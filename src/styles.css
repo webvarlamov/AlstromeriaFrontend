@@ -1,1 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
+@import "assets/fonts.css";
+@import "assets/fundamental-styles.css";
+@import "assets/reset.css";
+@import "assets/common.css";
+
+@import "assets/themes/light-dark/css_variables.css";
+@import "assets/themes/quartz-dark/css_variables.css";
+@import "assets/themes/hight-contrast/css_variables.css";
+
+@import "assets/dx-customisation.css";
+@import "assets/swal-customisation.css";
+@import "assets/bs-datepicker.css";
+@import "assets/bs-timepicker.css";
+
+/*body {*/
+/*  margin: 0;*/
+/*}*/
+
+.vertical-spacer-15 {
+  display: block;
+  width: 100%;
+  height: 15px;
+}
+
+.vertical-spacer-5 {
+  display: block;
+  width: 100%;
+  height: 5px;
+}
+
+.vertical-spacer-10 {
+  display: block;
+  width: 100%;
+  height: 5px;
+}
+
+.vertical-spacer-20 {
+  display: block;
+  width: 100%;
+  height: 5px;
+}
+

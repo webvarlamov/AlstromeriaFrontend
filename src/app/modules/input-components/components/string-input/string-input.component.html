@@ -1,0 +1,40 @@
+<div class="fd-form-item">
+  <label class="fd-form-label"
+         [for]="'input' + config.attributeKey">{{config?.caption}}
+  </label>
+  <div class="fd-popover">
+    <div class="fd-popover__control">
+      <div class="fd-input-group fd-input-group--control">
+        <input class="fd-input fd-input-group__input fd-tokenizer__input"
+               #input
+               [id]="'input' + config?.attributeKey"
+               type="text"
+               (click)="this.showSuggestions = true"
+        />
+        <span class="fd-input-group__addon fd-input-group__addon--button">
+          <button class="fd-input-group__button fd-button fd-button--transparent">
+            <i class="sap-icon--value-help"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
+         [attr.aria-hidden]="!showSuggestions">
+      <div class="fd-popover__wrapper">
+        <app-table
+          [id]="config?.attributeKey + 'string-input-suggestions-table'"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--[page]="listViewState?.listViewTableState.listViewTablePage$ | async"-->
+<!--[domainType]="listViewState.listViewConfigState?.domainType$ | async"-->
+<!--[selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"-->
+<!--[columns]="listViewState.listViewTableState.listViewTableColumns$ | async"-->
+<!--(onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"-->
+<!--(onTableComponentInit)="this.onTableComponentInit($event)"-->
+<!--(onAfterTableComponentViewInit)="this.onAfterTableComponentViewInit($event)"-->
+<!--(onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"-->

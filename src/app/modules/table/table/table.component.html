@@ -1,0 +1,55 @@
+<div class="table-body">
+  <div class="table-row table-header-row">
+    <div class="table-cell table-checkbox-cell"
+         *ngIf="config?.selectionConfig?.useSelection"
+         [style.width]="config?.selectionConfig?.columnWidth"
+         [ngClass]="{'table-checkbox-cell-sticky' : config.selectionConfig.sticky}"
+    >
+      <input aria-label="checkbox" type="checkbox" class="fd-checkbox" id="select-all-checkbox">
+      <label class="fd-checkbox__label" for="select-all-checkbox"></label>
+    </div>
+    <div class="table-cell" *ngFor="let column of getColumns;" [style.width]="column.width ? column.width : defaultColumnWidth">
+      {{column.caption}}
+    </div>
+  </div>
+  <div *ngFor="let row of getRows; let i = index; trackBy:trackByIdValue;" class="table-row table-row-hoverable"
+       [ngClass]="{'alternation-bg': i % 2 === 0, 'selected': row.selected}"
+  >
+    <div class="table-cell table-checkbox-cell"
+         *ngIf="config?.selectionConfig?.useSelection"
+         [style.width]="config?.selectionConfig?.columnWidth"
+         [ngClass]="{'table-checkbox-cell-sticky' : config.selectionConfig.sticky}"
+    >
+      <input #checkbox aria-label="checkbox" type="checkbox" class="fd-checkbox" [id]="row.id + '-select-checkbox'" [checked]="row.selected" (change)="onRowSelectionCheckboxChange(row, checkbox.checked)">
+      <label class="fd-checkbox__label" [for]="row.id + '-select-checkbox'"></label>
+    </div>
+    <div class="table-cell" *ngFor="let column of getColumns;" [style.width]="column.width ? column.width : defaultColumnWidth">
+      {{row.data[column.dataField]}}
+    </div>
+  </div>
+</div>
+<div class="table-footer">
+  <div></div>
+  <div class="fd-pagination">
+    <nav class="fd-pagination__nav">
+      <a class="fd-pagination__link fd-pagination__link--previous"
+         (click)="previousPageNavButtonClick()"
+         [attr.aria-disabled]="isPreviousPageDisabled"></a>
+      <div class="page-input-of">
+        <input
+          #pageNumberInput
+          type="number"
+          class="fd-input fd-input--compact"
+          [value]="getPageNumber"
+          [min]="1"
+          [max]="page?.page?.totalPages"
+          (input)="onUserPageNumberInput(pageNumberInput.value)"
+        />
+        <span class="of">из {{page?.page?.totalPages}}</span>
+      </div>
+      <a class="fd-pagination__link fd-pagination__link--next"
+         (click)="nextPageNavButtonClick()"
+         [attr.aria-disabled]="isNetPageDisabled"></a>
+    </nav>
+  </div>
+</div>

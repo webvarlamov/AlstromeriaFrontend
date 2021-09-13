@@ -1,0 +1,29 @@
+<div class="section action-bar">
+  <div class="section-content">
+    <app-crud-toolbar></app-crud-toolbar>
+  </div>
+</div>
+<div class="section filter-bar">
+  <div class="section-content">
+    <app-filter-bar
+      [filterConfigByAttributeKey]="listViewState?.listViewFilterState.listViewFilterConfigByAttributeKey$ | async"
+      [filterValuesByAttributeKey]="listViewState?.listViewFilterState.listViewFilterValuesByAttributeKey$ | async"
+      (onFilterValueChangeRequest)="onFilterBarValueChangeRequest($event)"
+    ></app-filter-bar>
+  </div>
+</div>
+<div class="section table-wrapper">
+  <div class="section-content">
+    <app-table
+      id="plan-list-data-grid"
+      [page]="listViewState?.listViewTableState.listViewTablePage$ | async"
+      [domainType]="listViewState.listViewConfigState?.domainType$ | async"
+      [selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"
+      [columns]="listViewState.listViewTableState.listViewTableColumns$ | async"
+      (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+      (onTableComponentInit)="this.onTableComponentInit($event)"
+      (onAfterTableComponentViewInit)="this.onAfterTableComponentViewInit($event)"
+      (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
+    ></app-table>
+  </div>
+</div>
