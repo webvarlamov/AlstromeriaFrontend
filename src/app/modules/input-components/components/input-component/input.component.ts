@@ -3,6 +3,9 @@ import {SelectedInputValuesTemplateSupport} from "./suggestions.directive";
 import {HasId, Pageable} from "../../../../service/http/model/pageable";
 import {FilterExpression} from "../../../../service/http/model/filter-expression";
 import {Observable} from "rxjs";
+import {ListViewState} from "../../../../view/view/state/list-view.state";
+import {DataAccessService} from "../../../../service/http/service/data-access-service.service";
+import {ListViewStateManager} from "../../../../view/view/state/list-view-state.manager";
 
 
 export enum InputComponentType {
@@ -210,20 +213,26 @@ export class InputComponentConfig<T> implements InputConfigInterface {
 }
 
 export interface InputComponentSuggestionsConfigInterface {
-  suggestionFilterExpression?: FilterExpression
-  loadSuggestionsPageFn?: (filterExpression: FilterExpression) => Pageable<any>
-  loadSuggestionsListFn?: (filterExpression: FilterExpression) => Array<any>
+  suggestionsUrl?: string;
+  suggestionsByProperty: string;
+  suggestionsListViewState: ListViewState;
+  suggestionsListViewStateManager: ListViewStateManager;
+  suggestionsDataAccessService: DataAccessService;
 }
 
 export class InputComponentSuggestionsConfig implements InputComponentSuggestionsConfigInterface {
-  public suggestionFilterExpression: FilterExpression;
-  public loadSuggestionsPageFn: (filterExpression: FilterExpression) => Pageable<any>;
-  public loadSuggestionsListFn: (filterExpression: FilterExpression) => Array<any>;
+  suggestionsUrl: string;
+  suggestionsByProperty: string;
+  suggestionsListViewState: ListViewState;
+  suggestionsListViewStateManager: ListViewStateManager;
+  suggestionsDataAccessService: DataAccessService;
 
   constructor(initial: InputComponentSuggestionsConfigInterface) {
-    this.suggestionFilterExpression = initial.suggestionFilterExpression ? initial.suggestionFilterExpression: FilterExpression.empty();
-    this.loadSuggestionsPageFn = initial.loadSuggestionsPageFn ? initial.loadSuggestionsPageFn: null;
-    this.loadSuggestionsListFn = initial.loadSuggestionsListFn ? initial.loadSuggestionsListFn: null;
+    this.suggestionsListViewState = initial.suggestionsListViewState ? initial.suggestionsListViewState : new ListViewState();
+    this.suggestionsListViewStateManager = initial.suggestionsListViewStateManager ? initial.suggestionsListViewStateManager: null;
+    this.suggestionsDataAccessService = initial.suggestionsDataAccessService;
+    this.suggestionsByProperty = initial.suggestionsByProperty;
+    this.suggestionsUrl = initial.suggestionsUrl;
   }
 }
 

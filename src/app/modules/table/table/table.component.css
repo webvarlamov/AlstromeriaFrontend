@@ -8,10 +8,10 @@
 
 .table-row {
   display: flex;
-  /*flex-grow: 1;*/
   min-width: 100%;
   width: max-content;
   border-bottom: 1px solid var(--sapList_BorderColor);
+  min-height: 35px;
 }
 
 .table-row-hoverable:hover, .table-row-hoverable:hover .table-checkbox-cell {
@@ -29,18 +29,31 @@
 
 .table-cell {
   border-right: 1px solid var(--sapList_BorderColor);
-  padding: 8px;
-
   white-space: nowrap;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.table-cell .cell-text {
+  padding: 8px;
+  box-sizing: border-box;
+  display: block;
   text-overflow: ellipsis;
   overflow: hidden;
+  width: 100%;
+}
 
-  flex-shrink: 0;
+.cell-resize-button-holder {
+  position: relative;
 }
 
 .table-checkbox-cell-sticky {
   position: sticky;
   left: 0;
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .table-checkbox-cell {

@@ -19,4 +19,8 @@ export class SelectedInputValuesTemplateSupport {
       this.showSelectedPopover = false;
     }
   }
+
+  public onInputClick(input: HTMLInputElement) {
+    this.showSuggestions = true
+  }
 }

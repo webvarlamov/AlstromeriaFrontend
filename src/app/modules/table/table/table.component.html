@@ -1,34 +1,78 @@
-<div class="table-body">
-  <div class="table-row table-header-row">
-    <div class="table-cell table-checkbox-cell"
-         *ngIf="config?.selectionConfig?.useSelection"
-         [style.width]="config?.selectionConfig?.columnWidth"
-         [ngClass]="{'table-checkbox-cell-sticky' : config.selectionConfig.sticky}"
-    >
-      <input aria-label="checkbox" type="checkbox" class="fd-checkbox" id="select-all-checkbox">
-      <label class="fd-checkbox__label" for="select-all-checkbox"></label>
-    </div>
-    <div class="table-cell" *ngFor="let column of getColumns;" [style.width]="column.width ? column.width : defaultColumnWidth">
-      {{column.caption}}
-    </div>
-  </div>
-  <div *ngFor="let row of getRows; let i = index; trackBy:trackByIdValue;" class="table-row table-row-hoverable"
-       [ngClass]="{'alternation-bg': i % 2 === 0, 'selected': row.selected}"
-  >
-    <div class="table-cell table-checkbox-cell"
-         *ngIf="config?.selectionConfig?.useSelection"
-         [style.width]="config?.selectionConfig?.columnWidth"
-         [ngClass]="{'table-checkbox-cell-sticky' : config.selectionConfig.sticky}"
-    >
-      <input #checkbox aria-label="checkbox" type="checkbox" class="fd-checkbox" [id]="row.id + '-select-checkbox'" [checked]="row.selected" (change)="onRowSelectionCheckboxChange(row, checkbox.checked)">
-      <label class="fd-checkbox__label" [for]="row.id + '-select-checkbox'"></label>
-    </div>
-    <div class="table-cell" *ngFor="let column of getColumns;" [style.width]="column.width ? column.width : defaultColumnWidth">
-      {{row.data[column.dataField]}}
-    </div>
-  </div>
+<div class="table-body" #tableBody>
+  <ng-container *ngTemplateOutlet="tableBodyTemplate"></ng-container>
 </div>
-<div class="table-footer">
+<div class="table-footer" #tableFooter>
+  <ng-container *ngTemplateOutlet="tableFooterTemplate"></ng-container>
+</div>
+
+<ng-template #tableBodyTemplate>
+  <ng-container *ngTemplateOutlet="tableHeaderRowTemplate"></ng-container>
+  <ng-container *ngTemplateOutlet="tableRowsTemplate"></ng-container>
+</ng-template>
+
+<ng-template #tableHeaderRowTemplate>
+  <div class="table-row table-header-row" #tableHeaderRow>
+    <div class="table-cell table-checkbox-cell"
+         *ngIf="selectionConfig?.useSelection"
+         [style.width]="selectionConfig?.columnWidth"
+         [ngClass]="{'table-checkbox-cell-sticky' : selectionConfig.sticky}">
+      <div class="checkbox-input-wrapper">
+        <input aria-label="checkbox" type="checkbox" class="fd-checkbox" id="select-all-checkbox">
+        <label class="fd-checkbox__label" for="select-all-checkbox"></label>
+      </div>
+    </div>
+    <div class="table-cell cell-resize-button-holder"
+         *ngFor="let column of getColumns;"
+         [attr.row-id]="'header'"
+         [attr.column-id]="column.id"
+         [attr.table-header-row-cell]="true"
+         [style.width]="column.width ? column.width : defaultColumnWidth">
+      <span class="cell-text">{{column.caption}}</span>
+      <app-cell-resize-button
+        [column]="column"
+        [tableBody]="tableBody"
+        (onColumnSizeChangeRequest)="onColumnSizeChange($event)"
+      ></app-cell-resize-button>
+      <app-column-controls
+        [column]="column"
+        (onColumnPositionChangeRequest)="onColumnPositionChange($event)"
+      ></app-column-controls>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #tableRowsTemplate>
+  <div class="table-row table-row-hoverable"
+       *ngFor="let row of getRows; let i = index; trackBy:trackByIdValue;"
+       [ngClass]="{'alternation-bg': i % 2 === 0, 'selected': row.selected}">
+    <div class="table-cell table-checkbox-cell"
+         *ngIf="selectionConfig?.useSelection"
+         [style.width]="selectionConfig?.columnWidth"
+         [ngClass]="{'table-checkbox-cell-sticky' : selectionConfig.sticky}">
+      <div class="checkbox-input-wrapper">
+        <input #checkbox
+               aria-label="checkbox"
+               type="checkbox"
+               class="fd-checkbox"
+               [id]="row.id + '-select-checkbox'"
+               [checked]="row.selected"
+               (change)="onRowSelectionCheckboxChange(row, checkbox.checked)">
+        <label class="fd-checkbox__label"
+               [for]="row.id + '-select-checkbox'"
+        ></label>
+      </div>
+    </div>
+    <div class="table-cell"
+         *ngFor="let column of getColumns;"
+         [style.width]="column.width ? column.width : defaultColumnWidth"
+         [attr.column-id]="column.id"
+         [attr.row-id]="row.id">
+      <span class="cell-text">{{row.data[column.dataField]}}</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #tableFooterTemplate>
   <div></div>
   <div class="fd-pagination">
     <nav class="fd-pagination__nav">
@@ -52,4 +96,7 @@
          [attr.aria-disabled]="isNetPageDisabled"></a>
     </nav>
   </div>
-</div>
+</ng-template>
+
+
+

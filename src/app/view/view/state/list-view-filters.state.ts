@@ -1,9 +1,7 @@
 import {BehaviorSubject} from "rxjs";
-import {
-    FilterConfigByAttributeKey,
-    FilterValuesByAttributeKey
-} from "./list-view.component";
 import {ListViewFiltersInitialState} from "./list-view-filters-initial.state";
+import {FilterValuesByAttributeKey} from "../component/list-view/filter-values-by-attribute.key";
+import {FilterConfigByAttributeKey} from "../component/list-view/filter-config-by-attribute.key";
 
 export class ListViewFiltersState {
     public listViewFilterValuesByAttributeKey$: BehaviorSubject<FilterValuesByAttributeKey>;

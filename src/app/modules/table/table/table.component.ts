@@ -1,18 +1,25 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  Component,
+  Component, ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges, ViewChild
 } from '@angular/core';
 import {HasId, Pageable} from "../../../service/http/model/pageable";
+import {ColumnSizeChangeRequest} from "./components/cell-resize/cell-resize.component";
+import {TableUtilsService} from "./table-utils-service";
+import {CollDragService} from "./components/coll-dragger/coll-drag.service";
+import {ColumnPositionChangeRequest} from "./components/coll-dragger/coll-dragger.component";
+
+export const DEFAULT_COLUMN_WIDTH = 200;
 
 export interface TableColumn {
   index?: number
+  id: string;
   dataField: string;
   caption?: string;
   width?: string
@@ -35,24 +42,36 @@ export interface SelectionChangeRequest {
   checked: boolean;
 }
 
-export interface TableConfig {
-  selectionConfig: TableSelectionConfig;
-}
-
 export interface TableSelectionConfig {
   useSelection: boolean;
   columnWidth: string;
   sticky: boolean;
+  selectionMode: SelectionMode;
+}
+
+export enum SelectionMode {
+  MULTI = 'multi',
+  SINGLE = 'single'
+}
+
+export const DEFAULT_SELECTION_CONFIG: TableSelectionConfig = {
+  sticky: true,
+  useSelection: true,
+  selectionMode: SelectionMode.MULTI,
+  columnWidth: '35px',
 }
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TableUtilsService, CollDragService]
 })
-export class TableComponent<Entity extends { id: string }> implements OnInit, AfterViewInit, OnChanges {
-  public defaultColumnWidth: string = '200px';
+export class TableComponent<Entity extends HasId> implements OnInit, AfterViewInit, OnChanges {
+  public defaultColumnWidth: string = DEFAULT_COLUMN_WIDTH + 'px';
+
+  @ViewChild('tableHeaderRow', {static: false}) tableHeaderRow: ElementRef;
 
   @Input()
   public page: Pageable<Entity>
@@ -63,13 +82,7 @@ export class TableComponent<Entity extends { id: string }> implements OnInit, Af
   @Input()
   public selectedEntities: Array<HasId> = [];
   @Input()
-  public config: TableConfig = {
-    selectionConfig: {
-      sticky: true,
-      useSelection: true,
-      columnWidth: '25px',
-    }
-  }
+  public selectionConfig: TableSelectionConfig = DEFAULT_SELECTION_CONFIG
 
   @Output()
   public onPageNumberChangeRequest: EventEmitter<PageNumberChangeRequest> = new EventEmitter();
@@ -81,13 +94,19 @@ export class TableComponent<Entity extends { id: string }> implements OnInit, Af
   public onAfterTableComponentViewInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
   @Output()
   public onTableComponentDestroy: EventEmitter<void> = new EventEmitter();
+  @Output()
+  public onColumnSizeChangeRequest: EventEmitter<ColumnSizeChangeRequest> = new EventEmitter();
+  @Output()
+  public onColumnPositionChangeRequest: EventEmitter<ColumnPositionChangeRequest> = new EventEmitter();
 
   public trackByIdValue(index: number, item: TableRow) {
     return item.id;
   };
 
-  constructor() {
-  }
+  constructor(
+    private tableUtilsService: TableUtilsService,
+    private collDragService: CollDragService
+  ) {}
 
   get getRows(): Array<TableRow> {
     const selectedEntitiesIds: Array<string> = this.selectedEntities.map(hasId => hasId.id);
@@ -105,9 +124,7 @@ export class TableComponent<Entity extends { id: string }> implements OnInit, Af
   }
 
   get getPageNumber(): number {
-    const number = this.page?.page?.number + 1;
-    console.log(number);
-    return number;
+    return this.page?.page?.number + 1;
   }
 
   ngOnInit(): void {
@@ -142,28 +159,35 @@ export class TableComponent<Entity extends { id: string }> implements OnInit, Af
 
   public ngAfterViewInit(): void {
     this.onAfterTableComponentViewInit.emit(this);
+
+    this.collDragService
+      .setTableHeaderRowElementRef(this.tableHeaderRow)
+      .setTableColumns(this.columns)
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    const columns = changes.columns;
+    const currentValue = columns?.currentValue;
+    if (currentValue != null) {
+      this.collDragService.setTableColumns(currentValue);
+    }
   }
 
   public onRowSelectionCheckboxChange(row: TableRow, checked: boolean) {
-    let selectedCandidates = [];
+    const selectionChangeRequest = this.tableUtilsService
+      .calcSelectionChangeRequest(row, checked, this.selectedEntities);
+    this.onSelectionChangeRequest.emit(selectionChangeRequest)
+  }
 
-    if (checked) {
-      selectedCandidates = this.selectedEntities
-        .concat(this.selectedEntities)
-        .concat(row.data)
-    } else {
-      selectedCandidates = this.selectedEntities
-        .filter(entity => entity.id !== row.data.id)
-    }
+  public onColumnSizeChange($event: ColumnSizeChangeRequest) {
+    const columnSizeChangeRequest = this.tableUtilsService
+      .addCandidatesToColumnSizeChangeRequest($event, this.columns);
+    this.onColumnSizeChangeRequest.emit(columnSizeChangeRequest)
+  }
 
-    this.onSelectionChangeRequest.emit({
-      currentSelectedEntities: checked ? [row.data] : [],
-      currentDeselectedEntities: checked ? [] : [row.data],
-      selectedCandidates,
-      checked
-    })
+  public onColumnPositionChange($event: ColumnPositionChangeRequest) {
+    const columnMoveChangeRequest = this.tableUtilsService
+      .addCandidatesToColumnMoveLeftChangeRequest($event, this.columns);
+    this.onColumnPositionChangeRequest.emit(columnMoveChangeRequest)
   }
 }

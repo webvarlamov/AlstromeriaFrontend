@@ -8,22 +8,21 @@
     <app-filter-bar
       [filterConfigByAttributeKey]="listViewState?.listViewFilterState.listViewFilterConfigByAttributeKey$ | async"
       [filterValuesByAttributeKey]="listViewState?.listViewFilterState.listViewFilterValuesByAttributeKey$ | async"
-      (onFilterValueChangeRequest)="onFilterBarValueChangeRequest($event)"
     ></app-filter-bar>
   </div>
 </div>
 <div class="section table-wrapper">
-  <div class="section-content">
     <app-table
       id="plan-list-data-grid"
+      [selectionConfig]="selectionConfig"
+      [domainType]="listViewState.listViewConfigState?.domainType"
       [page]="listViewState?.listViewTableState.listViewTablePage$ | async"
-      [domainType]="listViewState.listViewConfigState?.domainType$ | async"
-      [selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"
       [columns]="listViewState.listViewTableState.listViewTableColumns$ | async"
-      (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+      [selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"
       (onTableComponentInit)="this.onTableComponentInit($event)"
-      (onAfterTableComponentViewInit)="this.onAfterTableComponentViewInit($event)"
+      (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+      (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
       (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
+      (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
     ></app-table>
-  </div>
 </div>

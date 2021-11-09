@@ -1,6 +1,6 @@
 import {BehaviorSubject} from "rxjs";
-import {emptyPageable, HasId, Pageable} from "../../../../service/http/model/pageable";
-import {TableColumn} from "../../../../modules/table/table/table.component";
+import {emptyPageable, HasId, Pageable} from "../../../service/http/model/pageable";
+import {TableColumn} from "../../../modules/table/table/table.component";
 import {ListViewTableInitialState} from "./list-view-table-initial.state";
 
 export class ListViewTableState {

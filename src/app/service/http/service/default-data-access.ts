@@ -1,7 +1,7 @@
 import {EntitiesLoadOptions} from "../model/entities-load-options";
 import {FilterExpression} from "../model/filter-expression";
 import {Observable} from "rxjs";
-import {Pageable} from "../model/pageable";
+import {HasId, Pageable} from "../model/pageable";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Range} from "../model/range";
 import {EntityLoadOptions} from "../model/entity-load-options";
@@ -83,5 +83,14 @@ export class DefaultDataAccess {
     params = expression ? params.set('expression', JSON.stringify(expression)) : params;
 
     return this.httpClient.get(this.root + '/' + domainType + '/suggestion', {params}) as Observable<Array<string>>;
+  }
+
+  public loadSuggestionsPage(domainType: string, search: string, attributeKey: string, expression?: FilterExpression): Observable<Pageable<HasId>> {
+    let params = new HttpParams();
+    params = params.set('search', search);
+    params = params.set('attributeKey', attributeKey);
+    params = expression ? params.set('expression', JSON.stringify(expression)) : params;
+
+    return this.httpClient.get(this.root + '/' + domainType + '/suggestionPage', {params}) as Observable<Pageable<HasId>>;
   }
 }

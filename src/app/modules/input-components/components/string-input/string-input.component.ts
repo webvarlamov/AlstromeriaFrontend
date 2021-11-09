@@ -1,12 +1,13 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, Injector, OnInit} from '@angular/core';
 import {
   InputComponent,
   InputComponentConfig,
-  InputComponentValue,
   StringInputComponentValue
 } from "../input-component/input.component";
-import {BehaviorSubject, pipe, Subject} from "rxjs";
-import {map, switchMap} from "rxjs/operators";
+import {PageNumberChangeRequest, SelectionChangeRequest, TableComponent} from "../../../table/table/table.component";
+import {ToFilterExpressionTransformatorService} from "../../../../service/transformation/service/to-filter-expression-transformator.service";
+import {ListViewEntityPropertyStateManager} from "../../../../view/view/state/list-view-state.manager";
+import {config} from "rxjs";
 
 @Component({
   selector: 'app-string-input',
@@ -15,8 +16,18 @@ import {map, switchMap} from "rxjs/operators";
 })
 export class StringInputComponent extends InputComponent<InputComponentConfig<string>, StringInputComponentValue> implements OnInit {
 
+  async ngOnInit() {
+    super.ngOnInit();
+  }
 
-  // inputValue$: Subject<string> = new Subject<string>();
+  constructor(
+    public injector: Injector,
+    public elementRef: ElementRef
+  ) {
+    super(elementRef);
+  }
+
+// inputValue$: Subject<string> = new Subject<string>();
   // // suggestionList$ = this.inputValue$.pipe(
   // //   switchMap(searchValue => {
   // //     return this.config.suggestionConfig.dataAccessService.loadSuggestions(
@@ -46,4 +57,44 @@ export class StringInputComponent extends InputComponent<InputComponentConfig<st
   //   super(elementRef);
   //   // this.suggestionList$.subscribe(console.log)
   // }
+  public onSuggestionsTableComponentInit($event: TableComponent<any>) {
+    let listViewStateManager = this.config.suggestionsConfig.suggestionsListViewStateManager;
+    let listViewState = this.config.suggestionsConfig.suggestionsListViewState;
+    let dataAccessService = this.config.suggestionsConfig.suggestionsDataAccessService;
+    let transformator = this.injector.get(ToFilterExpressionTransformatorService);
+    let suggestionsByProperty = this.config.suggestionsConfig.suggestionsByProperty;
+
+    (listViewStateManager as ListViewEntityPropertyStateManager).loadPageToState({
+      listViewState,
+      dataAccessService,
+      transformator,
+      suggestionsByProperty
+    }).then()
+  }
+
+  public onPageNumberChangeRequest($event: PageNumberChangeRequest) {
+    let listViewStateManager = this.config.suggestionsConfig.suggestionsListViewStateManager;
+    let listViewState = this.config.suggestionsConfig.suggestionsListViewState;
+    let dataAccessService = this.config.suggestionsConfig.suggestionsDataAccessService;
+    let transformator = this.injector.get(ToFilterExpressionTransformatorService);
+
+
+    listViewStateManager.loadPageToState({
+      listViewState,
+      dataAccessService,
+      transformator,
+      options: {
+        page: $event.pageNumber
+      }
+    }).then();
+  }
+
+  public onTableSelectionChangeRequest($event: SelectionChangeRequest) {
+    let listViewState = this.config.suggestionsConfig.suggestionsListViewState;
+
+    listViewState
+      .listViewTableState
+      .listViewTableSelected$
+      .next($event.selectedCandidates)
+  }
 }

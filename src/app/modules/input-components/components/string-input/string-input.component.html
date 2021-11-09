@@ -9,7 +9,7 @@
                #input
                [id]="'input' + config?.attributeKey"
                type="text"
-               (click)="this.showSuggestions = true"
+               (click)="onInputClick(input)"
         />
         <span class="fd-input-group__addon fd-input-group__addon--button">
           <button class="fd-input-group__button fd-button fd-button--transparent">
@@ -20,21 +20,18 @@
     </div>
     <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
          [attr.aria-hidden]="!showSuggestions">
-      <div class="fd-popover__wrapper">
+      <div class="fd-popover__wrapper" *ngIf="showSuggestions">
         <app-table
           [id]="config?.attributeKey + 'string-input-suggestions-table'"
+          [page]="config.suggestionsConfig.suggestionsListViewState?.listViewTableState.listViewTablePage$ | async"
+          [domainType]="config.suggestionsConfig.suggestionsListViewState?.listViewConfigState?.domainType"
+          [selectedEntities]="config.suggestionsConfig.suggestionsListViewState?.listViewTableState.listViewTableSelected$ | async"
+          [columns]="config.suggestionsConfig.suggestionsListViewState?.listViewTableState.listViewTableColumns$ | async"
+          (onTableComponentInit)="this.onSuggestionsTableComponentInit($event)"
+          (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+          (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
         ></app-table>
       </div>
     </div>
   </div>
 </div>
-
-
-<!--[page]="listViewState?.listViewTableState.listViewTablePage$ | async"-->
-<!--[domainType]="listViewState.listViewConfigState?.domainType$ | async"-->
-<!--[selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"-->
-<!--[columns]="listViewState.listViewTableState.listViewTableColumns$ | async"-->
-<!--(onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"-->
-<!--(onTableComponentInit)="this.onTableComponentInit($event)"-->
-<!--(onAfterTableComponentViewInit)="this.onAfterTableComponentViewInit($event)"-->
-<!--(onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"-->

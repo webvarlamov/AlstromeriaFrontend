@@ -22,6 +22,12 @@
   height: 15px;
 }
 
+.horizontal-spacer-15 {
+  display: block;
+  height: 100%;
+  width: 15px;
+}
+
 .vertical-spacer-5 {
   display: block;
   width: 100%;

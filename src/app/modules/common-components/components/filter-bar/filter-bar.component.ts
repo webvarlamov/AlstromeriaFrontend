@@ -1,13 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   InputComponentValueChangeRequest,
-  InputComponentData, InputComponentConfig, InputComponentValue
+  InputComponentData
 } from "../../../input-components/components/input-component/input.component";
-import {
-  FilterComponentConfig,
-  FilterConfigByAttributeKey,
-  FilterValuesByAttributeKey
-} from "../../../../view/view/component/list-view/list-view.component";
+import {FilterValuesByAttributeKey} from "../../../../view/view/component/list-view/filter-values-by-attribute.key";
+import {FilterComponentConfig} from "../../../../view/view/component/list-view/filter-component.config";
+import {FilterConfigByAttributeKey} from "../../../../view/view/component/list-view/filter-config-by-attribute.key";
 
 export interface FilterComponentsDataDict {
   [attributeKey: string]: InputComponentData
@@ -38,10 +36,6 @@ export class FilterBarComponent implements OnInit {
 
   public trackByAttributeKey(index: number, item: { key: string, value: FilterComponentConfig<any>}): string {
     return item.key;
-  }
-
-  get filterComponentInputsDataArray(): Array<InputComponentData> {
-    return Object.values(this.filterComponentsInputData);
   }
 
   constructor() {

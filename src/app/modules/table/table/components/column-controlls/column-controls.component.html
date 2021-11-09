@@ -1,0 +1,11 @@
+<div class="position-control-group control-group">
+  <app-coll-dragger
+    [column]="column"
+    (onColumnPositionChangeRequest)="onColumnPositionChange($event)"
+  ></app-coll-dragger>
+</div>
+
+<div class="sort-control-group control-group">
+  <span class="sap-icon sap-icon--sort-descending" style="padding:0 2px" (click)="onSortDescClick()"></span>
+  <span class="sap-icon sap-icon--sort-ascending" style="padding:0 2px" (click)="onSortAscClick()"></span>
+</div>
