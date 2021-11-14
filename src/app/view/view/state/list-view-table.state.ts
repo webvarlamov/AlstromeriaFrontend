@@ -1,8 +1,8 @@
 import {BehaviorSubject} from "rxjs";
 import {emptyPageable, HasId, Pageable} from "../../../service/http/model/pageable";
 import {ListViewTableInitialState} from "./list-view-table-initial.state";
-import {TableColumn} from "../../../modules/table/table/models/dataModels/tableColumn";
-import {TableSort} from "../../../modules/table/table/models/dataModels/tableSort";
+import {TableColumn} from "../../../modules/table-module/table/models/dataModels/tableColumn";
+import {TableSort} from "../../../modules/table-module/table/models/dataModels/tableSort";
 
 export class ListViewTableState {
     public listViewTablePage$: BehaviorSubject<Pageable<any>>;

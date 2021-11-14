@@ -5,7 +5,7 @@ import { PlanDetailViewComponent } from './component/plan-detail-view/plan-detai
 import {RouterModule} from "@angular/router";
 import {CommonComponentsModule} from "../../modules/common-components/common-components.module";
 import {InputComponentsModule} from "../../modules/input-components/input-components.module";
-import {TableModule} from "../../modules/table/table.module";
+import {TableModule} from "../../modules/table-module/table.module";
 
 
 @NgModule({

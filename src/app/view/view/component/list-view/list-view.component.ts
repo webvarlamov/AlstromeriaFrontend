@@ -1,5 +1,5 @@
 import {Directive, Injector, OnInit} from "@angular/core";
-import {TableComponent} from "../../../../modules/table/table/table.component";
+import {TableComponent} from "../../../../modules/table-module/table/table.component";
 import {DataAccessService} from "../../../../service/http/service/data-access-service.service";
 import {ToFilterExpressionTransformatorService} from "../../../../service/transformation/service/to-filter-expression-transformator.service";
 import {ListViewState} from "../../state/list-view.state";
@@ -7,12 +7,12 @@ import {ListViewEntitiesStateManager, ListViewStateManager} from "../../state/li
 import {ListViewConfigInitialState} from "../../state/list-view-config-initial.state";
 import {ListViewTableInitialState} from "../../state/list-view-table-initial.state";
 import {ListViewFiltersInitialState} from "../../state/list-view-filters-initial.state";
-import {ColumnSizeChangeRequest} from "../../../../modules/table/table/components/cell-resize/cell-resize.component";
-import {PageNumberChangeRequest} from "../../../../modules/table/table/models/changeRequest/pageNumberChangeRequest";
-import {SelectionChangeRequest} from "../../../../modules/table/table/models/changeRequest/selectionChangeRequest";
-import {ColumnPositionChangeRequest} from "../../../../modules/table/table/models/changeRequest/column-position-change.request";
-import {SortChangeRequest} from "../../../../modules/table/table/models/changeRequest/sort-change-request";
-import {SortOrder} from "../../../../modules/table/table/models/dataModels/tableSort";
+import {ColumnSizeChangeRequest} from "../../../../modules/table-module/table/components/cell-resize/cell-resize.component";
+import {PageNumberChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/pageNumberChangeRequest";
+import {SelectionChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/selectionChangeRequest";
+import {ColumnPositionChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/column-position-change.request";
+import {SortChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/sort-change-request";
+import {SortOrder} from "../../../../modules/table-module/table/models/dataModels/tableSort";
 
 @Directive({
   selector: "app-list-view-component",

@@ -1,6 +1,6 @@
 import {HasId, Pageable} from "../../../service/http/model/pageable";
-import {TableColumn} from "../../../modules/table/table/models/dataModels/tableColumn";
-import {TableSort} from "../../../modules/table/table/models/dataModels/tableSort";
+import {TableColumn} from "../../../modules/table-module/table/models/dataModels/tableColumn";
+import {TableSort} from "../../../modules/table-module/table/models/dataModels/tableSort";
 
 export interface ListViewTableInitialState {
     listViewTablePage?: Pageable<Pageable<any>>;

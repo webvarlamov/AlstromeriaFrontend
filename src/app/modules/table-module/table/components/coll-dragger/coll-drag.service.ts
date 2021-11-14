@@ -1,5 +1,6 @@
 import {ElementRef, Injectable} from '@angular/core';
 import {TableColumn} from "../../models/dataModels/tableColumn";
+import {of} from "rxjs";
 
 export class TableHeaderRowCellsPosition {
   id: string;
@@ -22,6 +23,7 @@ export class CollDragService {
   }
 
   public getNextColumnPosition(event: MouseEvent, column: TableColumn): IndexRelativePosition {
+    debugger
     const positions = this.getTableHeaderRowCellsPositions();
 
     const headerCellPositions = positions
@@ -43,6 +45,25 @@ export class CollDragService {
         position: (dlx < drx) ? 'before' : 'after'
       }
     } else {
+      let columnIndex = this.tableColumns.map(tc => tc.id).indexOf(column.id);
+
+      if (headerCellPositions.find(position => position.startX < event.clientX) != null) {
+        if (columnIndex !== this.tableColumns.length - 1) {
+          return {
+            index: this.tableColumns.length - 1,
+            position: 'after'
+          }
+        }
+      }
+      if (headerCellPositions.find(position => position.startX > event.clientX) != null) {
+        if (columnIndex !== 0) {
+          return {
+            index: 0,
+            position: 'before'
+          }
+        }
+      }
+
       return null;
     }
   }

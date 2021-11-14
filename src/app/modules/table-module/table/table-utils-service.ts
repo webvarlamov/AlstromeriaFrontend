@@ -25,7 +25,7 @@ export class TableUtilsService {
     return {...$event, columnCandidates: candidates}
   }
 
-  public addCandidatesToColumnMoveLeftChangeRequest($event: ColumnPositionChangeRequest, columns: Array<TableColumn>): ColumnPositionChangeRequest {
+  public addCandidatesToColumnMoveChangeRequest($event: ColumnPositionChangeRequest, columns: Array<TableColumn>): ColumnPositionChangeRequest {
     const currentIndex = columns
       .map(column => column.id)
       .indexOf($event.column.id);

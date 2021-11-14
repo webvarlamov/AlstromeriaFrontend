@@ -9,7 +9,7 @@ import { DateTimeInputComponent } from './components/date-time-input/date-time-i
 import { PeriodInputComponent } from './components/period-input/period-input.component';
 import {EntityInputComponent} from "./components/entity-input/entity-input.component";
 import {SelectedInputValuesTemplateSupport} from "./components/input-component/suggestions.directive";
-import {TableModule} from "../table/table.module";
+import {TableModule} from "../table-module/table.module";
 
 
 

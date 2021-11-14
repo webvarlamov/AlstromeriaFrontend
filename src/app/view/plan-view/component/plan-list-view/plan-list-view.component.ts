@@ -8,8 +8,8 @@ import {DataAccessService} from "../../../../service/http/service/data-access-se
 import {FilterComponentConfig} from "../../../view/component/list-view/filter-component.config";
 import {ListViewState} from "../../../view/state/list-view.state";
 import {ListViewEntityPropertyStateManager} from "../../../view/state/list-view-state.manager";
-import {TableSelectionConfig} from "../../../../modules/table/table/models/config/tableSelectionConfig";
-import {SelectionMode} from "../../../../modules/table/table/models/config/selectionMode";
+import {TableSelectionConfig} from "../../../../modules/table-module/table/models/config/tableSelectionConfig";
+import {SelectionMode} from "../../../../modules/table-module/table/models/config/selectionMode";
 import {ListViewTableInitialState} from "../../../view/state/list-view-table-initial.state";
 import {ListViewFiltersInitialState} from "../../../view/state/list-view-filters-initial.state";
 import {ListViewConfigInitialState} from "../../../view/state/list-view-config-initial.state";

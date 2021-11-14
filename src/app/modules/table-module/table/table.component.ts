@@ -163,7 +163,7 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
 
   public onColumnPositionChange($event: ColumnPositionChangeRequest) {
     const columnMoveChangeRequest = this.tableUtilsService
-      .addCandidatesToColumnMoveLeftChangeRequest($event, this.columns);
+      .addCandidatesToColumnMoveChangeRequest($event, this.columns);
     this.onColumnPositionChangeRequest.emit(columnMoveChangeRequest)
   }
 
