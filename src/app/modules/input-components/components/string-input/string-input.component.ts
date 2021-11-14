@@ -4,10 +4,12 @@ import {
   InputComponentConfig,
   StringInputComponentValue
 } from "../input-component/input.component";
-import {PageNumberChangeRequest, SelectionChangeRequest, TableComponent} from "../../../table/table/table.component";
+import {TableComponent} from "../../../table/table/table.component";
 import {ToFilterExpressionTransformatorService} from "../../../../service/transformation/service/to-filter-expression-transformator.service";
 import {ListViewEntityPropertyStateManager} from "../../../../view/view/state/list-view-state.manager";
 import {config} from "rxjs";
+import {PageNumberChangeRequest} from "../../../table/table/models/changeRequest/pageNumberChangeRequest";
+import {SelectionChangeRequest} from "../../../table/table/models/changeRequest/selectionChangeRequest";
 
 @Component({
   selector: 'app-string-input',

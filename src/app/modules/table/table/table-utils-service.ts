@@ -1,8 +1,12 @@
 import {ColumnSizeChangeRequest} from "./components/cell-resize/cell-resize.component";
-import {SelectionChangeRequest, TableColumn, TableRow} from "./table.component";
 import {HasId} from "../../../service/http/model/pageable";
 import {Injectable} from "@angular/core";
-import {ColumnPositionChangeRequest} from "./components/coll-dragger/coll-dragger.component";
+import {TableRow} from "./models/dataModels/tableRow";
+import {SelectionChangeRequest} from "./models/changeRequest/selectionChangeRequest";
+import {TableColumn} from "./models/dataModels/tableColumn";
+import {ColumnPositionChangeRequest} from "./models/changeRequest/column-position-change.request";
+import {SortChangeRequest} from "./models/changeRequest/sort-change-request";
+import {TableSort} from "./models/dataModels/tableSort";
 
 @Injectable()
 export class TableUtilsService {
@@ -36,27 +40,45 @@ export class TableUtilsService {
     return {...$event, candidates: tableColumns};
   }
 
-  public calcSelectionChangeRequest(row: TableRow, checked: boolean, selectedEntities: Array<HasId>): SelectionChangeRequest {
+  public calcSingleSelectionChangeRequest(eventEntity: HasId, checked: boolean, selectedEntities: Array<HasId>): SelectionChangeRequest {
     let selectedCandidates = [];
 
     if (checked) {
       selectedCandidates = selectedEntities
-        .concat(selectedEntities)
-        .concat(row.data)
+        .concat([eventEntity])
     } else {
       selectedCandidates = selectedEntities
-        .filter(entity => entity.id !== row.data.id)
+        .filter(entity => entity.id !== eventEntity.id)
     }
 
     return {
-      currentSelectedEntities: checked ? [row.data] : [],
-      currentDeselectedEntities: checked ? [] : [row.data],
+      currentSelectedEntities: checked ? [eventEntity] : [],
+      currentDeselectedEntities: checked ? [] : [eventEntity],
       selectedCandidates,
       checked
     }
   }
 
-  public changeColumnPosition(tableColumns: Array<TableColumn> , currentIndex: number , targetIndex: number, position: 'before' | 'after' ): Array<TableColumn> {
+  public calcMultiSelectionChangeRequest(eventEntities: Array<HasId>, setSelection: boolean, selectedEntities: Array<HasId>): SelectionChangeRequest {
+    let selectedCandidates = [];
+
+    if (setSelection) {
+      selectedCandidates = selectedEntities.concat(eventEntities)
+    } else {
+      selectedCandidates = selectedEntities.filter(se => {
+        return eventEntities.find(ee => ee.id == se.id) == null;
+      })
+    }
+
+    return {
+      currentSelectedEntities: setSelection ? eventEntities : [],
+      currentDeselectedEntities: setSelection ? [] : eventEntities,
+      selectedCandidates,
+      checked: setSelection
+    }
+  }
+
+  public changeColumnPosition(tableColumns: Array<TableColumn>, currentIndex: number, targetIndex: number, position: 'before' | 'after'): Array<TableColumn> {
     const currentTableColumn = {...tableColumns[currentIndex]};
     const targetTableColumn = {...tableColumns[targetIndex]};
     const result: Array<TableColumn> = [];
@@ -75,8 +97,24 @@ export class TableUtilsService {
             result.push(currentTableColumn)
           }
         }
-    })
+      })
 
     return result;
   };
+
+  public calsSortingCandidates($event: SortChangeRequest, sorting: Array<TableSort>): SortChangeRequest {
+    const sortFromEvent: TableSort = {
+      dataField: $event.dataField,
+      order: $event.sortOrder
+    }
+
+    if ($event.enabled) {
+      let candidates = [...sorting].filter(s => s.dataField != sortFromEvent.dataField);
+      candidates.push(sortFromEvent);
+      return {...$event, sortCandidates: candidates}
+    } else {
+      let candidates = [...sorting].filter(s => s.dataField != sortFromEvent.dataField);
+      return {...$event, sortCandidates: candidates}
+    }
+  }
 }

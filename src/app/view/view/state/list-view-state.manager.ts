@@ -31,7 +31,9 @@ export class ListViewEntitiesStateManager extends ListViewStateManager {
       params.listViewState.listViewConfigState.domainType,
       params.options,
       filterExpression
-    ).pipe(take(1)).toPromise().then(pageable => {
+    ).pipe(take(1))
+      .toPromise()
+      .then(pageable => {
         params.listViewState.listViewTableState.listViewTablePage$.next(pageable);
         return pageable;
       }

@@ -3,7 +3,7 @@ import {Linked} from './linked';
 
 export interface Pageable<T> extends Linked {
   page?: Page;
-  _embedded: { [key: string]: Array<T> };
+  _embedded: { [domainType: string]: Array<T> };
 }
 
 export interface HasId {

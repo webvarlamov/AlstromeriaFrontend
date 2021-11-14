@@ -24,9 +24,19 @@
 .control-group span {
   color: var(--sapTextColor);
   opacity: 0.8;
+  cursor: pointer;
 }
 
 .control-group span:hover {
   color: var(--sapActiveColor);
+}
+
+span.sap-icon {
+  padding: 0 4px !important;
+}
+
+span.sap-icon.active {
+  background-color: var(--sapButton_Track_Background);
+  border-radius: 2px;
 }
 

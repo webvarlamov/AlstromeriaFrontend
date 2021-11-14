@@ -1,5 +1,5 @@
 import {ElementRef, Injectable} from '@angular/core';
-import {TableColumn} from "../../table.component";
+import {TableColumn} from "../../models/dataModels/tableColumn";
 
 export class TableHeaderRowCellsPosition {
   id: string;
@@ -19,7 +19,6 @@ export class CollDragService {
   private tableColumns: Array<TableColumn>;
 
   constructor() {
-    console.log("CollDragService constructor");
   }
 
   public getNextColumnPosition(event: MouseEvent, column: TableColumn): IndexRelativePosition {

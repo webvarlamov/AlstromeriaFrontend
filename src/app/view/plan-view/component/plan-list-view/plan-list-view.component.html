@@ -13,16 +13,19 @@
 </div>
 <div class="section table-wrapper">
     <app-table
-      id="plan-list-data-grid"
+      [id]="'plan-list-data-grid'"
       [selectionConfig]="selectionConfig"
+      [sorting]="listViewState.listViewTableState?.listViewTableSorting$| async"
       [domainType]="listViewState.listViewConfigState?.domainType"
       [page]="listViewState?.listViewTableState.listViewTablePage$ | async"
       [columns]="listViewState.listViewTableState.listViewTableColumns$ | async"
       [selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"
+
       (onTableComponentInit)="this.onTableComponentInit($event)"
       (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
       (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
       (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
       (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
+      (onSortChangeRequest)="this.onSortChangeRequest($event)"
     ></app-table>
 </div>

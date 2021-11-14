@@ -17,7 +17,16 @@
          [style.width]="selectionConfig?.columnWidth"
          [ngClass]="{'table-checkbox-cell-sticky' : selectionConfig.sticky}">
       <div class="checkbox-input-wrapper">
-        <input aria-label="checkbox" type="checkbox" class="fd-checkbox" id="select-all-checkbox">
+        <input #checkbox
+               id="select-all-checkbox"
+               aria-label="checkbox"
+               type="checkbox"
+               class="fd-checkbox fd-checkbox--compact"
+               [attr.checkbox-checked]="totalCheckboxIsChecked"
+               [attr.checkbox-indeterminate]="totalCheckboxIsIndeterminate"
+               [checked]="totalCheckboxIsChecked"
+               [indeterminate]="totalCheckboxIsIndeterminate"
+               (change)="onHeaderSelectionCheckboxChange(checkbox)">
         <label class="fd-checkbox__label" for="select-all-checkbox"></label>
       </div>
     </div>
@@ -34,8 +43,10 @@
         (onColumnSizeChangeRequest)="onColumnSizeChange($event)"
       ></app-cell-resize-button>
       <app-column-controls
+        [sortOrder]="getSorting?.[column.dataField]"
         [column]="column"
         (onColumnPositionChangeRequest)="onColumnPositionChange($event)"
+        (onSortChangeRequest)="onSortChange($event)"
       ></app-column-controls>
     </div>
   </div>
@@ -53,7 +64,7 @@
         <input #checkbox
                aria-label="checkbox"
                type="checkbox"
-               class="fd-checkbox"
+               class="fd-checkbox fd-checkbox--compact"
                [id]="row.id + '-select-checkbox'"
                [checked]="row.selected"
                (change)="onRowSelectionCheckboxChange(row, checkbox.checked)">

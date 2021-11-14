@@ -6,6 +6,12 @@
 </div>
 
 <div class="sort-control-group control-group">
-  <span class="sap-icon sap-icon--sort-descending" style="padding:0 2px" (click)="onSortDescClick()"></span>
-  <span class="sap-icon sap-icon--sort-ascending" style="padding:0 2px" (click)="onSortAscClick()"></span>
+  <span class="sap-icon sap-icon--navigation-down-arrow"
+        style="padding:0 2px"
+        [ngClass]="{'active': sortOrder === getSortOrderByString('desc')}"
+        (click)="onSortClick(getSortOrderByString('desc'))"></span>
+  <span class="sap-icon sap-icon--navigation-up-arrow"
+        style="padding:0 2px"
+        [ngClass]="{'active': sortOrder === getSortOrderByString('asc')}"
+        (click)="onSortClick(getSortOrderByString('asc'))"></span>
 </div>

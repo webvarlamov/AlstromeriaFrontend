@@ -1,14 +1,9 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TableColumn} from "../../table.component";
 import {fromEvent, Observable, Subscription} from "rxjs";
 import {map, switchMap, takeUntil, tap} from "rxjs/operators";
 import {CollDragService, IndexRelativePosition} from "./coll-drag.service";
-
-export interface ColumnPositionChangeRequest {
-  nextPosition: IndexRelativePosition;
-  column: TableColumn,
-  candidates?: Array<TableColumn>
-}
+import {TableColumn} from "../../models/dataModels/tableColumn";
+import {ColumnPositionChangeRequest} from "../../models/changeRequest/column-position-change.request";
 
 @Component({
   selector: 'app-coll-dragger',

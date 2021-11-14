@@ -7,9 +7,10 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import {DEFAULT_COLUMN_WIDTH, TableColumn} from "../../table.component";
+import {DEFAULT_COLUMN_WIDTH} from "../../table.component";
 import {fromEvent, Observable, Subscription} from "rxjs";
-import {filter, map, switchMap, takeUntil, tap} from "rxjs/operators";
+import {map, switchMap, takeUntil, tap} from "rxjs/operators";
+import {TableColumn} from "../../models/dataModels/tableColumn";
 
 export class ColumnSizeChangeRequest {
   columnCandidates?: TableColumn[]

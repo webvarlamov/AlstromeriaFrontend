@@ -17,19 +17,18 @@ export class DefaultDataAccess {
   public loadEntities<T>(domainType?: string, options?: EntitiesLoadOptions, expression?: FilterExpression): Observable<Pageable<T>> {
     let params = new HttpParams();
 
-    params = options?.page ? params.set('page', options.page?.toString()) : params;
-    params = options?.size ? params.set('size', options.size?.toString()) : params;
-    params = options?.projection ? params.set('projection', options.projection?.toString()) : params;
-    params = expression ? params.set('expression', JSON.stringify(expression)) : params;
+    params = options?.page ? params.append('page', options.page?.toString()) : params;
+    params = options?.size ? params.append('size', options.size?.toString()) : params;
+    params = options?.projection ? params.append('projection', options.projection?.toString()) : params;
+    params = expression ? params.append('expression', JSON.stringify(expression)) : params;
 
     if (options?.sort) {
       options.sort.forEach(sort => {
-        params = params.set('sort', [sort.selector, (sort.desc ? 'desc' : 'asc')].join(','));
+        params = params.append('sort', [sort.selector, (sort.desc ? 'desc' : 'asc')].join(','));
       });
     } else {
-      params = params.set('sort', 'id,asc');
+      params = params.append('sort', 'id,asc');
     }
-
     return this.httpClient.get(this.root + domainType, {params}) as Observable<Pageable<T>>;
   }
 

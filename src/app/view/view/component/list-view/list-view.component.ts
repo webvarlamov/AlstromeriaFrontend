@@ -1,9 +1,5 @@
 import {Directive, Injector, OnInit} from "@angular/core";
-import {
-  PageNumberChangeRequest,
-  SelectionChangeRequest,
-  TableComponent
-} from "../../../../modules/table/table/table.component";
+import {TableComponent} from "../../../../modules/table/table/table.component";
 import {DataAccessService} from "../../../../service/http/service/data-access-service.service";
 import {ToFilterExpressionTransformatorService} from "../../../../service/transformation/service/to-filter-expression-transformator.service";
 import {ListViewState} from "../../state/list-view.state";
@@ -12,7 +8,11 @@ import {ListViewConfigInitialState} from "../../state/list-view-config-initial.s
 import {ListViewTableInitialState} from "../../state/list-view-table-initial.state";
 import {ListViewFiltersInitialState} from "../../state/list-view-filters-initial.state";
 import {ColumnSizeChangeRequest} from "../../../../modules/table/table/components/cell-resize/cell-resize.component";
-import {ColumnPositionChangeRequest} from "../../../../modules/table/table/components/coll-dragger/coll-dragger.component";
+import {PageNumberChangeRequest} from "../../../../modules/table/table/models/changeRequest/pageNumberChangeRequest";
+import {SelectionChangeRequest} from "../../../../modules/table/table/models/changeRequest/selectionChangeRequest";
+import {ColumnPositionChangeRequest} from "../../../../modules/table/table/models/changeRequest/column-position-change.request";
+import {SortChangeRequest} from "../../../../modules/table/table/models/changeRequest/sort-change-request";
+import {SortOrder} from "../../../../modules/table/table/models/dataModels/tableSort";
 
 @Directive({
   selector: "app-list-view-component",
@@ -30,7 +30,8 @@ export class ListViewComponent<T> implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   public onPageNumberChangeRequest($event: PageNumberChangeRequest) {
     const dataAccessService = this.injector.get(DataAccessService);
@@ -39,7 +40,7 @@ export class ListViewComponent<T> implements OnInit {
       listViewState: this.listViewState,
       dataAccessService,
       transformator,
-      options: { page: $event.pageNumber }
+      options: {page: $event.pageNumber}
     }).then();
   }
 
@@ -72,5 +73,29 @@ export class ListViewComponent<T> implements OnInit {
       .listViewTableState
       .listViewTableColumns$
       .next($event.candidates)
+  }
+
+  public onSortChangeRequest($event: SortChangeRequest) {
+    this.listViewState
+      .listViewTableState
+      .listViewTableSorting$
+      .next($event.sortCandidates)
+
+    const dataAccessService = this.injector.get(DataAccessService);
+    const transformator = this.injector.get(ToFilterExpressionTransformatorService);
+
+    this.listViewStateManager.loadPageToState({
+      listViewState: this.listViewState,
+      dataAccessService,
+      transformator,
+      options: {
+        sort: $event.sortCandidates.map(s => {
+          return {
+            selector: s.dataField,
+            desc: s.order === SortOrder.DESC
+          }
+        })
+      }
+    }).then();
   }
 }

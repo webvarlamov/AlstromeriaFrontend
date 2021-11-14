@@ -1,10 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TableColumn} from "../../table.component";
-import {ColumnPositionChangeRequest} from "../coll-dragger/coll-dragger.component";
-
-export enum ColumnMoveDirection {
-  LEFT = -1, RIGHT = 1
-}
+import {TableColumn} from "../../models/dataModels/tableColumn";
+import {SortOrder} from "../../models/dataModels/tableSort";
+import {ColumnPositionChangeRequest} from "../../models/changeRequest/column-position-change.request";
+import {SortChangeRequest} from "../../models/changeRequest/sort-change-request";
 
 @Component({
   selector: 'app-column-controls',
@@ -14,23 +12,31 @@ export enum ColumnMoveDirection {
 export class ColumnControlsComponent implements OnInit {
   @Output()
   public onColumnPositionChangeRequest: EventEmitter<ColumnPositionChangeRequest> = new EventEmitter();
+  @Output()
+  public onSortChangeRequest: EventEmitter<SortChangeRequest> = new EventEmitter();
   @Input()
   public column: TableColumn;
+  @Input()
+  public sortOrder: SortOrder
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  public onSortAscClick() {
-
-  }
-
-  public onSortDescClick() {
-
+  public onSortClick(buttonSortOrder: SortOrder) {
+    this.onSortChangeRequest.emit({
+      enabled: buttonSortOrder !== this.sortOrder,
+      dataField: this.column.dataField,
+      sortOrder: buttonSortOrder,
+    })
   }
 
   public onColumnPositionChange($event: ColumnPositionChangeRequest) {
     this.onColumnPositionChangeRequest.emit($event)
+  }
+
+  public getSortOrderByString(order: string): SortOrder {
+    return order === 'asc' ? SortOrder.ASC : SortOrder.DESC
   }
 }

@@ -8,7 +8,11 @@ import {DataAccessService} from "../../../../service/http/service/data-access-se
 import {FilterComponentConfig} from "../../../view/component/list-view/filter-component.config";
 import {ListViewState} from "../../../view/state/list-view.state";
 import {ListViewEntityPropertyStateManager} from "../../../view/state/list-view-state.manager";
-import {SelectionMode, TableSelectionConfig} from "../../../../modules/table/table/table.component";
+import {TableSelectionConfig} from "../../../../modules/table/table/models/config/tableSelectionConfig";
+import {SelectionMode} from "../../../../modules/table/table/models/config/selectionMode";
+import {ListViewTableInitialState} from "../../../view/state/list-view-table-initial.state";
+import {ListViewFiltersInitialState} from "../../../view/state/list-view-filters-initial.state";
+import {ListViewConfigInitialState} from "../../../view/state/list-view-config-initial.state";
 
 @Component({
   selector: 'app-plan-list-view',
@@ -16,26 +20,21 @@ import {SelectionMode, TableSelectionConfig} from "../../../../modules/table/tab
   styleUrls: ['./plan-list-view.component.css'],
 })
 export class PlanListViewComponent extends ListViewComponent<any> implements OnInit {
-  public listViewConfigInitialState = {
+  public listViewConfigInitialState: ListViewConfigInitialState = {
     domainType: 'plans',
     projection: ''
   }
 
-  public listViewTableInitialState = {
+  public listViewTableInitialState: ListViewTableInitialState = {
     listViewTableColumns: [
-      {id: '0', caption: "0", dataField: "0"},
-      {id: '1', caption: "1", dataField: "1"},
-      {id: '2', caption: "2", dataField: "2"},
-      {id: '3', caption: "3", dataField: "3"},
-      {id: '4', caption: "4", dataField: "4"},
-      {id: '5', caption: "5", dataField: "5"},
-      {id: '6', caption: "6", dataField: "6"},
-      {id: '7', caption: "7", dataField: "7"},
-      {id: '8', caption: "8", dataField: "8"},
-    ]
+      {id: '0', caption: "ID", dataField: "id"},
+      {id: '1', caption: "Name", dataField: "name"},
+      {id: '2', caption: "Description", dataField: "description"},
+    ],
+    listViewTableSorting: []
   }
 
-  public listViewFilterInitialState = {
+  public listViewFilterInitialState: ListViewFiltersInitialState = {
     listViewFilterConfigByAttributeKey: {
       id: new FilterComponentConfig({
         attributeKey: 'id',

@@ -1,58 +1,32 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  Component, ElementRef,
+  Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges, ViewChild
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import {HasId, Pageable} from "../../../service/http/model/pageable";
 import {ColumnSizeChangeRequest} from "./components/cell-resize/cell-resize.component";
 import {TableUtilsService} from "./table-utils-service";
 import {CollDragService} from "./components/coll-dragger/coll-drag.service";
-import {ColumnPositionChangeRequest} from "./components/coll-dragger/coll-dragger.component";
+import {TableValidatorService} from "./table-validator.service";
+import {TableColumn} from "./models/dataModels/tableColumn";
+import {TableRow} from "./models/dataModels/tableRow";
+import {PageNumberChangeRequest} from "./models/changeRequest/pageNumberChangeRequest";
+import {SelectionChangeRequest} from "./models/changeRequest/selectionChangeRequest";
+import {TableSelectionConfig} from "./models/config/tableSelectionConfig";
+import {SelectionMode} from "./models/config/selectionMode";
+import {SortOrder, TableSort} from "./models/dataModels/tableSort";
+import {ColumnPositionChangeRequest} from "./models/changeRequest/column-position-change.request";
+import {SortChangeRequest} from "./models/changeRequest/sort-change-request";
 
 export const DEFAULT_COLUMN_WIDTH = 200;
-
-export interface TableColumn {
-  index?: number
-  id: string;
-  dataField: string;
-  caption?: string;
-  width?: string
-}
-
-export interface TableRow {
-  id: string;
-  data: any;
-  selected?: boolean;
-}
-
-export interface PageNumberChangeRequest {
-  pageNumber: number;
-}
-
-export interface SelectionChangeRequest {
-  currentSelectedEntities: Array<HasId>;
-  currentDeselectedEntities: Array<HasId>;
-  selectedCandidates: Array<HasId>;
-  checked: boolean;
-}
-
-export interface TableSelectionConfig {
-  useSelection: boolean;
-  columnWidth: string;
-  sticky: boolean;
-  selectionMode: SelectionMode;
-}
-
-export enum SelectionMode {
-  MULTI = 'multi',
-  SINGLE = 'single'
-}
 
 export const DEFAULT_SELECTION_CONFIG: TableSelectionConfig = {
   sticky: true,
@@ -66,24 +40,32 @@ export const DEFAULT_SELECTION_CONFIG: TableSelectionConfig = {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TableUtilsService, CollDragService]
+  providers: [TableUtilsService, CollDragService, TableValidatorService]
 })
 export class TableComponent<Entity extends HasId> implements OnInit, AfterViewInit, OnChanges {
   public defaultColumnWidth: string = DEFAULT_COLUMN_WIDTH + 'px';
 
   @ViewChild('tableHeaderRow', {static: false}) tableHeaderRow: ElementRef;
 
+  // --- Configuration ---  //
   @Input()
-  public page: Pageable<Entity>
+  public id: string;
   @Input()
   public domainType: string;
   @Input()
   public columns: Array<TableColumn> = [];
   @Input()
-  public selectedEntities: Array<HasId> = [];
+  public sorting: Array<TableSort> = [];
   @Input()
-  public selectionConfig: TableSelectionConfig = DEFAULT_SELECTION_CONFIG
+  public selectionConfig: TableSelectionConfig = {...DEFAULT_SELECTION_CONFIG}
 
+  // --- Data ---  //
+  @Input()
+  public page: Pageable<Entity>
+  @Input()
+  public selectedEntities: Array<HasId> = [];
+
+  // --- EventEmitters ---  //
   @Output()
   public onPageNumberChangeRequest: EventEmitter<PageNumberChangeRequest> = new EventEmitter();
   @Output()
@@ -98,6 +80,8 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   public onColumnSizeChangeRequest: EventEmitter<ColumnSizeChangeRequest> = new EventEmitter();
   @Output()
   public onColumnPositionChangeRequest: EventEmitter<ColumnPositionChangeRequest> = new EventEmitter();
+  @Output()
+  public onSortChangeRequest: EventEmitter<SortChangeRequest> = new EventEmitter();
 
   public trackByIdValue(index: number, item: TableRow) {
     return item.id;
@@ -105,8 +89,10 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
 
   constructor(
     private tableUtilsService: TableUtilsService,
-    private collDragService: CollDragService
-  ) {}
+    private collDragService: CollDragService,
+    private tableValidatorService: TableValidatorService
+  ) {
+  }
 
   get getRows(): Array<TableRow> {
     const selectedEntitiesIds: Array<string> = this.selectedEntities.map(hasId => hasId.id);
@@ -119,6 +105,14 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
     });
   }
 
+  get getSorting(): { [dataField: string]: SortOrder } {
+    const sorting: { [dataField: string]: SortOrder } = {};
+    this.sorting.forEach(si => {
+      sorting[si.dataField] = si.order
+    })
+    return sorting;
+  }
+
   get getColumns(): Array<TableColumn> {
     return this.columns ? this.columns : [];
   }
@@ -128,25 +122,8 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   ngOnInit(): void {
+    this.tableValidatorService.validate(this)
     this.onTableComponentInit.next(this);
-  }
-
-  public previousPageNavButtonClick(): void {
-    this.onPageNumberChangeRequest.emit({
-      pageNumber: this.page.page.number - 1
-    })
-  }
-
-  public onUserPageNumberInput(pageNumber: string) {
-    this.onPageNumberChangeRequest.emit({
-      pageNumber: parseInt(pageNumber, 10) - 1
-    })
-  }
-
-  public nextPageNavButtonClick(): void {
-    this.onPageNumberChangeRequest.emit({
-      pageNumber: this.page.page.number + 1
-    })
   }
 
   public get isNetPageDisabled(): boolean {
@@ -165,17 +142,16 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
       .setTableColumns(this.columns)
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    const columns = changes.columns;
-    const currentValue = columns?.currentValue;
-    if (currentValue != null) {
-      this.collDragService.setTableColumns(currentValue);
-    }
-  }
-
   public onRowSelectionCheckboxChange(row: TableRow, checked: boolean) {
     const selectionChangeRequest = this.tableUtilsService
-      .calcSelectionChangeRequest(row, checked, this.selectedEntities);
+      .calcSingleSelectionChangeRequest(row.data, checked, this.selectedEntities);
+    this.onSelectionChangeRequest.emit(selectionChangeRequest)
+  }
+
+  public onHeaderSelectionCheckboxChange(checkbox: HTMLInputElement) {
+    const entities: Array<HasId> = this.page._embedded[this.domainType];
+    const selectionChangeRequest = this.tableUtilsService
+      .calcMultiSelectionChangeRequest(entities, checkbox.checked, this.selectedEntities);
     this.onSelectionChangeRequest.emit(selectionChangeRequest)
   }
 
@@ -189,5 +165,66 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
     const columnMoveChangeRequest = this.tableUtilsService
       .addCandidatesToColumnMoveLeftChangeRequest($event, this.columns);
     this.onColumnPositionChangeRequest.emit(columnMoveChangeRequest)
+  }
+
+  public onSortChange($event: SortChangeRequest): any {
+    const sortChangeRequest = this.tableUtilsService.calsSortingCandidates($event, this.sorting);
+    this.onSortChangeRequest.emit(sortChangeRequest);
+  }
+
+  // Pagination
+  public previousPageNavButtonClick(): void {
+    this.onPageNumberChangeRequest.emit({
+      pageNumber: this.page.page.number - 1
+    })
+  }
+
+  public onUserPageNumberInput(pageNumber: string) {
+    this.onPageNumberChangeRequest.emit({
+      pageNumber: parseInt(pageNumber, 10) - 1
+    })
+  }
+
+  public nextPageNavButtonClick(): void {
+    this.onPageNumberChangeRequest.emit({
+      pageNumber: this.page.page.number + 1
+    })
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    this.setTableColumnsToCollDragService(changes)
+  }
+
+  private setTableColumnsToCollDragService(changes: SimpleChanges) {
+    const columnsChanges = changes.columns;
+    const currentValueTableColumns: Array<TableColumn> = columnsChanges?.currentValue;
+    if (currentValueTableColumns != null) {
+      this.collDragService.setTableColumns(currentValueTableColumns);
+    }
+  }
+
+  get totalCheckboxIsIndeterminate(): boolean {
+    const selectedOnPage = this.selectedEntities
+      .filter(se => this.getPageEntities().find(pe => pe.id == se.id) != null);
+
+    const b = this.selectedEntities.length != 0
+      && selectedOnPage.length != 0
+      && selectedOnPage.length != this.getPageEntities().length;
+
+    return b;
+  }
+
+  get totalCheckboxIsChecked(): boolean {
+    const b = this.selectedEntities.length != 0
+      && this.selectedEntities
+        .filter(se => this.getPageEntities()
+          .find(pe => pe.id == se.id) != null)
+        .length > 0;
+
+    return b;
+  }
+
+  public getPageEntities(): Array<HasId> {
+    return this.page._embedded[this.domainType];
   }
 }
