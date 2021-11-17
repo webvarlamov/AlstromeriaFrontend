@@ -15,7 +15,7 @@
     <app-table
       [id]="'plan-list-data-grid'"
       [selectionConfig]="selectionConfig"
-      [sorting]="listViewState.listViewTableState?.listViewTableSorting$| async"
+      [sorting]="listViewState.listViewTableState?.listViewTableSorting$ | async"
       [domainType]="listViewState.listViewConfigState?.domainType"
       [page]="listViewState?.listViewTableState.listViewTablePage$ | async"
       [columns]="listViewState.listViewTableState.listViewTableColumns$ | async"
@@ -27,5 +27,6 @@
       (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
       (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
       (onSortChangeRequest)="this.onSortChangeRequest($event)"
-    ></app-table>
+      (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)">
+    </app-table>
 </div>

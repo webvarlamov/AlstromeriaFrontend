@@ -68,10 +68,13 @@
 }
 
 .table-footer {
+  border-top: 1px solid var(--sapList_BorderColor);
+}
+
+.table-footer .table-footer-body {
   padding: 10px;
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid var(--sapList_BorderColor);
 }
 
 :host {
@@ -129,4 +132,17 @@ div.page-number-input-element {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+div.page-size-selector-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+span.page-size-selector-text {
+  white-space: nowrap;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
 }

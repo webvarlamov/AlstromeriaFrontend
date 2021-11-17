@@ -3,8 +3,9 @@ import {TableColumn} from "../../../modules/table-module/table/models/dataModels
 import {TableSort} from "../../../modules/table-module/table/models/dataModels/tableSort";
 
 export interface ListViewTableInitialState {
-    listViewTablePage?: Pageable<Pageable<any>>;
-    listViewTableColumns?: Array<TableColumn>;
-    listViewTableSelected?: Array<HasId>;
-    listViewTableSorting?: Array<TableSort>
+  listViewTablePage?: Pageable<Pageable<any>>;
+  listViewTablePageSize?: number;
+  listViewTableColumns?: Array<TableColumn>;
+  listViewTableSelected?: Array<HasId>;
+  listViewTableSorting?: Array<TableSort>
 }

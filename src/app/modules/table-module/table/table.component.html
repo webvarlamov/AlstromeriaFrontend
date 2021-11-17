@@ -2,7 +2,15 @@
   <ng-container *ngTemplateOutlet="tableBodyTemplate"></ng-container>
 </div>
 <div class="table-footer" #tableFooter>
-  <ng-container *ngTemplateOutlet="tableFooterTemplate"></ng-container>
+  <div class="table-footer-header">
+    <ng-content select="[tableFooterHeader]"></ng-content>
+  </div>
+  <div class="table-footer-body">
+    <ng-container *ngTemplateOutlet="tableFooterTemplate"></ng-container>
+  </div>
+  <div class="table-footer-footer">
+    <ng-content select="[tableFooterFooter]"></ng-content>
+  </div>
 </div>
 
 <ng-template #tableBodyTemplate>
@@ -84,29 +92,42 @@
 </ng-template>
 
 <ng-template #tableFooterTemplate>
-  <div></div>
-  <div class="fd-pagination">
-    <nav class="fd-pagination__nav">
-      <a class="fd-pagination__link fd-pagination__link--previous"
-         (click)="previousPageNavButtonClick()"
-         [attr.aria-disabled]="isPreviousPageDisabled"></a>
-      <div class="page-input-of">
-        <input
-          #pageNumberInput
-          type="number"
-          class="fd-input fd-input--compact"
-          [value]="getPageNumber"
-          [min]="1"
-          [max]="page?.page?.totalPages"
-          (input)="onUserPageNumberInput(pageNumberInput.value)"
-        />
-        <span class="of">из {{page?.page?.totalPages}}</span>
+  <ng-container *ngIf="pagingConfig.showPagination">
+    <div>
+      <div class="page-size-selector-wrapper" *ngIf="pagingConfig?.showPageSizeSelector">
+        <select #pageSizeSelector class="fd-input fd-input--compact" (change)="onPageSizeSelectorChange(pageSizeSelector.value)">
+          <ng-container *ngFor="let size of pagingConfig?.pageSizes">
+            <option>{{size}}</option>
+          </ng-container>
+        </select>
+        <span class="page-size-selector-text"> из {{page?.page?.totalElements}} элементов</span>
       </div>
-      <a class="fd-pagination__link fd-pagination__link--next"
-         (click)="nextPageNavButtonClick()"
-         [attr.aria-disabled]="isNetPageDisabled"></a>
-    </nav>
-  </div>
+    </div>
+
+    <div class="fd-pagination">
+      <nav class="fd-pagination__nav">
+        <a class="fd-pagination__link fd-pagination__link--previous"
+           (click)="previousPageNavButtonClick()"
+           [attr.aria-disabled]="isPreviousPageDisabled"></a>
+        <div class="page-input-of">
+          <input
+            #pageNumberInput
+            [size]="getPageInputSize"
+            type="number"
+            class="fd-input fd-input--compact"
+            [value]="getPageNumber"
+            [min]="1"
+            [max]="page?.page?.totalPages"
+            (change)="onUserPageNumberInput(pageNumberInput.value)"
+          />
+          <span class="of">из {{page?.page?.totalPages}}</span>
+        </div>
+        <a class="fd-pagination__link fd-pagination__link--next"
+           (click)="nextPageNavButtonClick()"
+           [attr.aria-disabled]="isNetPageDisabled"></a>
+      </nav>
+    </div>
+  </ng-container>
 </ng-template>
 
 

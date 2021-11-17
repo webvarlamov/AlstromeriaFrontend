@@ -25,14 +25,29 @@ import {SelectionMode} from "./models/config/selectionMode";
 import {SortOrder, TableSort} from "./models/dataModels/tableSort";
 import {ColumnPositionChangeRequest} from "./models/changeRequest/column-position-change.request";
 import {SortChangeRequest} from "./models/changeRequest/sort-change-request";
+import {PageSizeChangeRequest} from "./models/changeRequest/pageSizeChangeRequest";
 
 export const DEFAULT_COLUMN_WIDTH = 200;
+export const DEFAULT_PAGE_INPUT_SIZE = 5;
+
 
 export const DEFAULT_SELECTION_CONFIG: TableSelectionConfig = {
   sticky: true,
   useSelection: true,
   selectionMode: SelectionMode.MULTI,
   columnWidth: '35px',
+}
+
+export const DEFAULT_PAGING_CONFIG: TablePagingConfig = {
+  showPagination: true,
+  pageSizes: [10, 50, 100],
+  showPageSizeSelector: true,
+}
+
+export interface TablePagingConfig {
+  showPagination: boolean;
+  pageSizes: Array<Number>,
+  showPageSizeSelector: boolean,
 }
 
 @Component({
@@ -48,40 +63,27 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   @ViewChild('tableHeaderRow', {static: false}) tableHeaderRow: ElementRef;
 
   // --- Configuration ---  //
-  @Input()
-  public id: string;
-  @Input()
-  public domainType: string;
-  @Input()
-  public columns: Array<TableColumn> = [];
-  @Input()
-  public sorting: Array<TableSort> = [];
-  @Input()
-  public selectionConfig: TableSelectionConfig = {...DEFAULT_SELECTION_CONFIG}
+  @Input() public id: string;
+  @Input() public domainType: string;
+  @Input() public columns: Array<TableColumn> = [];
+  @Input() public sorting: Array<TableSort> = [];
+  @Input() public selectionConfig: TableSelectionConfig = {...DEFAULT_SELECTION_CONFIG}
+  @Input() public pagingConfig: TablePagingConfig = {...DEFAULT_PAGING_CONFIG}
 
   // --- Data ---  //
-  @Input()
-  public page: Pageable<Entity>
-  @Input()
-  public selectedEntities: Array<HasId> = [];
+  @Input() public page: Pageable<Entity>
+  @Input() public selectedEntities: Array<HasId> = [];
 
   // --- EventEmitters ---  //
-  @Output()
-  public onPageNumberChangeRequest: EventEmitter<PageNumberChangeRequest> = new EventEmitter();
-  @Output()
-  public onSelectionChangeRequest: EventEmitter<SelectionChangeRequest> = new EventEmitter();
-  @Output()
-  public onTableComponentInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
-  @Output()
-  public onAfterTableComponentViewInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
-  @Output()
-  public onTableComponentDestroy: EventEmitter<void> = new EventEmitter();
-  @Output()
-  public onColumnSizeChangeRequest: EventEmitter<ColumnSizeChangeRequest> = new EventEmitter();
-  @Output()
-  public onColumnPositionChangeRequest: EventEmitter<ColumnPositionChangeRequest> = new EventEmitter();
-  @Output()
-  public onSortChangeRequest: EventEmitter<SortChangeRequest> = new EventEmitter();
+  @Output() public onPageNumberChangeRequest: EventEmitter<PageNumberChangeRequest> = new EventEmitter();
+  @Output() public onSelectionChangeRequest: EventEmitter<SelectionChangeRequest> = new EventEmitter();
+  @Output() public onTableComponentInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
+  @Output() public onAfterTableComponentViewInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
+  @Output() public onTableComponentDestroy: EventEmitter<void> = new EventEmitter();
+  @Output() public onColumnSizeChangeRequest: EventEmitter<ColumnSizeChangeRequest> = new EventEmitter();
+  @Output() public onColumnPositionChangeRequest: EventEmitter<ColumnPositionChangeRequest> = new EventEmitter();
+  @Output() public onSortChangeRequest: EventEmitter<SortChangeRequest> = new EventEmitter();
+  @Output() public onPageSizeChangeRequest: EventEmitter<PageSizeChangeRequest> = new EventEmitter();
 
   public trackByIdValue(index: number, item: TableRow) {
     return item.id;
@@ -120,6 +122,13 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   get getPageNumber(): number {
     return this.page?.page?.number + 1;
   }
+
+  get getPageInputSize(): number {
+    return this.page != null && this.page.page != null
+      ? this.page.page.totalPages?.toString()?.length + 3
+      : DEFAULT_PAGE_INPUT_SIZE
+  }
+
 
   ngOnInit(): void {
     this.tableValidatorService.validate(this)
@@ -180,9 +189,12 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   public onUserPageNumberInput(pageNumber: string) {
-    this.onPageNumberChangeRequest.emit({
-      pageNumber: parseInt(pageNumber, 10) - 1
-    })
+    const candidate = parseInt(pageNumber, 10) - 1;
+    if (candidate < this.page.page.totalPages && candidate >= 0) {
+      this.onPageNumberChangeRequest.emit({
+        pageNumber: parseInt(pageNumber, 10) - 1
+      })
+    }
   }
 
   public nextPageNavButtonClick(): void {
@@ -207,24 +219,26 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
     const selectedOnPage = this.selectedEntities
       .filter(se => this.getPageEntities().find(pe => pe.id == se.id) != null);
 
-    const b = this.selectedEntities.length != 0
+    return this.selectedEntities.length != 0
       && selectedOnPage.length != 0
       && selectedOnPage.length != this.getPageEntities().length;
-
-    return b;
   }
 
   get totalCheckboxIsChecked(): boolean {
-    const b = this.selectedEntities.length != 0
+    return this.selectedEntities.length != 0
       && this.selectedEntities
         .filter(se => this.getPageEntities()
           .find(pe => pe.id == se.id) != null)
         .length > 0;
-
-    return b;
   }
 
   public getPageEntities(): Array<HasId> {
     return this.page._embedded[this.domainType];
+  }
+
+  public onPageSizeSelectorChange(pageSizeSelectorValue: string) {
+    this.onPageSizeChangeRequest.emit({
+      pageSize: parseInt(pageSizeSelectorValue, 10)
+    })
   }
 }

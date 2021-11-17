@@ -12,7 +12,7 @@ import {PageNumberChangeRequest} from "../../../../modules/table-module/table/mo
 import {SelectionChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/selectionChangeRequest";
 import {ColumnPositionChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/column-position-change.request";
 import {SortChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/sort-change-request";
-import {SortOrder} from "../../../../modules/table-module/table/models/dataModels/tableSort";
+import {PageSizeChangeRequest} from "../../../../modules/table-module/table/models/changeRequest/pageSizeChangeRequest";
 
 @Directive({
   selector: "app-list-view-component",
@@ -80,22 +80,30 @@ export class ListViewComponent<T> implements OnInit {
       .listViewTableState
       .listViewTableSorting$
       .next($event.sortCandidates)
+    // const dataAccessService = this.injector.get(DataAccessService);
+    // const transformator = this.injector.get(ToFilterExpressionTransformatorService);
+    //
+    // this.listViewStateManager.loadPageToState({
+    //   listViewState: this.listViewState,
+    //   dataAccessService,
+    //   transformator,
+    //   options: {
+    //     sort: $event.sortCandidates.map(s => {
+    //       return {
+    //         selector: s.dataField,
+    //         desc: s.order === SortOrder.DESC
+    //       }
+    //     })
+    //   }
+    // }).then();
+  }
 
-    const dataAccessService = this.injector.get(DataAccessService);
-    const transformator = this.injector.get(ToFilterExpressionTransformatorService);
+  public onPageSizeChangeRequest($event: PageSizeChangeRequest) {
+    this.listViewState
+      .listViewTableState
+      .listViewTablePageSize$
+      .next($event.pageSize)
 
-    this.listViewStateManager.loadPageToState({
-      listViewState: this.listViewState,
-      dataAccessService,
-      transformator,
-      options: {
-        sort: $event.sortCandidates.map(s => {
-          return {
-            selector: s.dataField,
-            desc: s.order === SortOrder.DESC
-          }
-        })
-      }
-    }).then();
+    console.log(this.listViewState);
   }
 }
