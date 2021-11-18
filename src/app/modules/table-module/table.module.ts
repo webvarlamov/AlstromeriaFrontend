@@ -5,6 +5,7 @@ import { CellResizeComponent } from './table/components/cell-resize/cell-resize.
 import { CollDraggerComponent } from './table/components/coll-dragger/coll-dragger.component';
 import { ColumnControlsComponent } from './table/components/column-controlls/column-controls.component';
 import { NullValueCellDisplayComponent } from './table/cell-template-components/null-value-cell-display/null-value-cell-display.component';
+import { CellTemplateResolverComponent } from './table/components/cell-template-resolver/cell-template-resolver.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { NullValueCellDisplayComponent } from './table/cell-template-components/
     CollDraggerComponent,
     ColumnControlsComponent,
     NullValueCellDisplayComponent,
+    CellTemplateResolverComponent,
   ],
   exports: [
     TableComponent

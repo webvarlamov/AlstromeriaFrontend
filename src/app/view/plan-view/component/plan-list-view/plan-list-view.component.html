@@ -20,6 +20,7 @@
       [page]="listViewState?.listViewTableState.listViewTablePage$ | async"
       [columns]="listViewState.listViewTableState.listViewTableColumns$ | async"
       [selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"
+      [columnCellTemplate]="{'id': hello}"
 
       (onTableComponentInit)="this.onTableComponentInit($event)"
       (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
@@ -28,5 +29,8 @@
       (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
       (onSortChangeRequest)="this.onSortChangeRequest($event)"
       (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)">
+      <ng-template #hello let-row='row'>
+        <button (click)="onHelloClick($event, row)">Hello</button>
+      </ng-template>
     </app-table>
 </div>

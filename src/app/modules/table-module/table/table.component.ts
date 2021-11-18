@@ -8,7 +8,7 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges, TemplateRef,
   ViewChild
 } from '@angular/core';
 import {HasId, Pageable} from "../../../service/http/model/pageable";
@@ -73,6 +73,7 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   // --- Data ---  //
   @Input() public page: Pageable<Entity>
   @Input() public selectedEntities: Array<HasId> = [];
+  @Input() public columnCellTemplate: {[dataField: string]: any} = {}
 
   // --- EventEmitters ---  //
   @Output() public onPageNumberChangeRequest: EventEmitter<PageNumberChangeRequest> = new EventEmitter();

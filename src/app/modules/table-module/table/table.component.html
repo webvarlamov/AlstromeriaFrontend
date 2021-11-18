@@ -86,7 +86,10 @@
          [style.width]="column.width ? column.width : defaultColumnWidth"
          [attr.column-id]="column.id"
          [attr.row-id]="row.id">
-      <span class="cell-text">{{row.data[column.dataField]}}</span>
+      <app-cell-template-resolver
+        [templateRef]="columnCellTemplate[column.dataField]"
+        [row]="row"></app-cell-template-resolver>
+<!--      <span class="cell-text">{{row.data[column.dataField]}}</span>-->
     </div>
   </div>
 </ng-template>

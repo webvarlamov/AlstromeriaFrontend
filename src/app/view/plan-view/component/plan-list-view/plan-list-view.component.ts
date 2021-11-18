@@ -13,6 +13,7 @@ import {SelectionMode} from "../../../../modules/table-module/table/models/confi
 import {ListViewTableInitialState} from "../../../view/state/list-view-table-initial.state";
 import {ListViewFiltersInitialState} from "../../../view/state/list-view-filters-initial.state";
 import {ListViewConfigInitialState} from "../../../view/state/list-view-config-initial.state";
+import {TableRow} from "../../../../modules/table-module/table/models/dataModels/tableRow";
 
 @Component({
   selector: 'app-plan-list-view',
@@ -90,5 +91,9 @@ export class PlanListViewComponent extends ListViewComponent<any> implements OnI
     public injector: Injector
   ) {
     super(injector);
+  }
+
+  onHelloClick($event: MouseEvent, row: TableRow) {
+    console.log($event, row)
   }
 }

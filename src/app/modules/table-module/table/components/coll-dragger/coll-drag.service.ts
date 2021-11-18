@@ -23,7 +23,6 @@ export class CollDragService {
   }
 
   public getNextColumnPosition(event: MouseEvent, column: TableColumn): IndexRelativePosition {
-    debugger
     const positions = this.getTableHeaderRowCellsPositions();
 
     const headerCellPositions = positions
