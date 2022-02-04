@@ -1,3 +1,6 @@
+import {Page} from "../../../../../service/http/model/page";
+
 export class PageSizeChangeRequest {
-    pageSize: number;
+    size: number;
+    candidate: Page;
 }

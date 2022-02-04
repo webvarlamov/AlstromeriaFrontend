@@ -13,9 +13,9 @@ export interface HasId {
 export const emptyPageable: Pageable<any> = {
   page: {
     size: 0,
-    totalElements: 0,
-    totalPages: 0,
-    number: 0,
+    itemsCount: 0,
+    pagesCount: 0,
+    page: 0,
   },
   _embedded: {
     entities: []

@@ -1,1 +1,47 @@
-<p>entity-input works!</p>
+<div class="fd-popover">
+  <div class="fd-popover__control" aria-expanded="true" aria-haspopup="true" (click)="showSuggestions = true">
+    <div class="fd-input-group fd-input-group--control">
+      <div class="fd-tokenizer">
+        <div class="fd-tokenizer__inner">
+<!--          <span tabindex="0" class="fd-token" role="button">-->
+<!--            <span class="fd-token__text">Apple</span>-->
+<!--              <button aria-label="unselect option: apple" class="fd-token__close"></button>-->
+<!--            </span>-->
+          <input class="fd-input fd-input-group__input fd-tokenizer__input"/>
+        </div>
+      </div>
+      <span class="fd-input-group__addon fd-input-group__addon--button">
+        <button
+          aria-label="show options"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="fd-input-group__button fd-button fd-button--transparent">
+          <i class="sap-icon--value-help"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
+       [attr.aria-hidden]="!showSuggestions">
+    <div class="fd-popover__wrapper">
+      <app-table
+        [id]="'entity-input-list-data-grid'"
+        [selectionConfig]="tableSelectionConfig"
+        [sorting]="this.listViewTableAsyncState.tableSorting$ | async"
+        [items]="this.listViewTableAsyncState.tableItemsList$ | async"
+        [columns]="this.listViewTableAsyncState.tableColumns$ | async"
+        [selectedEntities]="this.listViewTableAsyncState.tableSelectedList$ | async"
+        [page]="this.listViewTableAsyncState.tablePage$ | async"
+        [showLoadingIndicator]="this.listViewTableAsyncState.tableShowLoaderIndicator$ | async"
+        (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+        (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
+        (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
+        (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
+        (onSortChangeRequest)="this.onSortChangeRequest($event)"
+        (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)"
+      >
+      </app-table>
+    </div>
+  </div>
+</div>
+

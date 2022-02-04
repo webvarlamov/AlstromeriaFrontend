@@ -26,14 +26,35 @@ import {SortOrder, TableSort} from "./models/dataModels/tableSort";
 import {ColumnPositionChangeRequest} from "./models/changeRequest/column-position-change.request";
 import {SortChangeRequest} from "./models/changeRequest/sort-change-request";
 import {PageSizeChangeRequest} from "./models/changeRequest/pageSizeChangeRequest";
+import {Page} from "../../../service/http/model/page";
+import {UUID} from "angular2-uuid";
 
 export const DEFAULT_COLUMN_WIDTH = 200;
 export const DEFAULT_PAGE_INPUT_SIZE = 5;
+export const DEFAULT_MOCK_COLUMNS: Array<TableColumn> = [
+  {id: "0", dataField: "0"},
+  {id: "1", dataField: "1"},
+  {id: "2", dataField: "2"},
+  {id: "3", dataField: "3"},
+  {id: "4", dataField: "4"},
+  {id: "5", dataField: "5"},
+  {id: "6", dataField: "6"},
+  {id: "7", dataField: "7"},
+  {id: "8", dataField: "8"},
+  {id: "9", dataField: "9"},
+]
+export const DEFAULT_MOCK_SORTING: Array<TableSort> = []
+export const DEFAULT_MOCK_ITEMS: Array<HasId> = [
+  {id: "0"}, {id: "1"}, {id: "2"}, {id: "3"}, {id: "4"},
+  {id: "5"}, {id: "6"}, {id: "7"}, {id: "8"}, {id: "9"},
+  {id: "10"}, {id: "11"}, {id: "12"}, {id: "13"}, {id: "14"},
+  {id: "15"}, {id: "16"}, {id: "17"}, {id: "18"}, {id: "19"}
+]
 
 
 export const DEFAULT_SELECTION_CONFIG: TableSelectionConfig = {
   sticky: true,
-  useSelection: true,
+  useSelection: false,
   selectionMode: SelectionMode.MULTI,
   columnWidth: '35px',
 }
@@ -45,9 +66,9 @@ export const DEFAULT_PAGING_CONFIG: TablePagingConfig = {
 }
 
 export interface TablePagingConfig {
-  showPagination: boolean;
-  pageSizes: Array<Number>,
-  showPageSizeSelector: boolean,
+  showPagination?: boolean;
+  pageSizes?: Array<Number>,
+  showPageSizeSelector?: boolean,
 }
 
 @Component({
@@ -58,24 +79,22 @@ export interface TablePagingConfig {
   providers: [TableUtilsService, CollDragService, TableValidatorService]
 })
 export class TableComponent<Entity extends HasId> implements OnInit, AfterViewInit, OnChanges {
+  public uuid = UUID.UUID();
   public defaultColumnWidth: string = DEFAULT_COLUMN_WIDTH + 'px';
 
   @ViewChild('tableHeaderRow', {static: false}) tableHeaderRow: ElementRef;
 
-  // --- Configuration ---  //
   @Input() public id: string;
-  @Input() public domainType: string;
-  @Input() public columns: Array<TableColumn> = [];
-  @Input() public sorting: Array<TableSort> = [];
+  @Input() public columns: Array<TableColumn> = [...DEFAULT_MOCK_COLUMNS];
+  @Input() public items: Array<Entity | HasId> = [...DEFAULT_MOCK_ITEMS];
+  @Input() public sorting: Array<TableSort> = [...DEFAULT_MOCK_SORTING];
   @Input() public selectionConfig: TableSelectionConfig = {...DEFAULT_SELECTION_CONFIG}
-  @Input() public pagingConfig: TablePagingConfig = {...DEFAULT_PAGING_CONFIG}
+  @Input() public pagingConfig: TablePagingConfig = {...DEFAULT_PAGING_CONFIG};
+  @Input() public showLoadingIndicator: boolean = false;
 
-  // --- Data ---  //
-  @Input() public page: Pageable<Entity>
+  @Input() public page: Page;
   @Input() public selectedEntities: Array<HasId> = [];
-  @Input() public columnCellTemplate: {[dataField: string]: any} = {}
 
-  // --- EventEmitters ---  //
   @Output() public onPageNumberChangeRequest: EventEmitter<PageNumberChangeRequest> = new EventEmitter();
   @Output() public onSelectionChangeRequest: EventEmitter<SelectionChangeRequest> = new EventEmitter();
   @Output() public onTableComponentInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
@@ -99,7 +118,13 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
 
   get getRows(): Array<TableRow> {
     const selectedEntitiesIds: Array<string> = this.selectedEntities.map(hasId => hasId.id);
-    return this.page?._embedded[this.domainType]?.map((entity: Entity) => {
+
+    return this.items?.map((entity: HasId) => {
+      console.assert(entity.id != null,
+        "Table data item must implements HasId interface! Add field id:string to each item element.",
+        entity
+      );
+
       return {
         id: entity.id,
         data: entity,
@@ -121,12 +146,12 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   get getPageNumber(): number {
-    return this.page?.page?.number + 1;
+    return this.page?.page + 1;
   }
 
-  get getPageInputSize(): number {
-    return this.page != null && this.page.page != null
-      ? this.page.page.totalPages?.toString()?.length + 3
+  get getPageInputElementWidth(): number {
+    return this.page != null
+      ? this.page.pagesCount?.toString()?.length + 3
       : DEFAULT_PAGE_INPUT_SIZE
   }
 
@@ -137,11 +162,11 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   public get isNetPageDisabled(): boolean {
-    return this.page?.page?.number + 1 === this.page?.page?.totalPages;
+    return this.page?.page + 1 === this.page?.pagesCount;
   }
 
   public get isPreviousPageDisabled(): boolean {
-    return this?.page?.page?.number === 0;
+    return this?.page?.page === 0;
   }
 
   public ngAfterViewInit(): void {
@@ -159,7 +184,7 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   public onHeaderSelectionCheckboxChange(checkbox: HTMLInputElement) {
-    const entities: Array<HasId> = this.page._embedded[this.domainType];
+    const entities: Array<HasId> = this.items;
     const selectionChangeRequest = this.tableUtilsService
       .calcMultiSelectionChangeRequest(entities, checkbox.checked, this.selectedEntities);
     this.onSelectionChangeRequest.emit(selectionChangeRequest)
@@ -178,29 +203,37 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   public onSortChange($event: SortChangeRequest): any {
-    const sortChangeRequest = this.tableUtilsService.calsSortingCandidates($event, this.sorting);
+    const sortChangeRequest = this.tableUtilsService.calcSortingCandidates($event, this.sorting);
     this.onSortChangeRequest.emit(sortChangeRequest);
   }
 
-  // Pagination
   public previousPageNavButtonClick(): void {
+    const nextPageNumber = this.page.page - 1;
+    const pageCandidate = this.tableUtilsService.calcNumberChangePageCandidates(nextPageNumber, this.page)
     this.onPageNumberChangeRequest.emit({
-      pageNumber: this.page.page.number - 1
+      number: this.page.page - 1,
+      candidate: pageCandidate
     })
   }
 
   public onUserPageNumberInput(pageNumber: string) {
     const candidate = parseInt(pageNumber, 10) - 1;
-    if (candidate < this.page.page.totalPages && candidate >= 0) {
+    if (candidate < this.page.pagesCount && candidate >= 0) {
+      const nextPageNumber = parseInt(pageNumber, 10) - 1;
+      const pageCandidate = this.tableUtilsService.calcNumberChangePageCandidates(nextPageNumber, this.page)
       this.onPageNumberChangeRequest.emit({
-        pageNumber: parseInt(pageNumber, 10) - 1
+        number: nextPageNumber,
+        candidate: pageCandidate
       })
     }
   }
 
   public nextPageNavButtonClick(): void {
+    const nextPageNumber = this.page.page + 1
+    const pageCandidate = this.tableUtilsService.calcNumberChangePageCandidates(nextPageNumber, this.page)
     this.onPageNumberChangeRequest.emit({
-      pageNumber: this.page.page.number + 1
+      number: nextPageNumber,
+      candidate: pageCandidate
     })
   }
 
@@ -234,12 +267,15 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   public getPageEntities(): Array<HasId> {
-    return this.page._embedded[this.domainType];
+    return this.items;
   }
 
   public onPageSizeSelectorChange(pageSizeSelectorValue: string) {
+    const nextPageSize = parseInt(pageSizeSelectorValue, 10);
+    const pageCandidate = this.tableUtilsService.calcSizeChangePageCandidates(nextPageSize, this.page)
     this.onPageSizeChangeRequest.emit({
-      pageSize: parseInt(pageSizeSelectorValue, 10)
+      size: parseInt(pageSizeSelectorValue, 10),
+      candidate: pageCandidate
     })
   }
 }

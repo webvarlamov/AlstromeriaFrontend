@@ -1,3 +1,6 @@
+import {Page} from "../../../../../service/http/model/page";
+
 export interface PageNumberChangeRequest {
-    pageNumber: number;
+    number: number;
+    candidate: Page;
 }

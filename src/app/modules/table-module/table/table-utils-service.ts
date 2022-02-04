@@ -7,6 +7,7 @@ import {TableColumn} from "./models/dataModels/tableColumn";
 import {ColumnPositionChangeRequest} from "./models/changeRequest/column-position-change.request";
 import {SortChangeRequest} from "./models/changeRequest/sort-change-request";
 import {TableSort} from "./models/dataModels/tableSort";
+import {Page} from "../../../service/http/model/page";
 
 @Injectable()
 export class TableUtilsService {
@@ -22,7 +23,7 @@ export class TableUtilsService {
     const candidates = [...columns];
     candidates[changeableColumnIndex] = afterChangeableColumn;
 
-    return {...$event, columnCandidates: candidates}
+    return {...$event, candidates: candidates}
   }
 
   public addCandidatesToColumnMoveChangeRequest($event: ColumnPositionChangeRequest, columns: Array<TableColumn>): ColumnPositionChangeRequest {
@@ -54,7 +55,7 @@ export class TableUtilsService {
     return {
       currentSelectedEntities: checked ? [eventEntity] : [],
       currentDeselectedEntities: checked ? [] : [eventEntity],
-      selectedCandidates,
+      candidates: selectedCandidates,
       checked
     }
   }
@@ -73,7 +74,7 @@ export class TableUtilsService {
     return {
       currentSelectedEntities: setSelection ? eventEntities : [],
       currentDeselectedEntities: setSelection ? [] : eventEntities,
-      selectedCandidates,
+      candidates: selectedCandidates,
       checked: setSelection
     }
   }
@@ -102,7 +103,7 @@ export class TableUtilsService {
     return result;
   };
 
-  public calsSortingCandidates($event: SortChangeRequest, sorting: Array<TableSort>): SortChangeRequest {
+  public calcSortingCandidates($event: SortChangeRequest, sorting: Array<TableSort>): SortChangeRequest {
     const sortFromEvent: TableSort = {
       dataField: $event.dataField,
       order: $event.sortOrder
@@ -111,10 +112,18 @@ export class TableUtilsService {
     if ($event.enabled) {
       let candidates = [...sorting].filter(s => s.dataField != sortFromEvent.dataField);
       candidates.push(sortFromEvent);
-      return {...$event, sortCandidates: candidates}
+      return {...$event, candidates: candidates}
     } else {
       let candidates = [...sorting].filter(s => s.dataField != sortFromEvent.dataField);
-      return {...$event, sortCandidates: candidates}
+      return {...$event, candidates: candidates}
     }
+  }
+
+  public calcNumberChangePageCandidates(nextPageNumber: number, page: Page): Page {
+    return {...page, page: nextPageNumber}
+  }
+
+  public calcSizeChangePageCandidates(nextPageSize: number, page: Page): Page {
+    return {...page, size: nextPageSize}
   }
 }

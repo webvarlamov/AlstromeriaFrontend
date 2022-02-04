@@ -13,7 +13,7 @@ import {map, switchMap, takeUntil, tap} from "rxjs/operators";
 import {TableColumn} from "../../models/dataModels/tableColumn";
 
 export class ColumnSizeChangeRequest {
-  columnCandidates?: TableColumn[]
+  candidates?: TableColumn[]
   nextColumnSize: string;
   column: TableColumn;
 }

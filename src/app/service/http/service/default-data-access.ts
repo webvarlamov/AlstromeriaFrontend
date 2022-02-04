@@ -12,9 +12,10 @@ export class DefaultDataAccess {
 
   constructor(
     public httpClient: HttpClient
-  ) {}
+  ) {
+  }
 
-  public loadEntities<T>(domainType?: string, options?: EntitiesLoadOptions, expression?: FilterExpression): Observable<Pageable<T>> {
+  public loadEntitiesPageable<T>(domainType?: string, options?: EntitiesLoadOptions, expression?: FilterExpression): Observable<Pageable<T>> {
     let params = new HttpParams();
 
     params = options?.page ? params.append('page', options.page?.toString()) : params;

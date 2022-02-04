@@ -4,7 +4,7 @@ import {HasId, Pageable} from "../../../../service/http/model/pageable";
 import {FilterExpression} from "../../../../service/http/model/filter-expression";
 import {Observable} from "rxjs";
 import {ListViewState} from "../../../../view/view/state/list-view.state";
-import {DataAccessService} from "../../../../service/http/service/data-access-service.service";
+import {DataAccessServiceImpl} from "../../../../service/http/service/data-access-service.service";
 import {ListViewStateManager} from "../../../../view/view/state/list-view-state.manager";
 
 
@@ -217,7 +217,7 @@ export interface InputComponentSuggestionsConfigInterface {
   suggestionsByProperty: string;
   suggestionsListViewState: ListViewState;
   suggestionsListViewStateManager: ListViewStateManager;
-  suggestionsDataAccessService: DataAccessService;
+  suggestionsDataAccessService: DataAccessServiceImpl;
 }
 
 export class InputComponentSuggestionsConfig implements InputComponentSuggestionsConfigInterface {
@@ -225,7 +225,7 @@ export class InputComponentSuggestionsConfig implements InputComponentSuggestion
   suggestionsByProperty: string;
   suggestionsListViewState: ListViewState;
   suggestionsListViewStateManager: ListViewStateManager;
-  suggestionsDataAccessService: DataAccessService;
+  suggestionsDataAccessService: DataAccessServiceImpl;
 
   constructor(initial: InputComponentSuggestionsConfigInterface) {
     this.suggestionsListViewState = initial.suggestionsListViewState ? initial.suggestionsListViewState : new ListViewState();

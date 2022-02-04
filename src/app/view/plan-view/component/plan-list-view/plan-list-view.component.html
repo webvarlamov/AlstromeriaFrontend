@@ -1,36 +1,50 @@
 <div class="section action-bar">
   <div class="section-content">
-    <app-crud-toolbar></app-crud-toolbar>
+    <app-crud-toolbar
+      (onDeleteButtonClick)="onDeleteItemsRequest()"
+    ></app-crud-toolbar>
   </div>
 </div>
 <div class="section filter-bar">
   <div class="section-content">
-    <app-filter-bar
-      [filterConfigByAttributeKey]="listViewState?.listViewFilterState.listViewFilterConfigByAttributeKey$ | async"
-      [filterValuesByAttributeKey]="listViewState?.listViewFilterState.listViewFilterValuesByAttributeKey$ | async"
-    ></app-filter-bar>
+    <div class='fd-container'>
+      <div class='fd-row'>
+        <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--4'>
+          <div class='docs-layout-grid-bg docs-layout-grid-bg--color-1'>
+            <app-entity-input></app-entity-input>
+          </div>
+        </div>
+
+        <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--4'>
+          <div class='docs-layout-grid-bg docs-layout-grid-bg--color-2'>
+            <app-boolean-input></app-boolean-input>
+          </div>
+        </div>
+
+        <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--4'>
+          <div class='docs-layout-grid-bg docs-layout-grid-bg--color-3'>
+            <app-string-input></app-string-input>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="section table-wrapper">
     <app-table
       [id]="'plan-list-data-grid'"
-      [selectionConfig]="selectionConfig"
-      [sorting]="listViewState.listViewTableState?.listViewTableSorting$ | async"
-      [domainType]="listViewState.listViewConfigState?.domainType"
-      [page]="listViewState?.listViewTableState.listViewTablePage$ | async"
-      [columns]="listViewState.listViewTableState.listViewTableColumns$ | async"
-      [selectedEntities]="listViewState.listViewTableState.listViewTableSelected$ | async"
-      [columnCellTemplate]="{'id': hello}"
-
-      (onTableComponentInit)="this.onTableComponentInit($event)"
+      [selectionConfig]="tableSelectionConfig"
+      [sorting]="this.listViewTableAsyncState.tableSorting$ | async"
+      [items]="this.listViewTableAsyncState.tableItemsList$ | async"
+      [columns]="this.listViewTableAsyncState.tableColumns$ | async"
+      [selectedEntities]="this.listViewTableAsyncState.tableSelectedList$ | async"
+      [page]="this.listViewTableAsyncState.tablePage$ | async"
+      [showLoadingIndicator]="this.listViewTableAsyncState.tableShowLoaderIndicator$ | async"
       (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
       (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
       (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
       (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
       (onSortChangeRequest)="this.onSortChangeRequest($event)"
       (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)">
-      <ng-template #hello let-row='row'>
-        <button (click)="onHelloClick($event, row)">Hello</button>
-      </ng-template>
     </app-table>
 </div>

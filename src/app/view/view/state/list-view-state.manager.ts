@@ -1,5 +1,5 @@
 import {ListViewState} from "./list-view.state";
-import {DataAccessService} from "../../../service/http/service/data-access-service.service";
+import {DataAccessServiceImpl} from "../../../service/http/service/data-access-service.service";
 import {ToFilterExpressionTransformatorService} from "../../../service/transformation/service/to-filter-expression-transformator.service";
 import {EntitiesLoadOptions} from "../../../service/http/model/entities-load-options";
 import {emptyPageable, Pageable} from "../../../service/http/model/pageable";
@@ -10,7 +10,7 @@ import {of} from "rxjs";
 
 interface LoadPageToStateParams {
   listViewState: ListViewState,
-  dataAccessService: DataAccessService,
+  dataAccessService: DataAccessServiceImpl,
   transformator?: ToFilterExpressionTransformatorService,
   options?: EntitiesLoadOptions
 }
@@ -27,7 +27,7 @@ export class ListViewEntitiesStateManager extends ListViewStateManager {
       params.listViewState.listViewConfigState
     );
 
-    return params.dataAccessService.loadEntities(
+    return params.dataAccessService.loadEntitiesPageable(
       params.listViewState.listViewConfigState.domainType,
       params.options,
       filterExpression

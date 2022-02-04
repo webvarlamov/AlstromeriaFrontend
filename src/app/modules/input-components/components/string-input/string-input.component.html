@@ -1,37 +1,42 @@
-<div class="fd-form-item">
-  <label class="fd-form-label"
-         [for]="'input' + config.attributeKey">{{config?.caption}}
-  </label>
-  <div class="fd-popover">
-    <div class="fd-popover__control">
-      <div class="fd-input-group fd-input-group--control">
-        <input class="fd-input fd-input-group__input fd-tokenizer__input"
-               #input
-               [id]="'input' + config?.attributeKey"
-               type="text"
-               (click)="onInputClick(input)"
-        />
-        <span class="fd-input-group__addon fd-input-group__addon--button">
-          <button class="fd-input-group__button fd-button fd-button--transparent">
-            <i class="sap-icon--value-help"></i>
-          </button>
-        </span>
+<div class="fd-popover">
+  <div class="fd-popover__control" aria-expanded="true" aria-haspopup="true" (click)="showSuggestions = true">
+    <div class="fd-input-group fd-input-group--control">
+      <div class="fd-tokenizer">
+        <div class="fd-tokenizer__inner">
+          <input class="fd-input fd-input-group__input fd-tokenizer__input"/>
+        </div>
       </div>
+      <span class="fd-input-group__addon fd-input-group__addon--button">
+        <button
+          aria-label="show options"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="fd-input-group__button fd-button fd-button--transparent">
+          <i class="sap-icon--value-help"></i>
+        </button>
+      </span>
     </div>
-    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
-         [attr.aria-hidden]="!showSuggestions">
-      <div class="fd-popover__wrapper" *ngIf="showSuggestions">
-        <app-table
-          [id]="config?.attributeKey + 'string-input-suggestions-table'"
-          [page]="config.suggestionsConfig.suggestionsListViewState?.listViewTableState.listViewTablePage$ | async"
-          [domainType]="config.suggestionsConfig.suggestionsListViewState?.listViewConfigState?.domainType"
-          [selectedEntities]="config.suggestionsConfig.suggestionsListViewState?.listViewTableState.listViewTableSelected$ | async"
-          [columns]="config.suggestionsConfig.suggestionsListViewState?.listViewTableState.listViewTableColumns$ | async"
-          (onTableComponentInit)="this.onSuggestionsTableComponentInit($event)"
-          (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
-          (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
-        ></app-table>
-      </div>
+  </div>
+  <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
+       [attr.aria-hidden]="!showSuggestions">
+    <div class="fd-popover__wrapper">
+      <app-table
+        [id]="'entity-input-list-data-grid'"
+        [sorting]="this.listViewTableAsyncState.tableSorting$ | async"
+        [items]="this.listViewTableAsyncState.tableItemsList$ | async"
+        [columns]="this.listViewTableAsyncState.tableColumns$ | async"
+        [selectedEntities]="this.listViewTableAsyncState.tableSelectedList$ | async"
+        [page]="this.listViewTableAsyncState.tablePage$ | async"
+        [showLoadingIndicator]="this.listViewTableAsyncState.tableShowLoaderIndicator$ | async"
+        (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+        (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
+        (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
+        (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
+        (onSortChangeRequest)="this.onSortChangeRequest($event)"
+        (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)"
+      >
+      </app-table>
     </div>
   </div>
 </div>
+

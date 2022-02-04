@@ -5,7 +5,7 @@ import {DefaultDataAccess} from "./default-data-access";
 @Injectable({
   providedIn: 'root'
 })
-export class DataAccessService extends DefaultDataAccess {
+export class DataAccessServiceImpl extends DefaultDataAccess {
   constructor(
     public httpClient: HttpClient,
   ) {

@@ -4,5 +4,5 @@ export interface SortChangeRequest {
   enabled: boolean;
   dataField: string;
   sortOrder: SortOrder;
-  sortCandidates?: Array<TableSort>
+  candidates?: Array<TableSort>
 }
