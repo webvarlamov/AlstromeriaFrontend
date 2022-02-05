@@ -1,0 +1,49 @@
+<div class="fd-form-item">
+  <label class="fd-form-label">
+    {{label}}
+  </label>
+  <div class="fd-popover">
+    <div class="fd-popover__control" aria-expanded="true" aria-haspopup="true" (click)="showSuggestions = true">
+      <div class="fd-input-group fd-input-group--control">
+        <div class="fd-tokenizer">
+          <div class="fd-tokenizer__inner">
+            <input class="fd-input fd-input fd-input-group__input fd-tokenizer__input"/>
+          </div>
+        </div>
+        <span class="fd-input-group__addon fd-input-group__addon--button">
+              <button
+                aria-label="show options"
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="fd-input-group__button fd-button fd-button--transparent">
+                <i class="sap-icon--value-help"></i>
+              </button>
+            </span>
+      </div>
+    </div>
+    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
+         [attr.aria-hidden]="!showSuggestions">
+      <div class="fd-popover__wrapper">
+        <app-table
+          *ngIf="listViewTableAsyncStateManager != null && listViewTableAsyncStateManager.listViewTableAsyncState != null"
+          [id]="'entity-input-list-data-grid'"
+          [selectionConfig]="selectionConfig"
+          [sorting]="this.listViewTableAsyncStateManager.listViewTableAsyncState.tableSorting$ | async"
+          [items]="this.listViewTableAsyncStateManager.listViewTableAsyncState.tableItemsList$ | async"
+          [columns]="this.listViewTableAsyncStateManager.listViewTableAsyncState.tableColumns$ | async"
+          [selectedEntities]="this.listViewTableAsyncStateManager.listViewTableAsyncState.tableSelectedList$ | async"
+          [page]="this.listViewTableAsyncStateManager.listViewTableAsyncState.tablePage$ | async"
+          [showLoadingIndicator]="this.listViewTableAsyncStateManager.listViewTableAsyncState.tableShowLoaderIndicator$ | async"
+          (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+          (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
+          (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
+          (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
+          (onSortChangeRequest)="this.onSortChangeRequest($event)"
+          (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)"
+          (onTableRowClickEvent)="onTableRowClickEvent($event)"
+        >
+        </app-table>
+      </div>
+    </div>
+  </div>
+</div>

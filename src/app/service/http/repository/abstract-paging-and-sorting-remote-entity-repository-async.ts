@@ -12,7 +12,7 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
     public http: HttpClient
   ) {}
 
-  count(filterExpression?: FilterExpression): Observable<number> {
+  public count(filterExpression?: FilterExpression): Observable<number> {
     const url = this.getURL(this.count, {filterExpression});
 
     let params = new HttpParams();
@@ -20,26 +20,26 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
     return this.http.get(url, {params}) as Observable<number>
   }
 
-  delete(entity: S): Observable<void> {
+  public delete(entity: S): Observable<void> {
     const url = this.getURL(this.delete, {entity});
 
     this.http.delete(url)
     return undefined;
   }
 
-  deleteAll(): Observable<void> {
+  public deleteAll(): Observable<void> {
     const url = this.getURL(this.deleteAll);
 
     return undefined;
   }
 
-  deleteAllById(ids: Iterable<string>): Observable<void> {
+  public deleteAllById(ids: Iterable<string>): Observable<void> {
     const url = this.getURL(this.deleteAllById, {ids});
 
     return undefined;
   }
 
-  deleteAllEntities(args: {entities: Array<HasId>}): Observable<any> {
+  public deleteAllEntities(args: {entities: Array<HasId>}): Observable<any> {
     const url = this.getURL(this.deleteAllEntities, args);
     const requestsArray$ = args.entities.map(entity => {
       let params = new HttpParams();
@@ -50,37 +50,37 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
     return forkJoin(requestsArray$);
   }
 
-  deleteById(id: string): Observable<void> {
+  public deleteById(id: string): Observable<void> {
     const url = this.getURL(this.deleteById, {id});
 
     return undefined;
   }
 
-  exists(filterExpression?: FilterExpression): Observable<boolean> {
+  public exists(filterExpression?: FilterExpression): Observable<boolean> {
     const url = this.getURL(this.exists, {filterExpression});
 
     return undefined;
   }
 
-  existsById(id: string): Observable<boolean> {
+  public existsById(id: string): Observable<boolean> {
     const url = this.getURL(this.existsById, {id});
 
     return undefined;
   }
 
-  findAll(filterExpression?: FilterExpression): Observable<Iterable<S>> {
+  public findAll(filterExpression?: FilterExpression): Observable<Iterable<S>> {
     const url = this.getURL(this.findAll, {filterExpression});
 
     return undefined;
   }
 
-  findAllById(ids: Iterable<string>): Observable<Iterable<S>> {
+  public findAllById(ids: Iterable<string>): Observable<Iterable<S>> {
     const url = this.getURL(this.findAllById, {ids});
 
     return undefined;
   }
 
-  findAllOnPage<S extends HasId>(args: {
+  public findAllEntitiesOnPage<S extends HasId>(args: {
     page: Page,
     sort: Array<TableSort>,
     filterExpression?: FilterExpression,
@@ -90,12 +90,12 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
 
     let params = new HttpParams();
 
-    params = params.set("page", args.page.page)
-    params = params.set("size", args.page.size)
-    params = params.set("fetchStrategy", args.fetchStrategy)
+    params = params.set("page", args?.page?.page)
+    params = params.set("size", args?.page?.size)
+    params = params.set("fetchStrategy", args?.fetchStrategy)
 
-    if (args.sort != null) {
-      args.sort.forEach(s => {
+    if (args?.sort != null) {
+      args?.sort.forEach(s => {
         params = params.set("sort", [s.dataField, s.order].join(","))
       })
     }
@@ -103,39 +103,40 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
     return this.http.get(url + "/findAll", {params}) as Observable<ResponsePage<S>>;
   }
 
-  findSuggestions(args: {
+  public findAllSuggestionsOnPage(args: {
     page: Page,
+    sort: Array<TableSort>,
     filterExpression?: FilterExpression,
-    property: string
+    propertyName: string
   }): Observable<ResponsePage<any>> {
     const url = this.getURL(this.findAllById, args);
 
     let params = new HttpParams();
 
-    params = params.set("page", args.page.page)
-    params = params.set("size", args.page.size)
-    params = params.set("property", args.property)
+    params = params.set("page", args?.page?.page)
+    params = params.set("size", args?.page?.size)
+    params = params.set("propertyName", args?.propertyName)
 
     return this.http.get(url + "/findSuggestions", {params}) as Observable<ResponsePage<any>>
   }
 
-  findById(id: string): Observable<S> {
+  public findById(id: string): Observable<S> {
     const url = this.getURL(this.findById, {id});
 
     return undefined;
   }
 
-  save(entity: S): Observable<S> {
+  public save(entity: S): Observable<S> {
     const url = this.getURL(this.save, {entity});
 
     return undefined;
   }
 
-  saveAll(entities: Iterable<S>): Observable<Iterable<S>> {
+  public saveAll(entities: Iterable<S>): Observable<Iterable<S>> {
     const url = this.getURL(this.saveAll, {entities});
 
     return undefined;
   }
 
-  abstract getURL(method: any, methodArgs?: any): string;
+  public abstract getURL(method: any, methodArgs?: any): string;
 }

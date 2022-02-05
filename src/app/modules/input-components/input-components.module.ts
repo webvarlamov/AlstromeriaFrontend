@@ -10,6 +10,7 @@ import { PeriodInputComponent } from './components/period-input/period-input.com
 import {EntityInputComponent} from "./components/entity-input/entity-input.component";
 import {SelectedInputValuesTemplateSupport} from "./components/input-component/suggestions.directive";
 import {TableModule} from "../table-module/table.module";
+import { ListViewInputComponent } from './components/list-view-input-component/list-view-input-component.directive';
 
 
 
@@ -23,7 +24,8 @@ import {TableModule} from "../table-module/table.module";
         BooleanInputComponent,
         DateTimeInputComponent,
         PeriodInputComponent,
-        EntityInputComponent
+        EntityInputComponent,
+        ListViewInputComponent
     ],
   exports: [
     InputComponent,

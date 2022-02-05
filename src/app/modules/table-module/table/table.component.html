@@ -32,17 +32,19 @@
          [style.width]="selectionConfig?.columnWidth"
          [ngClass]="{'table-checkbox-cell-sticky' : selectionConfig.sticky}">
       <div class="checkbox-input-wrapper">
-        <input #checkbox
-               id="select-all-checkbox"
-               aria-label="checkbox"
-               type="checkbox"
-               class="fd-checkbox fd-checkbox--compact"
-               [attr.checkbox-checked]="totalCheckboxIsChecked"
-               [attr.checkbox-indeterminate]="totalCheckboxIsIndeterminate"
-               [checked]="totalCheckboxIsChecked"
-               [indeterminate]="totalCheckboxIsIndeterminate"
-               (change)="onHeaderSelectionCheckboxChange(checkbox)">
-        <label class="fd-checkbox__label" for="select-all-checkbox"></label>
+        <ng-container *ngIf="selectionConfig.selectionMode === 'multi'">
+          <input #checkbox
+                 [id]="'table-id-' + uuid + '-select-all-checkbox'"
+                 aria-label="checkbox"
+                 type="checkbox"
+                 class="fd-checkbox fd-checkbox--compact"
+                 [attr.checkbox-checked]="totalCheckboxIsChecked"
+                 [attr.checkbox-indeterminate]="totalCheckboxIsIndeterminate"
+                 [checked]="totalCheckboxIsChecked"
+                 [indeterminate]="totalCheckboxIsIndeterminate"
+                 (change)="onHeaderSelectionCheckboxChange(checkbox)">
+          <label class="fd-checkbox__label" [for]="'table-id-' + uuid + '-select-all-checkbox'"></label>
+        </ng-container>
       </div>
     </div>
     <div class="table-cell cell-resize-button-holder"
@@ -70,7 +72,9 @@
 <ng-template #tableRowsTemplate>
   <div class="table-row table-row-hoverable"
        *ngFor="let row of getRows; let i = index; trackBy:trackByIdValue;"
-       [ngClass]="{'alternation-bg': i % 2 === 0, 'selected': row.selected}">
+       [ngClass]="{'alternation-bg': i % 2 === 0, 'selected': row.selected}"
+       (click)="onTableRowClick($event, row)"
+  >
     <div class="table-cell table-checkbox-cell"
          *ngIf="selectionConfig?.useSelection"
          [style.width]="selectionConfig?.columnWidth"

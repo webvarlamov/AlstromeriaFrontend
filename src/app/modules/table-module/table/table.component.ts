@@ -28,6 +28,7 @@ import {SortChangeRequest} from "./models/changeRequest/sort-change-request";
 import {PageSizeChangeRequest} from "./models/changeRequest/pageSizeChangeRequest";
 import {Page} from "../../../service/http/model/page";
 import {UUID} from "angular2-uuid";
+import {TableRowClickEvent} from "./models/event/table-row-click-event";
 
 export const DEFAULT_COLUMN_WIDTH = 200;
 export const DEFAULT_PAGE_INPUT_SIZE = 5;
@@ -97,13 +98,14 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
 
   @Output() public onPageNumberChangeRequest: EventEmitter<PageNumberChangeRequest> = new EventEmitter();
   @Output() public onSelectionChangeRequest: EventEmitter<SelectionChangeRequest> = new EventEmitter();
+  @Output() public onColumnSizeChangeRequest: EventEmitter<ColumnSizeChangeRequest> = new EventEmitter();
+  @Output() public onColumnPositionChangeRequest: EventEmitter<ColumnPositionChangeRequest> = new EventEmitter();
+  @Output() public onPageSizeChangeRequest: EventEmitter<PageSizeChangeRequest> = new EventEmitter();
+  @Output() public onSortChangeRequest: EventEmitter<SortChangeRequest> = new EventEmitter();
   @Output() public onTableComponentInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
   @Output() public onAfterTableComponentViewInit: EventEmitter<TableComponent<Entity>> = new EventEmitter();
   @Output() public onTableComponentDestroy: EventEmitter<void> = new EventEmitter();
-  @Output() public onColumnSizeChangeRequest: EventEmitter<ColumnSizeChangeRequest> = new EventEmitter();
-  @Output() public onColumnPositionChangeRequest: EventEmitter<ColumnPositionChangeRequest> = new EventEmitter();
-  @Output() public onSortChangeRequest: EventEmitter<SortChangeRequest> = new EventEmitter();
-  @Output() public onPageSizeChangeRequest: EventEmitter<PageSizeChangeRequest> = new EventEmitter();
+  @Output() public onTableRowClickEvent: EventEmitter<TableRowClickEvent> = new EventEmitter();
 
   public trackByIdValue(index: number, item: TableRow) {
     return item.id;
@@ -177,16 +179,23 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
       .setTableColumns(this.columns)
   }
 
+  public onTableRowClick($event: MouseEvent, row: TableRow): void {
+    this.onTableRowClickEvent.emit({
+      event: $event,
+      tableRow: row
+    })
+  }
+
   public onRowSelectionCheckboxChange(row: TableRow, checked: boolean) {
     const selectionChangeRequest = this.tableUtilsService
-      .calcSingleSelectionChangeRequest(row.data, checked, this.selectedEntities);
+      .calcSingleSelectionChangeRequest(row.data, checked, this.selectedEntities, this.selectionConfig.selectionMode);
     this.onSelectionChangeRequest.emit(selectionChangeRequest)
   }
 
   public onHeaderSelectionCheckboxChange(checkbox: HTMLInputElement) {
     const entities: Array<HasId> = this.items;
     const selectionChangeRequest = this.tableUtilsService
-      .calcMultiSelectionChangeRequest(entities, checkbox.checked, this.selectedEntities);
+      .calcMultiSelectionChangeRequest(entities, checkbox.checked, this.selectedEntities, this.selectionConfig.selectionMode);
     this.onSelectionChangeRequest.emit(selectionChangeRequest)
   }
 

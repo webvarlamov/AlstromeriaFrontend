@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {InputComponent, InputComponentConfig, InputComponentValue} from "../input-component/input.component";
+import {ListViewInputComponent} from "../list-view-input-component/list-view-input-component.directive";
 
 @Component({
   selector: 'app-number-input',
-  templateUrl: './number-input.component.html',
+  templateUrl: "../list-view-input-component/list-view-input-component.directive.html",
   styleUrls: ['./number-input.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NumberInputComponent extends InputComponent<InputComponentConfig<any>, InputComponentValue> implements OnInit {
+export class NumberInputComponent extends ListViewInputComponent implements OnInit {
   ngOnInit() {
   }
 }

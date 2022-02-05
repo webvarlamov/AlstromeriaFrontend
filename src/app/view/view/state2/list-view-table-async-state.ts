@@ -4,6 +4,15 @@ import {TableSort} from "../../../modules/table-module/table/models/dataModels/t
 import {TableColumn} from "../../../modules/table-module/table/models/dataModels/tableColumn";
 import {HasId} from "../../../service/http/model/pageable";
 
+export interface ListViewTableAsyncInitialState {
+  tableItemsList?: Array<HasId & any>,
+  tableSelectedList?: Array<HasId>,
+  tableColumns?: Array<TableColumn>,
+  tableSorting?: Array<TableSort>,
+  tablePage?: Page,
+  tableShowLoaderIndicator?: boolean
+}
+
 export class ListViewTableAsyncState {
   public tableItemsList$: BehaviorSubject<Array<HasId>>;
   public tableSelectedList$: BehaviorSubject<Array<HasId>>;
@@ -32,14 +41,9 @@ export class ListViewTableAsyncState {
     this.tablePage$.next(tablePage)
   }
 
-  constructor(initialState?: {
-    tableItemsList?: Array<HasId & any>,
-    tableSelectedList?: Array<HasId>,
-    tableColumns?: Array<TableColumn>,
-    tableSorting?: Array<TableSort>,
-    tablePage?: Page,
-    tableShowLoaderIndicator?: boolean
-  }) {
+  constructor(initialState?: ListViewTableAsyncInitialState) {
+    console.log("ListViewTableAsyncState created")
+
     this.tableItemsList$ = new BehaviorSubject<Array<HasId>>(
       initialState?.tableItemsList != null ? initialState?.tableItemsList : []
     );

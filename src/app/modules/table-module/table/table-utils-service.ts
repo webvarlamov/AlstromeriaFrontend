@@ -1,13 +1,13 @@
 import {ColumnSizeChangeRequest} from "./components/cell-resize/cell-resize.component";
 import {HasId} from "../../../service/http/model/pageable";
 import {Injectable} from "@angular/core";
-import {TableRow} from "./models/dataModels/tableRow";
 import {SelectionChangeRequest} from "./models/changeRequest/selectionChangeRequest";
 import {TableColumn} from "./models/dataModels/tableColumn";
 import {ColumnPositionChangeRequest} from "./models/changeRequest/column-position-change.request";
 import {SortChangeRequest} from "./models/changeRequest/sort-change-request";
 import {TableSort} from "./models/dataModels/tableSort";
 import {Page} from "../../../service/http/model/page";
+import {SelectionMode} from "./models/config/selectionMode";
 
 @Injectable()
 export class TableUtilsService {
@@ -41,15 +41,21 @@ export class TableUtilsService {
     return {...$event, candidates: tableColumns};
   }
 
-  public calcSingleSelectionChangeRequest(eventEntity: HasId, checked: boolean, selectedEntities: Array<HasId>): SelectionChangeRequest {
-    let selectedCandidates = [];
+  public calcSingleSelectionChangeRequest(eventEntity: HasId, checked: boolean, selectedEntities: Array<HasId>, selectionMode: SelectionMode): SelectionChangeRequest {
+    let selectedCandidates: Array<HasId> = [];
 
-    if (checked) {
-      selectedCandidates = selectedEntities
-        .concat([eventEntity])
-    } else {
-      selectedCandidates = selectedEntities
-        .filter(entity => entity.id !== eventEntity.id)
+    if (selectionMode == SelectionMode.MULTI) {
+      if (checked) {
+        selectedCandidates = selectedEntities
+          .concat([eventEntity])
+      } else {
+        selectedCandidates = selectedEntities
+          .filter(entity => entity.id !== eventEntity.id)
+      }
+    } else if (selectionMode == SelectionMode.SINGLE) {
+      if (checked) {
+        selectedCandidates = [eventEntity]
+      }
     }
 
     return {
@@ -60,7 +66,7 @@ export class TableUtilsService {
     }
   }
 
-  public calcMultiSelectionChangeRequest(eventEntities: Array<HasId>, setSelection: boolean, selectedEntities: Array<HasId>): SelectionChangeRequest {
+  public calcMultiSelectionChangeRequest(eventEntities: Array<HasId>, setSelection: boolean, selectedEntities: Array<HasId>, selectionMode: SelectionMode): SelectionChangeRequest {
     let selectedCandidates = [];
 
     if (setSelection) {

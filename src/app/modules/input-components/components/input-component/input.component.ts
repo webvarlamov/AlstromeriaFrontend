@@ -220,29 +220,12 @@ export interface InputComponentSuggestionsConfigInterface {
   suggestionsDataAccessService: DataAccessServiceImpl;
 }
 
-export class InputComponentSuggestionsConfig implements InputComponentSuggestionsConfigInterface {
-  suggestionsUrl: string;
-  suggestionsByProperty: string;
-  suggestionsListViewState: ListViewState;
-  suggestionsListViewStateManager: ListViewStateManager;
-  suggestionsDataAccessService: DataAccessServiceImpl;
-
-  constructor(initial: InputComponentSuggestionsConfigInterface) {
-    this.suggestionsListViewState = initial.suggestionsListViewState ? initial.suggestionsListViewState : new ListViewState();
-    this.suggestionsListViewStateManager = initial.suggestionsListViewStateManager ? initial.suggestionsListViewStateManager: null;
-    this.suggestionsDataAccessService = initial.suggestionsDataAccessService;
-    this.suggestionsByProperty = initial.suggestionsByProperty;
-    this.suggestionsUrl = initial.suggestionsUrl;
-  }
-}
-
 @Directive({
   selector: 'app-input-component-directive'
 })
 export class InputComponent
   <C extends InputComponentConfig<any>, V extends InputComponentValue>
   extends SelectedInputValuesTemplateSupport implements OnInit {
-
 
   @Input() config: C;
   @Input() value: V;

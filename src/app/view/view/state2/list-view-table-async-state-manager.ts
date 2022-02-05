@@ -10,6 +10,7 @@ export class ListViewTableAsyncStateManager {
   public listViewTableAsyncState: ListViewTableAsyncState;
 
   constructor(listViewTableAsyncState: ListViewTableAsyncState) {
+    console.log("ListViewTableAsyncStateManager created")
     this.listViewTableAsyncState = listViewTableAsyncState;
   }
 

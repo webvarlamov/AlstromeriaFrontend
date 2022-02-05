@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
 @Injectable({
   providedIn: 'root'
 })
-export class PlanRepository extends AbstractPagingAndSortingRemoteEntityRepositoryAsync<Plan> implements PagingAndSortingRepositoryAsync<Plan> {
+export class StoryRepositoryService extends AbstractPagingAndSortingRemoteEntityRepositoryAsync<Plan> implements PagingAndSortingRepositoryAsync<Plan> {
   constructor(
     public http: HttpClient
   ) {
@@ -15,6 +15,6 @@ export class PlanRepository extends AbstractPagingAndSortingRemoteEntityReposito
   }
 
   getURL(method: any, methodArgs?: any): string {
-    return "plan";
+    return "story";
   }
 }

@@ -4,18 +4,21 @@ import {CrudToolbarComponent} from './components/crud-toolbar/crud-toolbar.compo
 import {SaveOrCancelToolbarComponent} from './components/save-or-cancel-toolbar/save-or-cancel-toolbar.component';
 import {FilterBarComponent} from './components/filter-bar/filter-bar.component';
 import {InputComponentsModule} from "../input-components/input-components.module";
+import {AcceptRejectButtonsComponent} from "./components/accept-reject-buttons/accept-reject-buttons.component";
 
 
 @NgModule({
   declarations: [
     CrudToolbarComponent,
     SaveOrCancelToolbarComponent,
-    FilterBarComponent
+    FilterBarComponent,
+    AcceptRejectButtonsComponent
   ],
   exports: [
     CrudToolbarComponent,
     SaveOrCancelToolbarComponent,
-    FilterBarComponent
+    FilterBarComponent,
+    AcceptRejectButtonsComponent
   ],
   imports: [
     CommonModule,

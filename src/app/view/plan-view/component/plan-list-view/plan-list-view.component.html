@@ -7,27 +7,44 @@
 </div>
 <div class="section filter-bar">
   <div class="section-content">
-    <div class='fd-container'>
-      <div class='fd-row'>
-        <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--4'>
-          <div class='docs-layout-grid-bg docs-layout-grid-bg--color-1'>
-            <app-entity-input></app-entity-input>
+    <fieldset>
+      <legend>Параметры фильтрации:</legend>
+      <div class='fd-container'>
+        <div class='fd-row'>
+          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
+            <app-entity-input [listViewTableAsyncStateManager]="storyFilterManager"></app-entity-input>
           </div>
-        </div>
 
-        <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--4'>
-          <div class='docs-layout-grid-bg docs-layout-grid-bg--color-2'>
+          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
             <app-boolean-input></app-boolean-input>
           </div>
-        </div>
 
-        <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--4'>
-          <div class='docs-layout-grid-bg docs-layout-grid-bg--color-3'>
+          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
+            <app-string-input [listViewTableAsyncStateManager]="stringFilterManager" [selectionConfig]="stringSelectionConfig"></app-string-input>
+          </div>
+
+          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
+            <app-number-input></app-number-input>
+          </div>
+
+          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
+            <app-enum-input></app-enum-input>
+          </div>
+
+          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
+            <app-string-input></app-string-input>
+          </div>
+
+          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
             <app-string-input></app-string-input>
           </div>
         </div>
       </div>
-    </div>
+      <hr>
+      <div class="section-content">
+        <app-accept-reject-buttons></app-accept-reject-buttons>
+      </div>
+    </fieldset>
   </div>
 </div>
 <div class="section table-wrapper">
