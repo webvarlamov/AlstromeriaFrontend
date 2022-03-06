@@ -1,17 +1,16 @@
-import {ListViewTableAsyncState} from "./list-view-table-async-state";
-import {Page} from "../../../service/http/model/page";
-import {TableSort} from "../../../modules/table-module/table/models/dataModels/tableSort";
-import {HasId} from "../../../service/http/model/pageable";
-import {TableColumn} from "../../../modules/table-module/table/models/dataModels/tableColumn";
+import {ListViewTableState} from "./list-view-table-state";
 import {take, tap} from "rxjs/operators";
-import {combineLatest} from "rxjs";
+import {combineLatest, of, throwError} from "rxjs";
+import {HasId} from "../../service/http/model/pageable";
+import {Page} from "../../service/http/model/page";
+import {TableSort} from "../../modules/table-module/table/models/dataModels/tableSort";
+import {TableColumn} from "../../modules/table-module/table/models/dataModels/tableColumn";
 
-export class ListViewTableAsyncStateManager {
-  public listViewTableAsyncState: ListViewTableAsyncState;
+export class ListViewTableStateManager {
+  public listViewTableAsyncState: ListViewTableState;
 
-  constructor(listViewTableAsyncState: ListViewTableAsyncState) {
-    console.log("ListViewTableAsyncStateManager created")
-    this.listViewTableAsyncState = listViewTableAsyncState;
+  constructor(listViewTableState: ListViewTableState) {
+    this.listViewTableAsyncState = listViewTableState;
   }
 
   public changeTablePage(page: Page): void {
@@ -46,6 +45,10 @@ export class ListViewTableAsyncStateManager {
         this.listViewTableAsyncState.nextTableSelectedList([]);
       })
     ).toPromise();
+  }
+
+  public updateItems(): Promise<boolean> {
+    return throwError('Method not implemented').toPromise();
   }
 }
 

@@ -1,5 +1,6 @@
-import {ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit} from '@angular/core';
-import {ListViewInputComponent} from "../list-view-input-component/list-view-input-component.directive";
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {InputComponent} from "../input-component/input.component";
+import {SuggestionEvent} from "../input-component/suggestions.directive";
 
 @Component({
   selector: 'app-entity-input',
@@ -7,11 +8,7 @@ import {ListViewInputComponent} from "../list-view-input-component/list-view-inp
   styleUrls: ['./entity-input.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EntityInputComponent extends ListViewInputComponent implements OnInit {
-  constructor(
-    public injector: Injector,
-    public elementRef: ElementRef,
-  ) {
-    super(elementRef);
+export class EntityInputComponent extends InputComponent<any, any> implements OnInit {
+  onInputSuggestionEvent(event: SuggestionEvent): void {
   }
 }

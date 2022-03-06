@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {InputComponent, InputComponentConfig, InputComponentValue} from "../input-component/input.component";
+import {SuggestionEvent} from "../input-component/suggestions.directive";
 
 @Component({
   selector: 'app-period-input',
@@ -8,4 +9,6 @@ import {InputComponent, InputComponentConfig, InputComponentValue} from "../inpu
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PeriodInputComponent extends InputComponent<InputComponentConfig<any>, InputComponentValue> implements OnInit {
+  onInputSuggestionEvent(event: SuggestionEvent): void {
+  }
 }

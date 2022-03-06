@@ -1,19 +1,32 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {TableSelectionConfig} from "../../../../modules/table-module/table/models/config/tableSelectionConfig";
 import {SelectionMode} from "../../../../modules/table-module/table/models/config/selectionMode";
-import {
-  ListViewTableAsyncInitialState,
-  ListViewTableAsyncState
-} from "../../../view/state2/list-view-table-async-state";
 import {PlanRepository} from "../../../../repository/plan-repository.service";
-import {
-  RemoteEntityListViewTableAsyncStateManager
-} from "../../../view/state2/remote-entity-list-view-table-async-state-manager";
 import {FilterableListViewComponent} from "../../../view/component/list-view/filterable-list-view-component.directive";
 import {StoryRepositoryService} from "../../../../repository/story-repository.service";
+import {ListViewTableState} from "../../../../state/list-view-state/list-view-table-state";
 import {
-  RemoteEntityPropertySuggestionListViewTableAsyncStateManager
-} from "../../../view/state2/remote-entity-property-suggestion-list-view-table-async-state-manager";
+  RemoteFilterableListViewStateManager
+} from "../../../../state/list-view-state/remote-filterable-list-view-state-manager";
+import {
+  SuggestionValueRemoteFilterableListViewStateManager
+} from "../../../../state/list-view-state/suggestion-value-remote-filterable-list-view-state-manager";
+import {
+  InputComponentConfig,
+  InputComponentType,
+  InputConfigInterface
+} from "../../../../modules/input-components/components/input-component/input.component";
+import {ListViewFiltersStateManager} from "../../../../state/filter-state/list-view-filters-state-manager";
+import {ListViewFiltersState} from "../../../../state/filter-state/list-view-filters.state";
+import {ListViewTableInitialState} from "../../../../state/list-view-state/list-view-table-initial-state";
+import {
+  DefaultFilterExpressionBuilderImpl
+} from "../../../../service/http/service/default-filter-expression-builder-impl";
+import {FilterComponentConfig} from "../../../view/component/list-view/filter-component.config";
+import {RangeOperator} from "../../../../service/http/model/range-operator.enum";
+import {
+  SuggestionEntityRemoteFilterableListViewStateManager
+} from "../../../../state/list-view-state/suggestion-entity-remote-filterable-list-view-state-manager";
 
 @Component({
   selector: 'app-plan-list-view',
@@ -21,12 +34,12 @@ import {
   styleUrls: ['./plan-list-view.component.css'],
 })
 export class PlanListViewComponent extends FilterableListViewComponent<any> implements OnInit {
-  public initialState: ListViewTableAsyncInitialState = {
+  public initialState: ListViewTableInitialState = {
     tableItemsList: [],
     tableColumns: [
       {id: '0', caption: "ID", dataField: "id"},
-      {id: '0', caption: "Name", dataField: "name"},
-      {id: '0', caption: "Description", dataField: "description"},
+      {id: '1', caption: "Name", dataField: "name"},
+      {id: '2', caption: "Description", dataField: "description"},
     ],
     tablePage: {
       page: 0,
@@ -35,29 +48,42 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
       itemsCount: 0,
     }
   }
-  public listViewTableAsyncState: ListViewTableAsyncState = new ListViewTableAsyncState(this.initialState);
-  public listViewTableAsyncStateManager: RemoteEntityListViewTableAsyncStateManager
-    = new RemoteEntityListViewTableAsyncStateManager(this.listViewTableAsyncState, this.planRepository)
 
-  /* Entity filter */
-  public storyFilterManager: RemoteEntityListViewTableAsyncStateManager =
-    new RemoteEntityListViewTableAsyncStateManager(
-      new ListViewTableAsyncState({
+  public listViewTableAsyncState: ListViewTableState = new ListViewTableState(this.initialState);
+
+  public listViewTableAsyncStateManager: RemoteFilterableListViewStateManager =
+    new RemoteFilterableListViewStateManager({
+    listViewTableState: this.listViewTableAsyncState,
+    repository: this.planRepository,
+    listViewFiltersStateManager: new ListViewFiltersStateManager({}),
+    filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
+  });
+
+  public storyFilterManager: SuggestionEntityRemoteFilterableListViewStateManager =
+    new SuggestionEntityRemoteFilterableListViewStateManager({
+      listViewTableState: new ListViewTableState({
+        tablePage: {
+          page: 0,
+          size: 50,
+          pagesCount: 0,
+          itemsCount: 0,
+        },
         tableColumns: [
           {
-            id: "name",
-            caption: "Имя",
-            dataField: "name"
+            id: "id",
+            caption: "ID",
+            dataField: "id"
           }
         ]
       }),
-      this.storyRepository
-    );
+      repository: this.storyRepository,
+      listViewFiltersStateManager: new ListViewFiltersStateManager({}),
+      filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
+    });
 
-  /* String filter */
-  public stringFilterManager: RemoteEntityPropertySuggestionListViewTableAsyncStateManager =
-    new RemoteEntityPropertySuggestionListViewTableAsyncStateManager(
-      new ListViewTableAsyncState({
+  public stringFilterManager: SuggestionValueRemoteFilterableListViewStateManager =
+    new SuggestionValueRemoteFilterableListViewStateManager({
+      listViewTableState: new ListViewTableState({
         tablePage: {
           page: 0,
           size: 50,
@@ -70,23 +96,87 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
           dataField: "value"
         }]
       }),
-      this.planRepository,
-      "name"
-    );
+      repository: this.planRepository,
+      attributeKey: "name",
+      listViewFiltersStateManager: new ListViewFiltersStateManager({
+        listViewFiltersState: new ListViewFiltersState({
+          listViewFilterConfigByAttributeKey: {
+            name: new FilterComponentConfig<any>({
+              attributeKey: "name",
+              caption: "Имя",
+              componentType: InputComponentType.STRING,
+              operator: RangeOperator.STARTWITH
+            })
+          },
+          listViewFilterValuesByAttributeKey: {
+            name: ''
+          }
+        })
+      }),
+      filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
+    });
+
+  public numberFilterManager: SuggestionValueRemoteFilterableListViewStateManager =
+    new SuggestionValueRemoteFilterableListViewStateManager({
+      listViewTableState: new ListViewTableState({
+        tablePage: {
+          page: 0,
+          size: 50,
+          pagesCount: 0,
+          itemsCount: 0,
+        },
+        tableColumns: [{
+          id: "value",
+          caption: "Значение",
+          dataField: "value"
+        }]
+      }),
+      repository: this.planRepository,
+      attributeKey: "num",
+      listViewFiltersStateManager: new ListViewFiltersStateManager({
+        listViewFiltersState: new ListViewFiltersState({
+          listViewFilterConfigByAttributeKey: {
+            num: new FilterComponentConfig<any>({
+              attributeKey: "num",
+              caption: "Значение",
+              componentType: InputComponentType.NUMBER,
+              operator: RangeOperator.GE
+            })
+          },
+          listViewFilterValuesByAttributeKey: {
+            num: "0"
+          }
+        })
+      }),
+      filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
+    });
+
 
   public stringSelectionConfig: TableSelectionConfig = {
     sticky: true,
-    useSelection: true,
+    useSelection: false,
     selectionMode: SelectionMode.SINGLE,
     columnWidth: '35px',
-  }
-
+  };
   public tableSelectionConfig: TableSelectionConfig = {
     sticky: true,
     useSelection: true,
     selectionMode: SelectionMode.MULTI,
     columnWidth: '35px',
   };
+  public stringInputConfig: InputConfigInterface = new InputComponentConfig({
+    attributeKey: 'name',
+    caption: 'caption',
+    componentType: InputComponentType.STRING,
+    operator: RangeOperator.STARTWITH
+  });
+
+  public numberInputConfig: InputConfigInterface = new InputComponentConfig({
+    attributeKey: 'num',
+    caption: 'caption',
+    componentType: InputComponentType.NUMBER,
+    operator: RangeOperator.EQ
+  });
 
   constructor(
     public injector: Injector,
@@ -98,6 +188,7 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
 
   ngOnInit() {
     super.ngOnInit();
+    this.listViewTableAsyncStateManager.updateItems().then();
   }
 }
 

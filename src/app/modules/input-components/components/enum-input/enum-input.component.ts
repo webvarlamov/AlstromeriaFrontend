@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {ListViewInputComponent} from "../list-view-input-component/list-view-input-component.directive";
+import {InputComponent} from "../input-component/input.component";
+import {SuggestionEvent} from "../input-component/suggestions.directive";
 
 
 @Component({
@@ -8,5 +9,7 @@ import {ListViewInputComponent} from "../list-view-input-component/list-view-inp
   styleUrls: ['./enum-input.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EnumInputComponent extends ListViewInputComponent implements OnInit {
+export class EnumInputComponent extends InputComponent<any, any> implements OnInit {
+  onInputSuggestionEvent(event: SuggestionEvent): void {
+  }
 }

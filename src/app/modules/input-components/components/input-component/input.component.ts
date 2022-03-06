@@ -1,11 +1,17 @@
-import {Directive, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SelectedInputValuesTemplateSupport} from "./suggestions.directive";
-import {HasId, Pageable} from "../../../../service/http/model/pageable";
-import {FilterExpression} from "../../../../service/http/model/filter-expression";
-import {Observable} from "rxjs";
-import {ListViewState} from "../../../../view/view/state/list-view.state";
-import {DataAccessServiceImpl} from "../../../../service/http/service/data-access-service.service";
-import {ListViewStateManager} from "../../../../view/view/state/list-view-state.manager";
+import {
+  AfterViewInit,
+  ContentChild,
+  Directive,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {SuggestionOwner} from "./suggestions.directive";
+import {HasId} from "../../../../service/http/model/pageable";
+import {BehaviorSubject} from "rxjs";
+import {InputSuggestionComponent} from "../input-suggestion/input-suggestion.component";
+import {RangeOperator} from "../../../../service/http/model/range-operator.enum";
 
 
 export enum InputComponentType {
@@ -194,38 +200,39 @@ export class StringListInputComponentValue extends InputComponentValue {
 export interface InputConfigInterface {
   attributeKey: string;
   caption: string;
-  componentType: InputComponentType
-  suggestionsConfig?: InputComponentSuggestionsConfigInterface
+  componentType: InputComponentType;
+  operator: RangeOperator
 }
 
 export class InputComponentConfig<T> implements InputConfigInterface {
   attributeKey: string;
   caption: string;
   componentType: InputComponentType;
-  suggestionsConfig: InputComponentSuggestionsConfigInterface;
+  operator: RangeOperator;
 
   constructor(initial: InputConfigInterface) {
     this.attributeKey = initial?.attributeKey;
     this.caption = initial?.caption;
     this.componentType = initial?.componentType
-    this.suggestionsConfig = initial.suggestionsConfig;
+    this.operator = initial?.operator
   }
 }
 
-export interface InputComponentSuggestionsConfigInterface {
-  suggestionsUrl?: string;
-  suggestionsByProperty: string;
-  suggestionsListViewState: ListViewState;
-  suggestionsListViewStateManager: ListViewStateManager;
-  suggestionsDataAccessService: DataAccessServiceImpl;
+export interface SuggestionOwnerInputEvent {
+  owner: InputComponent<any, any>;
+  value: string;
 }
 
 @Directive({
   selector: 'app-input-component-directive'
 })
-export class InputComponent
-  <C extends InputComponentConfig<any>, V extends InputComponentValue>
-  extends SelectedInputValuesTemplateSupport implements OnInit {
+export abstract class InputComponent<C extends InputComponentConfig<any>, V extends InputComponentValue> extends SuggestionOwner implements OnInit, AfterViewInit {
+  public inputValue$: BehaviorSubject<string> = new BehaviorSubject<any>('');
+  @ContentChild(InputSuggestionComponent)
+  public suggestionContent: InputSuggestionComponent;
+
+  @Input()
+  public label: string = 'Label has not been overridden';
 
   @Input() config: C;
   @Input() value: V;
@@ -234,5 +241,19 @@ export class InputComponent
   public onInputComponentValueChangeRequest: EventEmitter<InputComponentValueChangeRequest> = new EventEmitter();
 
   ngOnInit(): void {
+  }
+
+  public onInputValueChange(value: string) {
+    this.inputValue$.next(value);
+    this.suggestionContent.onOwnerInputEvent({
+      owner: this,
+      value: value
+    } as SuggestionOwnerInputEvent);
+  }
+
+  ngAfterViewInit(): void {
+    if (this.suggestionContent != null) {
+      this.suggestionContent.owner = this;
+    }
   }
 }

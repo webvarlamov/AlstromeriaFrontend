@@ -1,7 +1,6 @@
 import {RangeOperator} from './range-operator.enum';
 
 export interface RangeInterface {
-  exclude: boolean;
   operator: RangeOperator;
   property: string;
   value1?: any;
@@ -10,7 +9,7 @@ export interface RangeInterface {
 }
 
 export class Range {
-  exclude: boolean;
+  exclude: boolean = false;
   operator: RangeOperator;
   property: string;
   value1?: any;
@@ -18,7 +17,6 @@ export class Range {
   values?: any[];
 
   constructor(params: RangeInterface) {
-    this.exclude = params.exclude;
     this.operator = params.operator;
     this.property = params.property;
     this.value1 = params.value1;

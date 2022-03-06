@@ -13,14 +13,14 @@ import {PageSizeChangeRequest} from "../../../../modules/table-module/table/mode
 import {
   PageNumberChangeRequest
 } from "../../../../modules/table-module/table/models/changeRequest/pageNumberChangeRequest";
-import {ListViewTableAsyncState} from "../../state2/list-view-table-async-state";
-import {ListViewTableAsyncStateManager} from "../../state2/list-view-table-async-state-manager";
+import {ListViewTableState} from "../../../../state/list-view-state/list-view-table-state";
+import {ListViewTableStateManager} from "../../../../state/list-view-state/list-view-table-state-manager";
 
 @Directive({
   selector: "app-list-view-component",
 })
 export class ListViewComponent<T> implements OnInit {
-  public listViewTableAsyncState: ListViewTableAsyncState = new ListViewTableAsyncState({
+  public listViewTableAsyncState: ListViewTableState = new ListViewTableState({
     tableItemsList: [],
     tablePage: {
       size: 10,
@@ -30,15 +30,14 @@ export class ListViewComponent<T> implements OnInit {
     },
     tableColumns: []
   });
-  public listViewTableAsyncStateManager: ListViewTableAsyncStateManager = new ListViewTableAsyncStateManager(this.listViewTableAsyncState);
+
+  public listViewTableAsyncStateManager: ListViewTableStateManager = new ListViewTableStateManager(this.listViewTableAsyncState);
 
   constructor(
     public injector: Injector
-  ) {
-  }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public onColumnMoveChangeRequest($event: ColumnPositionChangeRequest) {
     this.listViewTableAsyncState.nextTableColumnsList($event.candidates);

@@ -1,0 +1,18 @@
+<app-table
+  *ngIf="suggestionListViewTableStateManager != null && suggestionListViewTableStateManager.listViewTableAsyncState != null"
+  [id]="'entity-input-list-data-grid'"
+  [selectionConfig]="selectionConfig"
+  [sorting]="this.suggestionListViewTableStateManager.listViewTableAsyncState.tableSorting$ | async"
+  [items]="this.suggestionListViewTableStateManager.listViewTableAsyncState.tableItemsList$ | async"
+  [columns]="this.suggestionListViewTableStateManager.listViewTableAsyncState.tableColumns$ | async"
+  [selectedEntities]="this.suggestionListViewTableStateManager.listViewTableAsyncState.tableSelectedList$ | async"
+  [page]="this.suggestionListViewTableStateManager.listViewTableAsyncState.tablePage$ | async"
+  [showLoadingIndicator]="this.suggestionListViewTableStateManager.listViewTableAsyncState.tableShowLoaderIndicator$ | async"
+  (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+  (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
+  (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
+  (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
+  (onSortChangeRequest)="this.onSortChangeRequest($event)"
+  (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)"
+  (onTableRowClickEvent)="onTableRowClickEvent($event)"
+></app-table>

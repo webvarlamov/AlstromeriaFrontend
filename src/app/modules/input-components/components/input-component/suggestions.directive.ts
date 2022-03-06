@@ -1,9 +1,9 @@
 import {Directive, ElementRef, HostListener} from "@angular/core";
 
 @Directive({
-  selector: 'Suggestion'
+  selector: 'SuggestionOwner'
 })
-export class SelectedInputValuesTemplateSupport {
+export abstract class SuggestionOwner {
   public showSuggestions: boolean = false;
   public showSelectedPopover: boolean = false;
 
@@ -23,4 +23,10 @@ export class SelectedInputValuesTemplateSupport {
   public onInputClick(input: HTMLInputElement) {
     this.showSuggestions = true
   }
+
+  public abstract onInputSuggestionEvent(event: SuggestionEvent): void;
+}
+
+export class SuggestionEvent {
+
 }

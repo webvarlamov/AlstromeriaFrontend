@@ -8,10 +8,10 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges, TemplateRef,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {HasId, Pageable} from "../../../service/http/model/pageable";
+import {HasId} from "../../../service/http/model/pageable";
 import {ColumnSizeChangeRequest} from "./components/cell-resize/cell-resize.component";
 import {TableUtilsService} from "./table-utils-service";
 import {CollDragService} from "./components/coll-dragger/coll-drag.service";

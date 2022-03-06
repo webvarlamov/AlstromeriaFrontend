@@ -1,19 +1,11 @@
 import {BehaviorSubject} from "rxjs";
-import {Page} from "../../../service/http/model/page";
-import {TableSort} from "../../../modules/table-module/table/models/dataModels/tableSort";
-import {TableColumn} from "../../../modules/table-module/table/models/dataModels/tableColumn";
-import {HasId} from "../../../service/http/model/pageable";
+import {HasId} from "../../service/http/model/pageable";
+import {TableColumn} from "../../modules/table-module/table/models/dataModels/tableColumn";
+import {TableSort} from "../../modules/table-module/table/models/dataModels/tableSort";
+import {Page} from "../../service/http/model/page";
+import {ListViewTableInitialState} from "./list-view-table-initial-state";
 
-export interface ListViewTableAsyncInitialState {
-  tableItemsList?: Array<HasId & any>,
-  tableSelectedList?: Array<HasId>,
-  tableColumns?: Array<TableColumn>,
-  tableSorting?: Array<TableSort>,
-  tablePage?: Page,
-  tableShowLoaderIndicator?: boolean
-}
-
-export class ListViewTableAsyncState {
+export class ListViewTableState {
   public tableItemsList$: BehaviorSubject<Array<HasId>>;
   public tableSelectedList$: BehaviorSubject<Array<HasId>>;
   public tableColumns$: BehaviorSubject<Array<TableColumn>>;
@@ -41,9 +33,7 @@ export class ListViewTableAsyncState {
     this.tablePage$.next(tablePage)
   }
 
-  constructor(initialState?: ListViewTableAsyncInitialState) {
-    console.log("ListViewTableAsyncState created")
-
+  constructor(initialState?: ListViewTableInitialState) {
     this.tableItemsList$ = new BehaviorSubject<Array<HasId>>(
       initialState?.tableItemsList != null ? initialState?.tableItemsList : []
     );

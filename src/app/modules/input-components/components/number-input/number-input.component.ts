@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {ListViewInputComponent} from "../list-view-input-component/list-view-input-component.directive";
+import {InputComponent} from "../input-component/input.component";
+import {SuggestionEvent} from "../input-component/suggestions.directive";
 
 @Component({
   selector: 'app-number-input',
@@ -7,7 +8,7 @@ import {ListViewInputComponent} from "../list-view-input-component/list-view-inp
   styleUrls: ['./number-input.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NumberInputComponent extends ListViewInputComponent implements OnInit {
-  ngOnInit() {
+export class NumberInputComponent extends InputComponent<any, any> implements OnInit {
+  onInputSuggestionEvent(event: SuggestionEvent) {
   }
 }

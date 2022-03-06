@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {Plan} from "../../../../entity/plan";
 import {DetailViewComponent} from "../../../view/component/detail-view/detail-view.component";
 
 @Component({

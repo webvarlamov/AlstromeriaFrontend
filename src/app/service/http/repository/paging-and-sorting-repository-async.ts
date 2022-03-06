@@ -8,5 +8,5 @@ import {ResponsePage} from "../model/response-page";
 
 export interface PagingAndSortingRepositoryAsync<S extends HasId> extends CrudRepositoryAsync<S> {
     findAllEntitiesOnPage<S>(args: { page: Page, sort: Array<TableSort>, filterExpression?: FilterExpression, fetchStrategy: string }): Observable<ResponsePage<HasId>>;
-    findAllSuggestionsOnPage<S>(args: { page: Page, sort: Array<TableSort>, filterExpression?: FilterExpression, propertyName: string }): Observable<ResponsePage<HasId>>;
+    findAllSuggestionsOnPage<S>(args: { page: Page, sort: Array<TableSort>, filterExpression?: FilterExpression, attributeKey: string }): Observable<ResponsePage<HasId>>;
 }

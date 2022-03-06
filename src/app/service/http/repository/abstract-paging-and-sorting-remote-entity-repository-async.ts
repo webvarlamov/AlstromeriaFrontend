@@ -107,7 +107,7 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
     page: Page,
     sort: Array<TableSort>,
     filterExpression?: FilterExpression,
-    propertyName: string
+    attributeKey: string
   }): Observable<ResponsePage<any>> {
     const url = this.getURL(this.findAllById, args);
 
@@ -115,7 +115,11 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
 
     params = params.set("page", args?.page?.page)
     params = params.set("size", args?.page?.size)
-    params = params.set("propertyName", args?.propertyName)
+    params = params.set("attributeKey", args?.attributeKey)
+
+    if (args.filterExpression != null) {
+      params = params.set("filterExpression", JSON.stringify(args.filterExpression))
+    }
 
     return this.http.get(url + "/findSuggestions", {params}) as Observable<ResponsePage<any>>
   }
