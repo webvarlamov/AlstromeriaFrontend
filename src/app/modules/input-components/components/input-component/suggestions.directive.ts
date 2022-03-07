@@ -1,4 +1,5 @@
 import {Directive, ElementRef, HostListener} from "@angular/core";
+import {TableRowClickEvent} from "../../../table-module/table/models/event/table-row-click-event";
 
 @Directive({
   selector: 'SuggestionOwner'
@@ -24,9 +25,15 @@ export abstract class SuggestionOwner {
     this.showSuggestions = true
   }
 
-  public abstract onInputSuggestionEvent(event: SuggestionEvent): void;
+  public abstract onInputSuggestionEvent(event: InputSuggestionEvent): void;
 }
 
-export class SuggestionEvent {
+export class InputSuggestionEvent {
+  type: InputSuggestionEventType
+  data: TableRowClickEvent | any
+}
 
+export enum InputSuggestionEventType {
+  ROW_CLICK = 'ROW_CLICK',
+  SELECTION_CHANGE = 'SELECTION_CHANGE',
 }

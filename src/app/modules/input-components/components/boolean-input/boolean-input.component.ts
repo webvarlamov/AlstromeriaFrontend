@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {InputComponent} from "../input-component/input.component";
-import {SuggestionEvent} from "../input-component/suggestions.directive";
+import {InputSuggestionEvent} from "../input-component/suggestions.directive";
 
 @Component({
   selector: 'app-boolean-input',
@@ -9,6 +9,13 @@ import {SuggestionEvent} from "../input-component/suggestions.directive";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BooleanInputComponent extends InputComponent<any, any> implements OnInit {
-  onInputSuggestionEvent(event: SuggestionEvent): void {
+  public allowValueHelp = false;
+  public inputDisabled = false;
+  public inputPlaceholder = 'Выберите значение'
+
+  onInputSuggestionEvent(event: InputSuggestionEvent): void {
   }
+
+
+
 }

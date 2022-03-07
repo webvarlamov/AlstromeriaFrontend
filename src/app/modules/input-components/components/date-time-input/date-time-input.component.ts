@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {InputComponent} from "../input-component/input.component";
-import {SuggestionEvent} from "../input-component/suggestions.directive";
+import {InputSuggestionEvent} from "../input-component/suggestions.directive";
 
 
 @Component({
@@ -10,6 +10,6 @@ import {SuggestionEvent} from "../input-component/suggestions.directive";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateTimeInputComponent extends InputComponent<any, any> implements OnInit {
-  onInputSuggestionEvent(event: SuggestionEvent): void {
+  onInputSuggestionEvent(event: InputSuggestionEvent): void {
   }
 }

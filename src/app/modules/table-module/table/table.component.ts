@@ -180,13 +180,14 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   public onTableRowClick($event: MouseEvent, row: TableRow): void {
+    console.log('onTableRowClick')
     this.onTableRowClickEvent.emit({
       event: $event,
       tableRow: row
     })
   }
 
-  public onRowSelectionCheckboxChange(row: TableRow, checked: boolean) {
+  public onRowSelectionCheckboxChange(row: TableRow, checked: boolean, $event: Event) {
     const selectionChangeRequest = this.tableUtilsService
       .calcSingleSelectionChangeRequest(row.data, checked, this.selectedEntities, this.selectionConfig.selectionMode);
     this.onSelectionChangeRequest.emit(selectionChangeRequest)

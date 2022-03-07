@@ -10,18 +10,23 @@
             <input class="fd-input fd-input fd-input-group__input fd-tokenizer__input"
                    #inputElement
                    (change)="onInputValueChange(inputElement.value)"
-                   [value]="inputValue$ | async"/>
+                   [value]="inputValue$ | async"
+                   [placeholder]="inputPlaceholder"
+                   [disabled]="inputDisabled"
+            />
           </div>
         </div>
         <span class="fd-input-group__addon fd-input-group__addon--button">
-              <button
-                aria-label="show options"
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="fd-input-group__button fd-button fd-button--transparent">
+          <ng-container *ngIf="allowValueHelp">
+            <button
+              aria-label="show options"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="fd-input-group__button fd-button fd-button--transparent">
                 <i class="sap-icon--value-help"></i>
               </button>
-            </span>
+          </ng-container>
+        </span>
       </div>
     </div>
     <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"

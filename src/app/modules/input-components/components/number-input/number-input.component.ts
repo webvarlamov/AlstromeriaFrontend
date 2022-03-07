@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {InputComponent} from "../input-component/input.component";
-import {SuggestionEvent} from "../input-component/suggestions.directive";
+import {InputSuggestionEvent, InputSuggestionEventType} from "../input-component/suggestions.directive";
+import {TableRowClickEvent} from "../../../table-module/table/models/event/table-row-click-event";
 
 @Component({
   selector: 'app-number-input',
@@ -9,6 +10,11 @@ import {SuggestionEvent} from "../input-component/suggestions.directive";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NumberInputComponent extends InputComponent<any, any> implements OnInit {
-  onInputSuggestionEvent(event: SuggestionEvent) {
+  public inputPlaceholder: string = 'Введите значение';
+
+  onInputSuggestionEvent(event: InputSuggestionEvent): void {
+    if (event.type === InputSuggestionEventType.ROW_CLICK) {
+
+    }
   }
 }

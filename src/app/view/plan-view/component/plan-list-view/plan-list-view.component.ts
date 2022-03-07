@@ -27,6 +27,11 @@ import {RangeOperator} from "../../../../service/http/model/range-operator.enum"
 import {
   SuggestionEntityRemoteFilterableListViewStateManager
 } from "../../../../state/list-view-state/suggestion-entity-remote-filterable-list-view-state-manager";
+import {ListViewTableStateManager} from "../../../../state/list-view-state/list-view-table-state-manager";
+import {TableColumn} from "../../../../modules/table-module/table/models/dataModels/tableColumn";
+import {
+  BooleanInputListViewTableStateManager
+} from "../../../../modules/input-components/components/boolean-input/boolean-input-list-view-table-state-manager";
 
 @Component({
   selector: 'app-plan-list-view',
@@ -80,6 +85,8 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
       listViewFiltersStateManager: new ListViewFiltersStateManager({}),
       filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
     });
+
+  public booleanFilterManager: any = new BooleanInputListViewTableStateManager();
 
   public stringFilterManager: SuggestionValueRemoteFilterableListViewStateManager =
     new SuggestionValueRemoteFilterableListViewStateManager({
@@ -177,6 +184,16 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
     componentType: InputComponentType.NUMBER,
     operator: RangeOperator.EQ
   });
+
+  public enumFilterManager: any = new ListViewTableStateManager(new ListViewTableState({
+    tableItemsList: [
+      {id: '1', value: '1', caption: 'В работе'},
+      {id: '2', value: '2', caption: 'Тестировать'},
+    ],
+    tableColumns: [
+      {id: '1', dataField: 'caption', caption: 'Значение'},
+    ]
+  }))
 
   constructor(
     public injector: Injector,

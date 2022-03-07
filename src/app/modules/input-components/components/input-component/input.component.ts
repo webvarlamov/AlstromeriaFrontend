@@ -12,6 +12,7 @@ import {HasId} from "../../../../service/http/model/pageable";
 import {BehaviorSubject} from "rxjs";
 import {InputSuggestionComponent} from "../input-suggestion/input-suggestion.component";
 import {RangeOperator} from "../../../../service/http/model/range-operator.enum";
+import {TableRowClickEvent} from "../../../table-module/table/models/event/table-row-click-event";
 
 
 export enum InputComponentType {
@@ -229,7 +230,10 @@ export interface SuggestionOwnerInputEvent {
 export abstract class InputComponent<C extends InputComponentConfig<any>, V extends InputComponentValue> extends SuggestionOwner implements OnInit, AfterViewInit {
   public inputValue$: BehaviorSubject<string> = new BehaviorSubject<any>('');
   @ContentChild(InputSuggestionComponent)
-  public suggestionContent: InputSuggestionComponent;
+  public suggestionComponent: InputSuggestionComponent;
+  public allowValueHelp: boolean = true;
+  public inputPlaceholder: string = '';
+  public inputDisabled: boolean = false;
 
   @Input()
   public label: string = 'Label has not been overridden';
@@ -245,15 +249,17 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
 
   public onInputValueChange(value: string) {
     this.inputValue$.next(value);
-    this.suggestionContent.onOwnerInputEvent({
+    this.suggestionComponent.onOwnerInputValueChangeEvent({
       owner: this,
       value: value
     } as SuggestionOwnerInputEvent);
   }
 
   ngAfterViewInit(): void {
-    if (this.suggestionContent != null) {
-      this.suggestionContent.owner = this;
+    if (this.suggestionComponent != null) {
+      this.suggestionComponent.owner = this;
     }
   }
+
+  // abstract get allowValueHelp(): boolean;
 }

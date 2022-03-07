@@ -86,7 +86,7 @@
                class="fd-checkbox fd-checkbox--compact"
                [id]="'table-id-' + uuid + '-row-id-' + row.id + '-select-checkbox'"
                [checked]="row.selected"
-               (change)="onRowSelectionCheckboxChange(row, checkbox.checked)">
+               (change)="onRowSelectionCheckboxChange(row, checkbox.checked, $event)">
         <label class="fd-checkbox__label"
                [for]="'table-id-' + uuid + '-row-id-' + row.id + '-select-checkbox'"
         ></label>

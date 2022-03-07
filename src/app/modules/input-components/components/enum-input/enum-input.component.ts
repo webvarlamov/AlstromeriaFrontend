@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {InputComponent} from "../input-component/input.component";
-import {SuggestionEvent} from "../input-component/suggestions.directive";
+import {InputSuggestionEvent} from "../input-component/suggestions.directive";
 
 
 @Component({
@@ -10,6 +10,9 @@ import {SuggestionEvent} from "../input-component/suggestions.directive";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EnumInputComponent extends InputComponent<any, any> implements OnInit {
-  onInputSuggestionEvent(event: SuggestionEvent): void {
+  public allowValueHelp = false;
+  public inputPlaceholder = 'Выберите значение';
+
+  onInputSuggestionEvent(event: InputSuggestionEvent): void {
   }
 }
