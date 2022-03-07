@@ -21,14 +21,16 @@
           </div>
         </div>
         <span class="fd-input-group__addon fd-input-group__addon--button">
-          <ng-container *ngIf="allowValueHelp">
+          <ng-container *ngIf="allowMasterInput">
             <button
               aria-label="show options"
               aria-expanded="false"
               aria-haspopup="true"
-              class="fd-input-group__button fd-button fd-button--transparent">
-                <i class="sap-icon--value-help"></i>
-              </button>
+              class="fd-input-group__button fd-button fd-button--transparent"
+              (click)="onMasterInputButtonClick()"
+            >
+              <i class="sap-icon--value-help"></i>
+            </button>
           </ng-container>
         </span>
       </div>

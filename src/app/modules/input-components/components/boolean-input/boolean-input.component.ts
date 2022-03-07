@@ -9,7 +9,7 @@ import {InputSuggestionEvent} from "../input-component/suggestions.directive";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BooleanInputComponent extends InputComponent<any, any> implements OnInit {
-  public allowValueHelp = false;
+  public allowMasterInput = false;
   public inputDisabled = false;
   public inputPlaceholder = 'Выберите значение'
 

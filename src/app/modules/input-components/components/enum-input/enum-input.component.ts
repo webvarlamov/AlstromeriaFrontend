@@ -10,7 +10,7 @@ import {InputSuggestionEvent} from "../input-component/suggestions.directive";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EnumInputComponent extends InputComponent<any, any> implements OnInit {
-  public allowValueHelp = false;
+  public allowMasterInput = false;
   public inputPlaceholder = 'Выберите значение';
 
   onInputSuggestionEvent(event: InputSuggestionEvent): void {

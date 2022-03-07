@@ -229,7 +229,7 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
   public inputValue$: BehaviorSubject<string> = new BehaviorSubject<any>('');
   @ContentChild(InputSuggestionComponent)
   public suggestionComponent: InputSuggestionComponent;
-  public allowValueHelp: boolean = true;
+  public allowMasterInput: boolean = true;
   public inputPlaceholder: string = '';
   public inputDisabled: boolean = false;
 
@@ -253,6 +253,10 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
       owner: this,
       value: value
     } as SuggestionOwnerInputEvent);
+  }
+
+  public onMasterInputButtonClick(): void {
+    
   }
 
   ngAfterViewInit(): void {
