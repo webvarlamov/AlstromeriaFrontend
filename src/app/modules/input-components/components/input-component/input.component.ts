@@ -12,8 +12,6 @@ import {HasId} from "../../../../service/http/model/pageable";
 import {BehaviorSubject} from "rxjs";
 import {InputSuggestionComponent} from "../input-suggestion/input-suggestion.component";
 import {RangeOperator} from "../../../../service/http/model/range-operator.enum";
-import {TableRowClickEvent} from "../../../table-module/table/models/event/table-row-click-event";
-
 
 export enum InputComponentType {
   BOOLEAN = 'boolean',
@@ -235,6 +233,8 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
   public inputPlaceholder: string = '';
   public inputDisabled: boolean = false;
 
+  public inputSelectionValueInfo: string;
+
   @Input()
   public label: string = 'Label has not been overridden';
 
@@ -260,6 +260,4 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
       this.suggestionComponent.owner = this;
     }
   }
-
-  // abstract get allowValueHelp(): boolean;
 }

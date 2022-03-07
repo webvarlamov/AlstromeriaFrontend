@@ -3,7 +3,7 @@
     {{ label }}
   </label>
   <div class="fd-popover">
-    <div class="fd-popover__control" aria-expanded="true" aria-haspopup="true" (click)="showSuggestions = true">
+    <div class="fd-popover__control" aria-expanded="true" aria-haspopup="true">
       <div class="fd-input-group fd-input-group--control">
         <div class="fd-tokenizer">
           <div class="fd-tokenizer__inner">
@@ -13,7 +13,11 @@
                    [value]="inputValue$ | async"
                    [placeholder]="inputPlaceholder"
                    [disabled]="inputDisabled"
+                   (click)="showSuggestions = true"
             />
+            <span class="fd-link" *ngIf="inputSelectionValueInfo != null">
+              {{inputSelectionValueInfo}}
+            </span>
           </div>
         </div>
         <span class="fd-input-group__addon fd-input-group__addon--button">

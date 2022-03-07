@@ -14,8 +14,6 @@ export class BooleanInputComponent extends InputComponent<any, any> implements O
   public inputPlaceholder = 'Выберите значение'
 
   onInputSuggestionEvent(event: InputSuggestionEvent): void {
+
   }
-
-
-
 }
