@@ -1,0 +1,8 @@
+:host {
+  display: block;
+  padding: 10px;
+  margin: 5px 10px;
+  border-radius: 3px;
+  border-left: 1px solid var(--sapAccentColor6);
+  background: linear-gradient(90deg, rgb(53 74 95 / 39%) 0%, rgb(0 0 0 / 0%) 35%);
+}

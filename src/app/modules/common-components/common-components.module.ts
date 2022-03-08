@@ -5,24 +5,19 @@ import {SaveOrCancelToolbarComponent} from './components/save-or-cancel-toolbar/
 import {FilterBarComponent} from './components/filter-bar/filter-bar.component';
 import {InputComponentsModule} from "../input-components/input-components.module";
 import {AcceptRejectButtonsComponent} from "./components/accept-reject-buttons/accept-reject-buttons.component";
-import {ModalableDirective} from "./components/modal-window/model/modalable.directive";
-import {ModalWindowComponent} from "./components/modal-window/modal-window.component";
-
 
 @NgModule({
   declarations: [
     CrudToolbarComponent,
     SaveOrCancelToolbarComponent,
     FilterBarComponent,
-    AcceptRejectButtonsComponent,
-    ModalableDirective,
-    ModalWindowComponent
+    AcceptRejectButtonsComponent
   ],
   exports: [
     CrudToolbarComponent,
     SaveOrCancelToolbarComponent,
     FilterBarComponent,
-    AcceptRejectButtonsComponent
+    AcceptRejectButtonsComponent,
   ],
   imports: [
     CommonModule,

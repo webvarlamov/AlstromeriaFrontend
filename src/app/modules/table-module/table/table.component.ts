@@ -55,7 +55,7 @@ export const DEFAULT_MOCK_ITEMS: Array<HasId> = [
 
 export const DEFAULT_SELECTION_CONFIG: TableSelectionConfig = {
   sticky: true,
-  useSelection: false,
+  useSelection: true,
   selectionMode: SelectionMode.MULTI,
   columnWidth: '35px',
 }

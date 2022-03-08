@@ -38,8 +38,23 @@
     <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
          [attr.aria-hidden]="!showSuggestions">
       <div class="fd-popover__wrapper">
-        <ng-content></ng-content>
+        <ng-content select="app-input-suggestion"></ng-content>
       </div>
     </div>
   </div>
 </div>
+
+<app-modal-window [id]="'master-input-id'"
+                  *ngIf="showMasterInput"
+                  style="z-index: 100"
+                  [baseHeight]="'800px'"
+                  [baseWidth]="'1200px'"
+                  [minWidth]="'700px'"
+                  [minHeight]="'450px'"
+                  (decline)="onMasterInputDecline()"
+                  [headerTitle]="'Детальная настройка значения фильтра'"
+>
+  <div modalWindowBody>
+    <ng-content select="[masterInputContent]"></ng-content>
+  </div>
+</app-modal-window>

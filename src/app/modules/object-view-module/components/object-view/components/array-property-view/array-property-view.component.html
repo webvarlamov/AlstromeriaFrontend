@@ -1,0 +1,36 @@
+<div class="header controls">
+  <button class="fd-button fd-button--transparent is-expanded fd-button--compact"
+          [attr.aria-expanded]="ariaExpanded"
+          (click)="ariaExpanded = !ariaExpanded">
+    <i [ngClass]="{'sap-icon--slim-arrow-down': !ariaExpanded, 'sap-icon--slim-arrow-up': ariaExpanded}"></i>
+  </button>
+  <span>Список ({{value.length}})</span>
+</div>
+<ng-container *ngIf="ariaExpanded">
+  <ng-container *ngFor="let i of value">
+    <ng-container *ngIf="isArray(i)">
+      <app-array-property-view [value]="i" [key]="key" class="property-view"></app-array-property-view>
+    </ng-container>
+    <ng-container *ngIf="isObject(i)">
+      <div class="object-property-view-wrapper">
+        <button class="delete-button" title="Удалить обьект">-</button>
+        <app-object-property-view [value]="i" [key]="key" class="property-view"></app-object-property-view>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isNumber(i)">
+      <app-number-property-view [value]="i" [key]="key" class="property-view"></app-number-property-view>
+    </ng-container>
+    <ng-container *ngIf="isString(i)">
+      <app-string-property-view [value]="i" [key]="key" class="property-view"></app-string-property-view>
+    </ng-container>
+    <ng-container *ngIf="isBoolean(i)">
+      <app-boolean-property-view [value]="i" [key]="key" class="property-view"></app-boolean-property-view>
+    </ng-container>
+  </ng-container>
+  <div class="footer controls">
+    <button aria-label="Accept" class="fd-button fd-button--transparent fd-button--compact fd-button--positive">
+      <i class="sap-icon--add"></i>
+    </button>
+    <span>Добавить обьект</span>
+  </div>
+</ng-container>

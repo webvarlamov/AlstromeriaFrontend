@@ -13,6 +13,6 @@ export class EnumInputComponent extends InputComponent<any, any> implements OnIn
   public allowMasterInput = false;
   public inputPlaceholder = 'Выберите значение';
 
-  onInputSuggestionEvent(event: InputSuggestionEvent): void {
+  public onInputSuggestionEvent(event: InputSuggestionEvent): void {
   }
 }
