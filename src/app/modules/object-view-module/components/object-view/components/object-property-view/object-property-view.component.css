@@ -1,8 +1,27 @@
 :host {
   display: block;
-  padding: 10px;
   margin: 5px 10px;
-  border-radius: 3px;
   border-left: 1px solid var(--sapAccentColor6);
-  background: linear-gradient(90deg, rgb(53 74 95 / 39%) 0%, rgb(0 0 0 / 0%) 35%);
+  margin-right: 0px;
+  width: 100%;
 }
+
+.header.controls {
+  grid-template-columns: 50px 30px;
+  grid-gap: 5px;
+  display: grid;
+  padding: 10px;
+  align-items: center;
+  background-color: #a6a6a610;
+}
+
+.state-control-button {
+  opacity: 0.1;
+  filter: grayscale(1);
+}
+
+.state-control-button:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}
+

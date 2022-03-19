@@ -1,5 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {PropertyView} from "../property-view/property-view";
+import {BehaviorSubject, fromEvent, merge, of} from "rxjs";
+import {delay, switchMap, take, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-array-property-view',
@@ -13,7 +15,35 @@ export class ArrayPropertyViewComponent extends PropertyView implements OnInit {
   @Input()
   public key: any;
 
-  ngOnInit(): void {
+  public showControlsContextMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  public onAddNewObjectToArrayButtonClick(): void {
+    this.root.onAddNewObjectToArrayButtonClick({
+      owner: this.value,
+      ownerKey: this.key,
+      path: this.path as string
+    })
   }
 
+  public onDeleteObjectFromArrayButtonClick(arrayItem: any): void {
+    this.root.onDeleteObjectFromArrayButtonClick({
+      owner: this.value,
+      ownerKey: this.key,
+      subject: arrayItem,
+      path: this.path as string
+    });
+  }
+
+  public onUserContextMenuCall($event: MouseEvent) {
+    of([]).pipe(
+      delay(10),
+      tap(() => this.showControlsContextMenu$.next(true)),
+      switchMap(() => merge(
+        fromEvent(document, 'contextmenu').pipe(take(1)),
+        fromEvent(document, 'click').pipe(take(1)),
+      )),
+      tap(() => this.showControlsContextMenu$.next(false)),
+    ).toPromise().then();
+    return false;
+  }
 }

@@ -27,5 +27,5 @@ export interface FilterExpressionInterface {
 }
 
 export enum FilterExpressionOperator {
-  AND= 'AND', OR = 'OR'
+  AND = 'AND', OR = 'OR'
 }

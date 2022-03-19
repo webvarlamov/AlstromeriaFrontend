@@ -1,9 +1,7 @@
 ::ng-deep .property-key-value {
   display: grid;
   grid-template-columns: 100px 1fr;
-  padding: 3px;
-  margin: 3px;
-  grid-gap: 10px;
+  padding: 5px 0 0 5px;
 }
 
 :host {
@@ -13,10 +11,15 @@
   overflow: auto;
 }
 
-::ng-deep  .property-key {
-  background-color: #a6a6a621;
+::ng-deep .property-key {
+  background-color: #a6a6a610;
   height: fit-content;
   padding: 2px 5px;
   width: auto;
-  border-radius: 3px;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+::ng-deep .property-key:hover {
+  background-color: #a6a6a615;
 }

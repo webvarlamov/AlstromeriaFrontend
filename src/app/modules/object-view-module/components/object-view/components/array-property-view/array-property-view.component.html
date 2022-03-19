@@ -1,36 +1,149 @@
-<div class="header controls">
-  <button class="fd-button fd-button--transparent is-expanded fd-button--compact"
-          [attr.aria-expanded]="ariaExpanded"
-          (click)="ariaExpanded = !ariaExpanded">
-    <i [ngClass]="{'sap-icon--slim-arrow-down': !ariaExpanded, 'sap-icon--slim-arrow-up': ariaExpanded}"></i>
-  </button>
-  <span>Список ({{value.length}})</span>
-</div>
-<ng-container *ngIf="ariaExpanded">
-  <ng-container *ngFor="let i of value">
-    <ng-container *ngIf="isArray(i)">
-      <app-array-property-view [value]="i" [key]="key" class="property-view"></app-array-property-view>
-    </ng-container>
-    <ng-container *ngIf="isObject(i)">
-      <div class="object-property-view-wrapper">
-        <button class="delete-button" title="Удалить обьект">-</button>
-        <app-object-property-view [value]="i" [key]="key" class="property-view"></app-object-property-view>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="isNumber(i)">
-      <app-number-property-view [value]="i" [key]="key" class="property-view"></app-number-property-view>
-    </ng-container>
-    <ng-container *ngIf="isString(i)">
-      <app-string-property-view [value]="i" [key]="key" class="property-view"></app-string-property-view>
-    </ng-container>
-    <ng-container *ngIf="isBoolean(i)">
-      <app-boolean-property-view [value]="i" [key]="key" class="property-view"></app-boolean-property-view>
-    </ng-container>
-  </ng-container>
-  <div class="footer controls">
-    <button aria-label="Accept" class="fd-button fd-button--transparent fd-button--compact fd-button--positive">
-      <i class="sap-icon--add"></i>
+<ng-container *ngIf="value != null">
+  <div class="header controls">
+    <button class="fd-button fd-button--transparent is-expanded fd-button--compact"
+            [attr.aria-expanded]="ariaExpanded"
+            (click)="ariaExpanded = !ariaExpanded">
+      <i [ngClass]="{'sap-icon--slim-arrow-down': !ariaExpanded, 'sap-icon--slim-arrow-up': ariaExpanded}"></i>
     </button>
-    <span>Добавить обьект</span>
+    <span>Список ({{value != null ? value.length : "Не задан"}})</span>
+    <div class="fd-popover">
+      <div class="fd-popover__control">
+        <button
+          (click)="onUserContextMenuCall($event)"
+          class="fd-button fd-button--transparent fd-button--compact">
+          <i class="sap-icon--menu2"></i>
+        </button>
+      </div>
+      <div class="fd-popover__body" [attr.aria-hidden]="!(showControlsContextMenu$ | async)">
+        <nav aria-label="context menu" class="fd-menu fd-menu--compact">
+          <ul class="fd-menu__list fd-menu__list--no-shadow">
+            <li class="fd-menu__item">
+              <a class="fd-menu__link">
+                <span class="fd-menu__title">Удалить список</span>
+              </a>
+            </li>
+            <li class="fd-menu__item">
+              <a class="fd-menu__link">
+                <span class="fd-menu__title">Очистить список</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </div>
+
+  <ng-container *ngIf="ariaExpanded">
+    <ng-container *ngFor="let item of value; let i = index">
+      <ng-container *ngIf="typeFinderService.isArray(typeFinderService.getArrayElementType(type))">
+        <app-array-property-view class="property-view"
+                                 [value]="item"
+                                 [key]="i"
+                                 [root]="root"
+                                 [owner]="value"
+                                 [path]="path + '.[' + i + ']'"
+                                 [typeFinderService]="typeFinderService"
+                                 [typeGraph]="typeGraph"
+                                 [objectStateType]="objectStateType"
+                                 [type]="typeFinderService.getArrayElementType(type)"
+                                 [enumMembersLocalisation]="enumMembersLocalisation"
+        ></app-array-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isObject(typeFinderService.getArrayElementType(type), typeGraph)">
+        <div class="object-property-view-wrapper">
+<!--          <button class="delete-button" title="Удалить обьект"-->
+<!--                  (click)="onDeleteObjectFromArrayButtonClick(item)">- -->
+<!--          </button>-->
+          <app-object-property-view class="property-view"
+                                    [value]="item"
+                                    [key]="i"
+                                    [root]="root"
+                                    [owner]="value"
+                                    [path]="path + '.[' + i + ']'"
+                                    [typeFinderService]="typeFinderService"
+                                    [typeGraph]="typeGraph"
+                                    [objectStateType]="objectStateType"
+                                    [type]="typeFinderService.getArrayElementType(type)"
+                                    [enumMembersLocalisation]="enumMembersLocalisation"
+          ></app-object-property-view>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isNumber(typeFinderService.getArrayElementType(type))">
+        <app-number-property-view class="property-view"
+                                  [value]="item"
+                                  [key]="i"
+                                  [root]="root"
+                                  [owner]="value"
+                                  [path]="path + '.[' + i + ']'"
+                                  [type]="typeFinderService.getArrayElementType(type)"
+        ></app-number-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isString(typeFinderService.getArrayElementType(type))">
+        <div class="object-property-view-wrapper">
+          <button class="delete-button" title="Удалить обьект"
+                  (click)="onDeleteObjectFromArrayButtonClick(item)">-
+          </button>
+          <app-string-property-view class="property-view"
+                                    [value]="item"
+                                    [key]="i"
+                                    [root]="root"
+                                    [owner]="value"
+                                    [path]="path + '.[' + i + ']'"
+                                    [type]="typeFinderService.getArrayElementType(type)"
+          ></app-string-property-view>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isBoolean(typeFinderService.getArrayElementType(type))">
+        <app-boolean-property-view class="property-view"
+                                   [value]="item"
+                                   [key]="i"
+                                   [root]="root"
+                                   [owner]="value"
+                                   [path]="path + '.[' + i + ']'"
+                                   [type]="typeFinderService.getArrayElementType(type)"
+        ></app-boolean-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isAny(typeFinderService.getArrayElementType(type))">
+        <app-any-property-view class="property-value"
+                               [value]="item"
+                               [key]="i"
+                               [root]="root"
+                               [owner]="value"
+                               [path]="path + '.[' + i + ']'"
+                               [type]="typeFinderService.getArrayElementType(type)"
+        ></app-any-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isEnum(typeFinderService.getArrayElementType(type))">
+        <app-enum-property-view class="property-value"
+                                [value]="item"
+                                [key]="i"
+                                [root]="root"
+                                [owner]="value"
+                                [path]="path + '.[' + i + ']'"
+                                [typeFinderService]="typeFinderService"
+                                [typeGraph]="typeGraph"
+                                [type]="typeFinderService.getArrayElementType(type)"
+                                [enumMembersLocalisation]="enumMembersLocalisation"
+        ></app-enum-property-view>
+      </ng-container>
+    </ng-container>
+    <div class="footer controls">
+      <ng-container *ngIf="value != null">
+        <button aria-label="Accept" class="fd-button fd-button--transparent fd-button--compact fd-button--positive"
+                (click)="onAddNewObjectToArrayButtonClick()">
+          <i class="sap-icon--add"></i>
+          <span>Добавить</span>
+        </button>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="value == null">
+  <button class="fd-button fd-button--transparent fd-button--compact fd-button--positive"
+          style="width: fit-content;"
+          (click)="onAddNewObjectToArrayButtonClick()">
+    <i class="sap-icon--list"></i>
+    <span>Задать пустой список</span>
+  </button>
 </ng-container>

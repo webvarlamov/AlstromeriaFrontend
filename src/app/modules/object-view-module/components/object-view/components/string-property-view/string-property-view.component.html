@@ -1,1 +1,20 @@
-{{value}}
+<div class="fd-form-item">
+  <ng-container *ngIf="value == null">
+    <input
+      #input
+      disabled
+      class="fd-input fd-input--compact"
+      type="text"
+      placeholder="Введите текст">
+  </ng-container>
+  <ng-container *ngIf="value != null">
+    <input
+      #input
+      [value]="value"
+      class="fd-input fd-input--compact"
+      type="text"
+      placeholder="Введите текст"
+      (change)="onInputValueChange(input.value)">
+  </ng-container>
+</div>
+

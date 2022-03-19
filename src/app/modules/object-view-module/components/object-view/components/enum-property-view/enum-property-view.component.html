@@ -3,7 +3,8 @@
           #select
           (change)="onInputValueChange(select.value)">
     <option value="" [selected]="value === undefined"></option>
-    <option value="true" [selected]="value === true">Да</option>
-    <option value="false" [selected]="value === false">Нет</option>
+    <ng-container *ngFor="let member of getEnumMembers()">
+      <option [value]="member.value" [selected]="value === member.value">{{member.label}}</option>
+    </ng-container>
   </select>
 </div>

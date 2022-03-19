@@ -1,9 +1,9 @@
 :host {
   border-left: 1px dashed var(--sapAccentColor8);
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-left: 10px;
 }
 
 .controls {
@@ -11,17 +11,13 @@
   grid-template-columns: auto 1fr;
   align-items: center;
   grid-gap: 3px;
-  margin-left: 5px;
-}
-
-.controls {
-  margin: 5px 10px;
+  padding: 5px 10px;
 }
 
 .object-property-view-wrapper {
-  padding-left: 10px;
   align-items: center;
   display: flex;
+  padding-left: 15px;
 }
 
 .delete-button {
@@ -39,4 +35,20 @@
 
 .delete-button:hover {
   background-color: var(--sapChart_Bad);
+}
+
+.header.controls {
+  grid-template-columns: 30px 100px 30px;
+  grid-gap: 5px;
+  background-color: #a6a6a610;
+}
+
+.state-control-button {
+  opacity: 0.1;
+  filter: grayscale(1);
+}
+
+.state-control-button:hover {
+  opacity: 1;
+  filter: grayscale(0);
 }

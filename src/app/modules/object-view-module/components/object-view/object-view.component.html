@@ -1,27 +1,84 @@
 <ng-container *ngFor="let keyValue of objectState | keyvalue">
-  <div class="property-key-value">
-    <div class="property-key" [title]="keyValue.key">
-      {{getPropertyNameLocalisation(keyValue.key)}}:
+    <div class="property-key-value">
+      <div class="property-key" [title]="keyValue.key">
+        {{getPropertyNameLocalisation(keyValue.key)}}:
+      </div>
+      <ng-container *ngIf="typeFinderService.isArray(typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType))">
+        <app-array-property-view class="property-value"
+                                 [value]="keyValue.value"
+                                 [key]="keyValue.key"
+                                 [root]="this"
+                                 [owner]="objectState"
+                                 [path]="keyValue.key"
+                                 [typeFinderService]="typeFinderService"
+                                 [typeGraph]="typeGraph"
+                                 [objectStateType]="objectStateType"
+                                 [type]="typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType)"
+                                 [enumMembersLocalisation]="enumMembersLocalisation"
+        ></app-array-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isObject(typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType), typeGraph)">
+        <app-object-property-view class="property-value"
+                                  [value]="keyValue.value"
+                                  [key]="keyValue.key"
+                                  [root]="this"
+                                  [owner]="objectState"
+                                  [path]="keyValue.key"
+                                  [typeFinderService]="typeFinderService"
+                                  [typeGraph]="typeGraph"
+                                  [objectStateType]="objectStateType"
+                                  [type]="typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType)"
+                                  [enumMembersLocalisation]="enumMembersLocalisation"
+        ></app-object-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isNumber(typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType))">
+        <app-number-property-view class="property-value"
+                                  [value]="keyValue.value"
+                                  [key]="keyValue.key"
+                                  [root]="this"
+                                  [owner]="objectState"
+                                  [path]="keyValue.key"
+        ></app-number-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isString(typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType))">
+        <app-string-property-view class="property-value"
+                                  [value]="keyValue.value"
+                                  [key]="keyValue.key"
+                                  [root]="this"
+                                  [owner]="objectState"
+                                  [path]="keyValue.key"
+        ></app-string-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isBoolean(typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType))">
+        <app-boolean-property-view class="property-value"
+                                   [value]="keyValue.value"
+                                   [key]="keyValue.key"
+                                   [root]="this"
+                                   [owner]="objectState"
+                                   [path]="keyValue.key"
+        ></app-boolean-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isAny(typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType))">
+        <app-any-property-view class="property-value"
+                                   [value]="keyValue.value"
+                                   [key]="keyValue.key"
+                                   [root]="this"
+                                   [owner]="objectState"
+                                   [path]="keyValue.key"
+        ></app-any-property-view>
+      </ng-container>
+      <ng-container *ngIf="typeFinderService.isEnum(typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType))">
+        <app-enum-property-view class="property-value"
+                                [value]="keyValue.value"
+                                [key]="keyValue.key"
+                                [root]="this"
+                                [owner]="objectState"
+                                [path]="keyValue.key"
+                                [typeFinderService]="typeFinderService"
+                                [typeGraph]="typeGraph"
+                                [type]="typeFinderService.getObjectPropertyType(keyValue.key, typeGraph, objectStateType)"
+                                [enumMembersLocalisation]="enumMembersLocalisation"
+        ></app-enum-property-view>
+      </ng-container>
     </div>
-    <ng-container *ngIf="isArray(keyValue.value)">
-      <app-array-property-view [value]="keyValue.value" [key]="keyValue.key"
-                               class="property-value"></app-array-property-view>
-    </ng-container>
-    <ng-container *ngIf="isObject(keyValue.value)">
-      <app-object-property-view [value]="keyValue.value" [key]="keyValue.key"
-                                class="property-value"></app-object-property-view>
-    </ng-container>
-    <ng-container *ngIf="isNumber(keyValue.value)">
-      <app-number-property-view [value]="keyValue.value" [key]="keyValue.key"
-                                class="property-value"></app-number-property-view>
-    </ng-container>
-    <ng-container *ngIf="isString(keyValue.value)">
-      <app-string-property-view [value]="keyValue.value" [key]="keyValue.key"
-                                class="property-value"></app-string-property-view>
-    </ng-container>
-    <ng-container *ngIf="isBoolean(keyValue.value)">
-      <app-boolean-property-view [value]="keyValue.value" [key]="keyValue.key"
-                                 class="property-value"></app-boolean-property-view>
-    </ng-container>
-  </div>
 </ng-container>

@@ -180,7 +180,6 @@ export class TableComponent<Entity extends HasId> implements OnInit, AfterViewIn
   }
 
   public onTableRowClick($event: MouseEvent, row: TableRow): void {
-    console.log('onTableRowClick')
     this.onTableRowClickEvent.emit({
       event: $event,
       tableRow: row

@@ -13,7 +13,13 @@ export class NumberPropertyViewComponent extends PropertyView implements OnInit 
   @Input()
   public key: any;
 
-  ngOnInit(): void {
+  public onInputValueChange(value: string): void {
+    this.root.onNumberInputValueChange({
+      value: value,
+      key: this.key,
+      owner: this.owner,
+      previousValue: this.value,
+      path: this.path as string
+    })
   }
-
 }

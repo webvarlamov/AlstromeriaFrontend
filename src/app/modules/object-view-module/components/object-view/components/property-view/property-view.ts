@@ -1,42 +1,38 @@
-import {Directive, Input} from "@angular/core";
+import {Directive, Input, OnInit} from "@angular/core";
+import {ObjectViewComponent, TypeGraph} from "../../object-view.component";
+import {TypeFinderService} from "../../type-finder-service";
 
 @Directive()
-export class PropertyView {
+export class PropertyView implements OnInit {
   @Input()
-  public propertyNameLocalisation: {[propertyName: string]: string} = {
-    expressions: "Выражения",
-    ranges: "Ограничения",
-    operator: "Оператор",
-    value1: "Значение 1",
-    exclude: "Исключено",
-    property: "Свойство"
-  }
+  public owner: any;
+  @Input()
+  public root: ObjectViewComponent;
+  @Input()
+  public path: string | unknown;
+  @Input()
+  public typeGraph: TypeGraph & any;
+  @Input()
+  public typeFinderService: TypeFinderService;
+  @Input()
+  public objectStateType: string;
+  @Input()
+  public type: string;
+
+  @Input()
+  public propertyNameLocalisation: {[propertyName: string]: string} = {}
+  @Input()
+  public enumMembersLocalisation: {[enumType: string]: {[enumMember:string]: string}} = {};
 
   public ariaExpanded: boolean = false;
-
-  public isArray(value: any): boolean {
-    return Array.isArray(value);
-  }
-
-  public isObject(value: any): boolean {
-    return typeof value === 'object' && !Array.isArray(value)
-  }
-
-  public isNumber(value: any): boolean {
-    return typeof value ==='number';
-  }
-
-  public isString(value: any): boolean {
-    return typeof value ==='string';
-  }
-
-  public isBoolean(value: any): boolean {
-    return typeof value ==='boolean';
-  }
 
   public getPropertyNameLocalisation(key: unknown): string {
     return (this.propertyNameLocalisation[key as string] != null
       ? this.propertyNameLocalisation[key as string]
       : key) as string;
+  }
+
+  public ngOnInit(): void {
+
   }
 }
