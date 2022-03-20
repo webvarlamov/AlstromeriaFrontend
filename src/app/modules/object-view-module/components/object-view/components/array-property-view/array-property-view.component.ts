@@ -17,11 +17,13 @@ export class ArrayPropertyViewComponent extends PropertyView implements OnInit {
 
   public showControlsContextMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  public onAddNewObjectToArrayButtonClick(): void {
-    this.root.onAddNewObjectToArrayButtonClick({
+  public onAddNewElementToArrayButtonClick(): void {
+    this.root.onAddNewElementToArrayButtonClick({
       owner: this.value,
       ownerKey: this.key,
-      path: this.path as string
+      path: this.path as string,
+      subjectType: this.typeFinderService.getArrayElementType(this.type),
+      subjectOwnerType: this.type,
     })
   }
 
@@ -45,5 +47,14 @@ export class ArrayPropertyViewComponent extends PropertyView implements OnInit {
       tap(() => this.showControlsContextMenu$.next(false)),
     ).toPromise().then();
     return false;
+  }
+
+  public onDefineValueButtonClick(): void {
+    this.root.onDefineValueButtonClick({
+      owner: this.owner,
+      path: this.path as string,
+      key: this.key,
+      type: this.type
+    })
   }
 }

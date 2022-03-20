@@ -3,13 +3,37 @@ import {PropertyView} from "./components/property-view/property-view";
 import 'reflect-metadata';
 import {TypeFinderService} from "./type-finder-service";
 
-export interface AddNewObjectToArrayRequest {
+export enum ObjectStateChangeRequestType {
+  AddNewElementToArrayRequest = "AddNewElementToArrayRequest",
+  DeleteElementFromArrayRequest = "DeleteElementFromArrayRequest",
+  PrimitiveValueChangeRequest = "PrimitiveValueChangeRequest",
+  DefineValueRequest = "DefineValueRequest",
+}
+
+export interface ObjectStateChangeRequest {
+  requestType: ObjectStateChangeRequestType,
+  payload: AddNewElementToArrayRequest
+    | DeleteElementFromArrayRequest
+    | PrimitiveValueChangeRequest
+    | DefineValueRequest
+}
+
+export interface DefineValueRequest {
+  owner: any;
+  path: string;
+  key: any;
+  type: string;
+}
+
+export interface AddNewElementToArrayRequest {
   owner: any;
   ownerKey: any;
   path: string;
+  subjectType: string;
+  subjectOwnerType: string;
 }
 
-export interface DeleteObjectFromArrayRequest {
+export interface DeleteElementFromArrayRequest {
   owner: any;
   subject: any;
   ownerKey: any;
@@ -24,7 +48,7 @@ export interface PrimitiveValueChangeRequest {
   key: any;
 }
 
-export interface TypeGraph extends Object{
+export interface TypeGraph extends Object {
 }
 
 @Component({
@@ -38,11 +62,7 @@ export class ObjectViewComponent extends PropertyView implements OnInit {
   public objectState: any = {}
 
   @Output()
-  public onAddNewObjectToArrayRequest: EventEmitter<AddNewObjectToArrayRequest> = new EventEmitter<AddNewObjectToArrayRequest>();
-  @Output()
-  public onDeleteObjectFromArrayRequest: EventEmitter<DeleteObjectFromArrayRequest> = new EventEmitter<DeleteObjectFromArrayRequest>();
-  @Output()
-  public onPrimitiveValueChangeRequest: EventEmitter<PrimitiveValueChangeRequest> = new EventEmitter<PrimitiveValueChangeRequest>();
+  public onObjectStateChangeRequest: EventEmitter<ObjectStateChangeRequest> = new EventEmitter<ObjectStateChangeRequest>();
 
   @Input()
   public typeFinderService: TypeFinderService = new TypeFinderService();
@@ -51,23 +71,45 @@ export class ObjectViewComponent extends PropertyView implements OnInit {
     super();
   }
 
-  public onAddNewObjectToArrayButtonClick(request: AddNewObjectToArrayRequest): void {
-    this.onAddNewObjectToArrayRequest.emit(request)
+  public onAddNewElementToArrayButtonClick(request: AddNewElementToArrayRequest): void {
+    this.onObjectStateChangeRequest.emit({
+      requestType: ObjectStateChangeRequestType.AddNewElementToArrayRequest,
+      payload: request
+    })
   }
 
-  public onDeleteObjectFromArrayButtonClick(request: DeleteObjectFromArrayRequest): void {
-   this.onDeleteObjectFromArrayRequest.emit(request)
+  public onDeleteObjectFromArrayButtonClick(request: DeleteElementFromArrayRequest): void {
+    this.onObjectStateChangeRequest.emit({
+      requestType: ObjectStateChangeRequestType.DeleteElementFromArrayRequest,
+      payload: request
+    })
   }
 
-  public onBooleanInputValueChange(request: PrimitiveValueChangeRequest): void  {
-    this.onPrimitiveValueChangeRequest.emit(request);
+  public onBooleanInputValueChange(request: PrimitiveValueChangeRequest): void {
+    this.onObjectStateChangeRequest.emit({
+      requestType: ObjectStateChangeRequestType.PrimitiveValueChangeRequest,
+      payload: request
+    })
   }
 
-  public onNumberInputValueChange(request: PrimitiveValueChangeRequest): void  {
-    this.onPrimitiveValueChangeRequest.emit(request);
+  public onNumberInputValueChange(request: PrimitiveValueChangeRequest): void {
+    this.onObjectStateChangeRequest.emit({
+      requestType: ObjectStateChangeRequestType.PrimitiveValueChangeRequest,
+      payload: request
+    })
   }
 
   public onStringInputValueChange(request: PrimitiveValueChangeRequest): void {
-    this.onPrimitiveValueChangeRequest.emit(request);
+    this.onObjectStateChangeRequest.emit({
+      requestType: ObjectStateChangeRequestType.PrimitiveValueChangeRequest,
+      payload: request
+    })
+  }
+
+  public onDefineValueButtonClick(request: DefineValueRequest): void {
+    this.onObjectStateChangeRequest.emit({
+      requestType: ObjectStateChangeRequestType.DefineValueRequest,
+      payload: request
+    })
   }
 }

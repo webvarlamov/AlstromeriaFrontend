@@ -6,8 +6,6 @@
     [propertyNameLocalisation]="propertyNameLocalisation"
     [enumMembersLocalisation]="enumMembersLocalisation"
     [objectStateType]="rootObjectTypeName"
-    (onAddNewObjectToArrayRequest)="onAddNewObjectToArrayRequest($event)"
-    (onDeleteObjectFromArrayRequest)="onDeleteObjectFromArrayRequest($event)"
-    (onPrimitiveValueChangeRequest)="onPrimitiveValueChangeRequest($event)"
+    (onObjectStateChangeRequest)="onObjectStateChangeRequest($event)"
   ></app-object-view>
 </fieldset>

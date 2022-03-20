@@ -1,11 +1,8 @@
 <div class="fd-form-item">
   <ng-container *ngIf="value == null">
-    <input
-      #input
-      disabled
-      class="fd-input fd-input--compact"
-      type="number"
-      placeholder="Введите число">
+    <button class="fd-button fd-button--transparent fd-button--compact fd-button--positive" (click)="onDefineValueButtonClick()">
+      Задать начальное значение
+    </button>
   </ng-container>
   <ng-container *ngIf="value != null">
     <input
@@ -13,8 +10,6 @@
       [value]="value"
       class="fd-input fd-input--compact"
       type="number"
-      placeholder="Введите число"
       (change)="onInputValueChange(input.value)">
   </ng-container>
 </div>
-

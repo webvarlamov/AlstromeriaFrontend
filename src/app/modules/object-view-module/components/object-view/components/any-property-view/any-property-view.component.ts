@@ -23,4 +23,12 @@ export class AnyPropertyViewComponent extends PropertyView implements OnInit {
     })
   }
 
+  public onDefineValueButtonClick(): void {
+    this.root.onDefineValueButtonClick({
+      owner: this.owner,
+      path: this.path as string,
+      key: this.key,
+      type: this.type
+    })
+  }
 }

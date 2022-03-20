@@ -22,4 +22,13 @@ export class StringPropertyViewComponent extends PropertyView implements OnInit 
       path: this.path as string
     })
   }
+
+  public onDefineValueButtonClick() {
+    this.root.onDefineValueButtonClick({
+      owner: this.owner,
+      path: this.path as string,
+      key: this.key,
+      type: this.type,
+    })
+  }
 }

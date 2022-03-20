@@ -130,7 +130,7 @@
     <div class="footer controls">
       <ng-container *ngIf="value != null">
         <button aria-label="Accept" class="fd-button fd-button--transparent fd-button--compact fd-button--positive"
-                (click)="onAddNewObjectToArrayButtonClick()">
+                (click)="onAddNewElementToArrayButtonClick()">
           <i class="sap-icon--add"></i>
           <span>Добавить</span>
         </button>
@@ -142,8 +142,7 @@
 <ng-container *ngIf="value == null">
   <button class="fd-button fd-button--transparent fd-button--compact fd-button--positive"
           style="width: fit-content;"
-          (click)="onAddNewObjectToArrayButtonClick()">
-    <i class="sap-icon--list"></i>
-    <span>Задать пустой список</span>
+          (click)="onDefineValueButtonClick()">
+    <span>Задать начальное значение</span>
   </button>
 </ng-container>

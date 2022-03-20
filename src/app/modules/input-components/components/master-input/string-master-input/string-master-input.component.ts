@@ -3,8 +3,10 @@ import {FilterExpression, FilterExpressionOperator} from "../../../../../service
 import {Range} from "../../../../../service/http/model/range";
 import {RangeOperator} from "../../../../../service/http/model/range-operator.enum";
 import {
-  AddNewObjectToArrayRequest,
-  DeleteObjectFromArrayRequest, PrimitiveValueChangeRequest, TypeGraph
+  AddNewElementToArrayRequest, DefineValueRequest,
+  ObjectStateChangeRequest,
+  ObjectStateChangeRequestType,
+  TypeGraph
 } from "../../../../object-view-module/components/object-view/object-view.component";
 
 @Component({
@@ -18,6 +20,8 @@ export class StringMasterInputComponent implements OnInit {
   public objectState: FilterExpression = new FilterExpression({
     operator: FilterExpressionOperator.AND,
     ranges: undefined,
+    // @ts-ignore
+    range: undefined,
     expressions: [
       new FilterExpression({
         operator: FilterExpressionOperator.AND,
@@ -39,7 +43,6 @@ export class StringMasterInputComponent implements OnInit {
               })
             ],
             expressions: []
-
           })
         ]
 
@@ -51,7 +54,7 @@ export class StringMasterInputComponent implements OnInit {
     "FilterExpression": {
       operator: "Enum<FilterExpressionOperator>",
       expressions: "Array<FilterExpression>",
-      ranges: "Array<Range>"
+      ranges: "Array<Range>",
     },
     "FilterExpressionOperator": {
       AND: 'AND',
@@ -61,9 +64,9 @@ export class StringMasterInputComponent implements OnInit {
       exclude: "boolean",
       operator: "Enum<RangeOperator>",
       property: "string",
-      value1: "any",
-      value2: "any",
-      values: "Array<any>",
+      value1: "number",
+      value2: "number",
+      values: "Array<number>",
     },
     "RangeOperator": {
       EQ: 'EQ',
@@ -119,15 +122,57 @@ export class StringMasterInputComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public onAddNewObjectToArrayRequest($event: AddNewObjectToArrayRequest): void {
-    console.log($event)
-  }
+  public onObjectStateChangeRequest($event: ObjectStateChangeRequest) {
+    switch ($event.requestType) {
+      case ObjectStateChangeRequestType.AddNewElementToArrayRequest: {
+        const payload = $event.payload as AddNewElementToArrayRequest
 
-  public onDeleteObjectFromArrayRequest($event: DeleteObjectFromArrayRequest): void {
-    console.log($event)
-  }
+        switch (payload.subjectType) {
+          case ("FilterExpression"): {
+            (payload.owner as Array<FilterExpression>)
+              .push(new FilterExpression({
+                operator: FilterExpressionOperator.OR,
+              }))
+            break;
+          }
 
-  public onPrimitiveValueChangeRequest($event: PrimitiveValueChangeRequest) {
-    console.log($event)
+          case ("Range"): {
+            (payload.owner as Array<Range>)
+              .push(new Range({
+                operator: undefined,
+                property: undefined
+              }))
+            break;
+          }
+
+          case ("string"): {
+            (payload.owner as Array<string>).push(undefined);
+            break
+          }
+
+          case ("number"): {
+            (payload.owner as Array<number>).push(undefined);
+            break
+          }
+        }
+        break;
+      }
+      case ObjectStateChangeRequestType.DefineValueRequest: {
+        const payload = $event.payload as DefineValueRequest;
+        if (payload.type.includes("Array<")) {
+          payload.owner[payload.key] = [];
+        }
+
+        if (payload.type == 'number') {
+          payload.owner[payload.key] = 0;
+        }
+
+        if (payload.type == 'string') {
+          payload.owner[payload.key] = '';
+        }
+
+        break;
+      }
+    }
   }
 }
