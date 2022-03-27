@@ -1,9 +1,7 @@
 :host {
   display: grid;
-  grid-template-columns: auto auto 1fr;
-  grid-gap: 5px;
+  grid-template-columns: minmax(200px, auto) auto 1fr;
   align-items: center;
-  margin-left: 10px;
 }
 
 select {
@@ -28,5 +26,4 @@ option {
 .fd-checkbox__label {
   outline-color: transparent !important;
   width: 100%;
-  padding: 0;
 }

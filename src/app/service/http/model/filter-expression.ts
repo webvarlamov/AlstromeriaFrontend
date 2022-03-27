@@ -21,7 +21,7 @@ export class FilterExpression {
 }
 
 export interface FilterExpressionInterface {
-  operator: FilterExpressionOperator;
+  operator?: FilterExpressionOperator;
   expressions?: FilterExpression[];
   ranges?: Range[];
 }

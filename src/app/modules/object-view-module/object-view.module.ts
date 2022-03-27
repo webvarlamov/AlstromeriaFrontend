@@ -9,11 +9,30 @@ import { BooleanPropertyViewComponent } from './components/object-view/component
 import { AnyPropertyViewComponent } from './components/object-view/components/any-property-view/any-property-view.component';
 import { EnumPropertyViewComponent } from './components/object-view/components/enum-property-view/enum-property-view.component';
 import {ReactiveFormsModule} from "@angular/forms";
-
-
+import { ArrayElementControlComponent } from './components/object-view/components/control/array-element-controls/array-element-control.component';
+import { ContextMenuControlComponent } from './components/object-view/components/control/context-menu-control/context-menu-control.component';
+import { ObjectControlComponent } from './components/object-view/components/control/object-control/object-control.component';
+import { ArrayControlComponent } from './components/object-view/components/control/array-control/array-control.component';
+import {
+  BaseValueControlComponent
+} from "./components/object-view/components/control/primitive-control/base-value-control.component";
 
 @NgModule({
-    declarations: [ObjectViewComponent, ObjectPropertyViewComponent, StringPropertyViewComponent, ArrayPropertyViewComponent, NumberPropertyViewComponent, BooleanPropertyViewComponent, AnyPropertyViewComponent, EnumPropertyViewComponent],
+    declarations: [
+      ObjectViewComponent,
+      ObjectPropertyViewComponent,
+      StringPropertyViewComponent,
+      ArrayPropertyViewComponent,
+      NumberPropertyViewComponent,
+      BooleanPropertyViewComponent,
+      AnyPropertyViewComponent,
+      EnumPropertyViewComponent,
+      ArrayElementControlComponent,
+      ContextMenuControlComponent,
+      ObjectControlComponent,
+      ArrayControlComponent,
+      BaseValueControlComponent,
+    ],
     exports: [
         ObjectViewComponent
     ],

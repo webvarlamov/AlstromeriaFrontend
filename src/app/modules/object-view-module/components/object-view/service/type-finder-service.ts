@@ -1,4 +1,4 @@
-import {TypeGraph} from "./object-view.component";
+import {TypeGraph} from "../model/type.graph";
 
 export class TypeFinderService {
   private ENUM_WRAPPER = 'Enum<';
@@ -15,7 +15,7 @@ export class TypeFinderService {
   private OBJECT_TYPE = 'object';
 
   public isArray(type: string): boolean {
-    return type.includes(this.ARRAY_WRAPPER)
+    return (type as string).startsWith(this.ARRAY_WRAPPER, 0)
   }
 
   public isObject(type: string, typeGraph: TypeGraph & any): boolean {
@@ -39,12 +39,11 @@ export class TypeFinderService {
   }
 
   public isEnum(type: any): boolean {
-    return type.includes(this.ENUM_WRAPPER)
+    return (type as string).startsWith(this.ENUM_WRAPPER, 0)
   }
 
   public getObjectPropertyType(key: unknown, typeGraph: any, propertyOwnerType: string): string {
-    let typeGraphElementElement = typeGraph[propertyOwnerType][key as string];
-    return typeGraphElementElement
+    return typeGraph[propertyOwnerType][key as string]
   }
 
   public getArrayElementType(type: string): string {
@@ -55,5 +54,9 @@ export class TypeFinderService {
   public getEnumMemberType(type: string): string {
     return type.replace(this.ENUM_WRAPPER, "")
       .replace(this.RIGHT_ANGLE_BRACKET, "");
+  }
+
+  public getTypeDescription(type: string, typeGraph: TypeGraph & any): ReadonlyMap<string, string> {
+    return typeGraph[type];
   }
 }

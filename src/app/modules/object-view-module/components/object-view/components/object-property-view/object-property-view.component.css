@@ -1,18 +1,19 @@
 :host {
   display: block;
-  margin: 5px 10px;
   border-left: 1px solid var(--sapAccentColor6);
-  margin-right: 0px;
   width: 100%;
 }
 
 .header.controls {
-  grid-template-columns: 50px 30px;
-  grid-gap: 5px;
+  grid-template-columns: 30px 130px 30px;
   display: grid;
-  padding: 10px;
+  padding: 5px;
   align-items: center;
-  background-color: #a6a6a610;
+  box-sizing: border-box;
+}
+
+.header.controls.aria-collapsed {
+  min-height: 100%;
 }
 
 .state-control-button {
@@ -25,3 +26,6 @@
   filter: grayscale(0);
 }
 
+.spacer {
+  height: 5px;
+}

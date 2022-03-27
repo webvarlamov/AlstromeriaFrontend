@@ -1,5 +1,12 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {PropertyView} from "../property-view/property-view";
+import {PropertyValueView} from "../property-view/property-value-view.directive";
+import {
+  CommonRequestImpl,
+  RequestMetaInfImpl,
+  RequestOwnerStateImpl, RequestPurpose,
+  RequestSubjectStateImpl
+} from "../../model/common.request";
+import {RequestType} from "../../model/request.type";
 
 @Component({
   selector: 'app-number-property-view',
@@ -7,28 +14,40 @@ import {PropertyView} from "../property-view/property-view";
   styleUrls: ['./number-property-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NumberPropertyViewComponent extends PropertyView implements OnInit {
+export class NumberPropertyViewComponent extends PropertyValueView implements OnInit {
   @Input()
   public value: any;
   @Input()
   public key: any;
 
   public onInputValueChange(value: string): void {
-    this.root.onNumberInputValueChange({
-      value: value,
-      key: this.key,
-      owner: this.owner,
-      previousValue: this.value,
-      path: this.path as string
+    this.root.onObjectStateChangeRequest.emit({
+      typeFinderService: this.typeFinderService,
+      payload: new CommonRequestImpl({
+        metaInf: new RequestMetaInfImpl({
+          path: this.path as string,
+          key: this.key,
+        }),
+        subject: new RequestSubjectStateImpl({
+          currentValue: this.value,
+          nextValue: value == '' ? undefined : value,
+          valueType: this.type
+        }),
+        owner: new RequestOwnerStateImpl({
+          valueType: this.ownerType,
+          currentValue: this.owner,
+        }),
+        requestPurpose: RequestPurpose.CHANGE,
+        requestType: this.isArrayItem ? RequestType.CHANGE_ARRAY_ITEM_VALUE : RequestType.CHANGE_OBJECT_PROPERTY_VALUE,
+      })
     })
   }
 
-  public onDefineValueButtonClick() {
-    this.root.onDefineValueButtonClick({
-      owner: this.owner,
-      path: this.path as string,
-      key: this.key,
-      type: this.type,
-    })
+  public onDefineValueButtonClick($event: any): void {
+
+  }
+
+  public onDeleteValueButtonClick($event: any): void {
+
   }
 }

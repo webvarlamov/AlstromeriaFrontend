@@ -1,15 +1,7 @@
 <div class="fd-form-item">
-  <ng-container *ngIf="value == null">
-    <button class="fd-button fd-button--transparent fd-button--compact fd-button--positive" (click)="onDefineValueButtonClick()">
-      Задать начальное значение
-    </button>
-  </ng-container>
-  <ng-container *ngIf="value != null">
-    <input
-      #input
-      [value]="value"
-      class="fd-input fd-input--compact"
-      type="text"
-      (change)="onInputValueChange(input.value)">
-  </ng-container>
+  Not implemented
 </div>
+<app-context-menu-control>
+  <app-base-value-control></app-base-value-control>
+  <app-array-element-control *ngIf="isArrayItem"></app-array-element-control>
+</app-context-menu-control>

@@ -10,8 +10,6 @@ select {
 
 :host {
   display: grid;
-  grid-template-columns: auto auto 1fr;
-  grid-gap: 5px;
+  grid-template-columns: minmax(200px, auto) auto 1fr;
   align-items: center;
-  margin-left: 10px;
 }

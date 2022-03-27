@@ -15,6 +15,7 @@ import { EntityMasterInputComponent } from './components/master-input/entity-mas
 import {ModalWindowModuleModule} from "../modal-window/modal-window-module.module";
 import {CommonComponentsModule} from "../common-components/common-components.module";
 import {ObjectViewModule} from "../object-view-module/object-view.module";
+import {FieldsetModuleModule} from "../fieldset-module/fieldset-module.module";
 
 @NgModule({
     declarations: [
@@ -43,11 +44,12 @@ import {ObjectViewModule} from "../object-view-module/object-view.module";
     StringMasterInputComponent,
     NumberMasterInputComponent
   ],
-  imports: [
-    CommonModule,
-    TableModule,
-    ModalWindowModuleModule,
-    ObjectViewModule
-  ]
+    imports: [
+        CommonModule,
+        TableModule,
+        ModalWindowModuleModule,
+        ObjectViewModule,
+        FieldsetModuleModule
+    ]
 })
 export class InputComponentsModule { }

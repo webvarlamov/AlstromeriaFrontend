@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {PropertyView} from "../property-view/property-view";
+import {PropertyValueView} from "../property-view/property-value-view.directive";
 
 @Component({
   selector: 'app-any-property-view',
@@ -7,28 +7,17 @@ import {PropertyView} from "../property-view/property-view";
   styleUrls: ['./any-property-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnyPropertyViewComponent extends PropertyView implements OnInit {
+export class AnyPropertyViewComponent extends PropertyValueView implements OnInit {
   @Input()
   public value: any;
   @Input()
   public key: any;
 
   public onInputValueChange(value: string): void {
-    this.root.onStringInputValueChange({
-      value: value,
-      key: this.key,
-      owner: this.owner,
-      previousValue: this.value,
-      path: this.path as string
-    })
+
   }
 
   public onDefineValueButtonClick(): void {
-    this.root.onDefineValueButtonClick({
-      owner: this.owner,
-      path: this.path as string,
-      key: this.key,
-      type: this.type
-    })
+
   }
 }

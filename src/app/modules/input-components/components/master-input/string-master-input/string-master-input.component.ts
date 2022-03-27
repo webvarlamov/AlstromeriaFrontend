@@ -1,13 +1,14 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FilterExpression, FilterExpressionOperator} from "../../../../../service/http/model/filter-expression";
-import {Range} from "../../../../../service/http/model/range";
-import {RangeOperator} from "../../../../../service/http/model/range-operator.enum";
+import {FilterExpression} from "../../../../../service/http/model/filter-expression";
+import {TypeGraph} from "../../../../object-view-module/components/object-view/model/type.graph";
 import {
-  AddNewElementToArrayRequest, DefineValueRequest,
-  ObjectStateChangeRequest,
-  ObjectStateChangeRequestType,
-  TypeGraph
-} from "../../../../object-view-module/components/object-view/object-view.component";
+  ObjectStateChangeRequest
+} from "../../../../object-view-module/components/object-view/model/object-state-change.request";
+import {
+  CommonRequestImpl,
+  RequestPurpose
+} from "../../../../object-view-module/components/object-view/model/common.request";
+import {RequestType} from "../../../../object-view-module/components/object-view/model/request.type";
 
 @Component({
   selector: 'app-string-master-input',
@@ -18,39 +19,10 @@ import {
 export class StringMasterInputComponent implements OnInit {
 
   public objectState: FilterExpression = new FilterExpression({
-    operator: FilterExpressionOperator.AND,
-    ranges: undefined,
-    // @ts-ignore
-    range: undefined,
-    expressions: [
-      new FilterExpression({
-        operator: FilterExpressionOperator.AND,
-        ranges: [
-          new Range({
-            property: "property",
-            operator: RangeOperator.IN,
-            values: ["123", "gfds", "Arra"]
-          })
-        ],
-        expressions: [
-          new FilterExpression({
-            operator: FilterExpressionOperator.AND,
-            ranges: [
-              new Range({
-                property: "property",
-                operator: RangeOperator.IN,
-                values: ["123", "gfds", "Arra"]
-              })
-            ],
-            expressions: []
-          })
-        ]
-
-      })
-    ]
+    expressions: []
   })
 
-  public entityGraph: TypeGraph & any = {
+  public typeGraph: TypeGraph & any = {
     "FilterExpression": {
       operator: "Enum<FilterExpressionOperator>",
       expressions: "Array<FilterExpression>",
@@ -64,9 +36,9 @@ export class StringMasterInputComponent implements OnInit {
       exclude: "boolean",
       operator: "Enum<RangeOperator>",
       property: "string",
-      value1: "number",
-      value2: "number",
-      values: "Array<number>",
+      value1: "string",
+      value2: "string",
+      values: "Array<string>",
     },
     "RangeOperator": {
       EQ: 'EQ',
@@ -89,6 +61,8 @@ export class StringMasterInputComponent implements OnInit {
     ranges: "Ограничения",
     operator: "Оператор",
     value1: "Значение 1",
+    value2: "Значение 2",
+    values: "Значения",
     exclude: "Исключено",
     property: "Свойство"
   }
@@ -122,57 +96,75 @@ export class StringMasterInputComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public onObjectStateChangeRequest($event: ObjectStateChangeRequest) {
-    switch ($event.requestType) {
-      case ObjectStateChangeRequestType.AddNewElementToArrayRequest: {
-        const payload = $event.payload as AddNewElementToArrayRequest
+  public onObjectStateChangeRequestEvent($event: ObjectStateChangeRequest) {
+    const payload:CommonRequestImpl = $event.payload;
 
-        switch (payload.subjectType) {
-          case ("FilterExpression"): {
-            (payload.owner as Array<FilterExpression>)
-              .push(new FilterExpression({
-                operator: FilterExpressionOperator.OR,
-              }))
-            break;
-          }
+    if (payload.requestPurpose === RequestPurpose.DEFINE) {
+      this.onObjectStateDefineRequest($event)
+    } else if (payload.requestPurpose === RequestPurpose.DELETE) {
+      this.onObjectStateDeleteRequest($event)
+    } else if (payload.requestPurpose === RequestPurpose.CHANGE) {
+      this.onObjectStateChangeRequest($event)
+    }
+  }
 
-          case ("Range"): {
-            (payload.owner as Array<Range>)
-              .push(new Range({
-                operator: undefined,
-                property: undefined
-              }))
-            break;
-          }
+  public onObjectStateDefineRequest($event: ObjectStateChangeRequest): void {
+   let payload = $event.payload;
+   let typeFinderService = $event.typeFinderService;
 
-          case ("string"): {
-            (payload.owner as Array<string>).push(undefined);
-            break
-          }
+   if (typeFinderService.isArray(payload.subject.valueType)) {
+     payload.owner.currentValue[payload.metaInf.key] = [];
+   } else if (typeFinderService.isObject(payload.subject.valueType, this.typeGraph)) {
+     payload.owner.currentValue[payload.metaInf.key] = {};
+   } else if(typeFinderService.isString(payload.subject.valueType)) {
+     payload.owner.currentValue[payload.metaInf.key] = '';
+   } else if(typeFinderService.isNumber(payload.subject.valueType)) {
+     payload.owner.currentValue[payload.metaInf.key] = 100;
+   }
+  }
 
-          case ("number"): {
-            (payload.owner as Array<number>).push(undefined);
-            break
-          }
-        }
-        break;
+  public onObjectStateDeleteRequest($event: ObjectStateChangeRequest): void {
+    let payload = $event.payload;
+    let typeFinderService = $event.typeFinderService;
+
+    if (typeFinderService.isObject(payload.owner.valueType, this.typeGraph)) {
+      delete payload.owner.currentValue[payload.metaInf.key];
+    }
+
+    if (typeFinderService.isArray(payload.owner.valueType)) {
+      (payload.owner.currentValue as Array<any>)
+        .splice(payload.metaInf.key, 1)
+    }
+  }
+
+  public onObjectStateChangeRequest($event: ObjectStateChangeRequest): void {
+    let payload = $event.payload;
+    let typeFinderService = $event.typeFinderService;
+
+    if (payload.requestType == RequestType.DELETE_ALL_ARRAY_ITEMS) {
+      if (payload.owner.currentValue[payload.metaInf.key] != null) {
+        payload.owner.currentValue[payload.metaInf.key] = [];
       }
-      case ObjectStateChangeRequestType.DefineValueRequest: {
-        const payload = $event.payload as DefineValueRequest;
-        if (payload.type.includes("Array<")) {
-          payload.owner[payload.key] = [];
-        }
+    }
 
-        if (payload.type == 'number') {
-          payload.owner[payload.key] = 0;
-        }
-
-        if (payload.type == 'string') {
-          payload.owner[payload.key] = '';
-        }
-
-        break;
+    if (payload.requestType == RequestType.ADD_ARRAY_ITEM) {
+      if (typeFinderService.isArray(payload.subject.valueType)) {
+        (payload.owner.currentValue as Array<any>).push([]);
+      } else if (typeFinderService.isObject(payload.subject.valueType, this.typeGraph)) {
+        (payload.owner.currentValue as Array<any>).push({});
+      } else if (typeFinderService.isEnum(payload.subject.valueType)) {
+        (payload.owner.currentValue as Array<any>).push(undefined);
+      } else {
+        (payload.owner.currentValue as Array<any>).push(undefined);
       }
+    }
+
+    if (payload.requestType == RequestType.CHANGE_OBJECT_PROPERTY_VALUE) {
+      payload.owner.currentValue[payload.metaInf.key] = payload.subject.nextValue;
+    }
+
+    if (payload.requestType == RequestType.CHANGE_ARRAY_ITEM_VALUE) {
+      payload.owner.currentValue[payload.metaInf.key] = payload.subject.nextValue;
     }
   }
 }

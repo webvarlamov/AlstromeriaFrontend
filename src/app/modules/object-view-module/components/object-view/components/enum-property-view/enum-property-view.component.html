@@ -8,3 +8,10 @@
     </ng-container>
   </select>
 </div>
+<app-context-menu-control *ngIf="isArrayItem">
+  <app-base-value-control
+    [allowDeleteButton]="isArrayItem"
+    (onDeleteValueButtonClick)="onDeleteValueButtonClick($event)"
+  ></app-base-value-control>
+  <app-array-element-control></app-array-element-control>
+</app-context-menu-control>

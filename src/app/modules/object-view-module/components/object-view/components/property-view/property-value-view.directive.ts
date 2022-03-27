@@ -1,11 +1,14 @@
 import {Directive, Input, OnInit} from "@angular/core";
-import {ObjectViewComponent, TypeGraph} from "../../object-view.component";
-import {TypeFinderService} from "../../type-finder-service";
+import {ObjectViewComponent} from "../../object-view.component";
+import {TypeFinderService} from "../../service/type-finder-service";
+import {TypeGraph} from "../../model/type.graph";
 
 @Directive()
-export class PropertyView implements OnInit {
+export class PropertyValueView implements OnInit {
   @Input()
   public owner: any;
+  @Input()
+  public ownerType: string;
   @Input()
   public root: ObjectViewComponent;
   @Input()
@@ -18,6 +21,8 @@ export class PropertyView implements OnInit {
   public objectStateType: string;
   @Input()
   public type: string;
+  @Input()
+  public isArrayItem: boolean;
 
   @Input()
   public propertyNameLocalisation: {[propertyName: string]: string} = {}
@@ -32,7 +37,5 @@ export class PropertyView implements OnInit {
       : key) as string;
   }
 
-  public ngOnInit(): void {
-
-  }
+  public ngOnInit(): void {}
 }

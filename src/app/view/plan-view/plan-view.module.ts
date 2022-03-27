@@ -6,6 +6,7 @@ import {RouterModule} from "@angular/router";
 import {CommonComponentsModule} from "../../modules/common-components/common-components.module";
 import {InputComponentsModule} from "../../modules/input-components/input-components.module";
 import {TableModule} from "../../modules/table-module/table.module";
+import {FieldsetModuleModule} from "../../modules/fieldset-module/fieldset-module.module";
 
 
 @NgModule({
@@ -16,14 +17,15 @@ import {TableModule} from "../../modules/table-module/table.module";
     exports: [
         PlanListViewComponent
     ],
-  imports: [
-    RouterModule.forChild([
-      {path: '', component: PlanListViewComponent}
-    ]),
-    CommonModule,
-    CommonComponentsModule,
-    InputComponentsModule,
-    TableModule,
-  ]
+    imports: [
+        RouterModule.forChild([
+            {path: '', component: PlanListViewComponent}
+        ]),
+        CommonModule,
+        CommonComponentsModule,
+        InputComponentsModule,
+        TableModule,
+        FieldsetModuleModule,
+    ]
 })
 export class PlanViewModule { }
