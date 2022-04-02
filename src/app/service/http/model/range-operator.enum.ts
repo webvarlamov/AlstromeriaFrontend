@@ -12,3 +12,8 @@ export enum RangeOperator {
   STARTWITH = 'STARTWITH',
   ENDWITH = 'ENDWITH'
 }
+
+export class RangeOperatorsMetadata {
+  icon: string;
+  localisation: string;
+}

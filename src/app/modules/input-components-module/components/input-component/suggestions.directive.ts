@@ -1,5 +1,5 @@
 import {Directive, ElementRef, HostListener} from "@angular/core";
-import {TableRowClickEvent} from "../../../table-module/table/models/event/table-row-click-event";
+import {TableRowClickEvent} from "../../../table-components-module/table/models/event/table-row-click-event";
 
 @Directive({
   selector: 'SuggestionOwner'

@@ -5,6 +5,17 @@
   <div class="fd-popover">
     <div class="fd-popover__control" aria-expanded="true" aria-haspopup="true">
       <div class="fd-input-group fd-input-group--control">
+        <span class="fd-input-group__addon fd-input-group__addon--button" *ngIf="allowMasterInput">
+          <button
+            aria-label="show options"
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="fd-input-group__button fd-button fd-button--transparent"
+            (click)="onMasterInputButtonClick()"
+          >
+            <i class="sap-icon--value-help"></i>
+          </button>
+        </span>
         <div class="fd-tokenizer">
           <div class="fd-tokenizer__inner">
             <input class="fd-input fd-input fd-input-group__input fd-tokenizer__input"
@@ -13,26 +24,9 @@
                    [value]="inputValue$ | async"
                    [placeholder]="inputPlaceholder"
                    [disabled]="inputDisabled"
-                   (click)="showSuggestions = true"
-            />
-            <span class="fd-link" *ngIf="inputSelectionValueInfo != null">
-              {{inputSelectionValueInfo}}
-            </span>
+                   (click)="showSuggestions = true"/>
           </div>
         </div>
-        <span class="fd-input-group__addon fd-input-group__addon--button">
-          <ng-container *ngIf="allowMasterInput">
-            <button
-              aria-label="show options"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="fd-input-group__button fd-button fd-button--transparent"
-              (click)="onMasterInputButtonClick()"
-            >
-              <i class="sap-icon--value-help"></i>
-            </button>
-          </ng-container>
-        </span>
       </div>
     </div>
     <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"

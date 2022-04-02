@@ -2,7 +2,7 @@ import {ListViewTableState} from "./list-view-table-state";
 import {PagingAndSortingRepositoryAsync} from "../../service/http/repository/paging-and-sorting-repository-async";
 import {combineLatest, of} from "rxjs";
 import {Page} from "../../service/http/model/page";
-import {TableSort} from "../../modules/table-module/table/models/dataModels/tableSort";
+import {TableSort} from "../../modules/table-components-module/table/models/dataModels/tableSort";
 import {ResponsePage} from "../../service/http/model/response-page";
 import {HasId} from "../../service/http/model/pageable";
 import {map, switchMap, take, tap} from "rxjs/operators";

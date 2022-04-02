@@ -9,7 +9,7 @@ import {RemoteFilterableListViewStateManager} from "./remote-filterable-list-vie
 import {ListViewFiltersStateManager} from "../filter-state/list-view-filters-state-manager";
 import {FilterExpressionBuilder} from "../../service/http/service/filter-expression-builder";
 import {SuggestionFilterableListViewStateManager} from "./suggestion-filterable-list-view-state-manager";
-import {SuggestionOwnerInputEvent} from "../../modules/input-components/components/input-component/input.component";
+import {SuggestionOwnerInputEvent} from "../../modules/input-components-module/components/input-component/input.component";
 
 export class SuggestionValueRemoteFilterableListViewStateManager extends RemoteFilterableListViewStateManager implements SuggestionFilterableListViewStateManager {
   private attributeKey: string;

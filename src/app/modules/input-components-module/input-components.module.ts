@@ -7,15 +7,14 @@ import { BooleanInputComponent } from './components/boolean-input/boolean-input.
 import { DateTimeInputComponent } from './components/date-time-input/date-time-input.component';
 import { PeriodInputComponent } from './components/period-input/period-input.component';
 import { EntityInputComponent } from "./components/entity-input/entity-input.component";
-import { TableModule } from "../table-module/table.module";
+import { TableModule } from "../table-components-module/table.module";
 import { InputSuggestionComponent } from './components/input-suggestion/input-suggestion.component';
 import { NumberMasterInputComponent } from './components/master-input/number-master-input/number-master-input.component';
 import { StringMasterInputComponent } from './components/master-input/string-master-input/string-master-input.component';
 import { EntityMasterInputComponent } from './components/master-input/entity-master-input/entity-master-input.component';
-import {ModalWindowModuleModule} from "../modal-window/modal-window-module.module";
-import {CommonComponentsModule} from "../common-components/common-components.module";
+import {ModalWindowModuleModule} from "../modal-window-module/modal-window-module.module";
 import {ObjectViewModule} from "../object-view-module/object-view.module";
-import {FieldsetModuleModule} from "../fieldset-module/fieldset-module.module";
+import {FieldsetModuleModule} from "../fieldset-components-module/fieldset-module.module";
 
 @NgModule({
     declarations: [

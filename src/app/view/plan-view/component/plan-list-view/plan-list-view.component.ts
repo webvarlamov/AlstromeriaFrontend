@@ -1,6 +1,6 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {TableSelectionConfig} from "../../../../modules/table-module/table/models/config/tableSelectionConfig";
-import {SelectionMode} from "../../../../modules/table-module/table/models/config/selectionMode";
+import {TableSelectionConfig} from "../../../../modules/table-components-module/table/models/config/tableSelectionConfig";
+import {SelectionMode} from "../../../../modules/table-components-module/table/models/config/selectionMode";
 import {PlanRepository} from "../../../../repository/plan-repository.service";
 import {FilterableListViewComponent} from "../../../view/component/list-view/filterable-list-view-component.directive";
 import {StoryRepositoryService} from "../../../../repository/story-repository.service";
@@ -15,7 +15,7 @@ import {
   InputComponentConfig,
   InputComponentType,
   InputConfigInterface
-} from "../../../../modules/input-components/components/input-component/input.component";
+} from "../../../../modules/input-components-module/components/input-component/input.component";
 import {ListViewFiltersStateManager} from "../../../../state/filter-state/list-view-filters-state-manager";
 import {ListViewFiltersState} from "../../../../state/filter-state/list-view-filters.state";
 import {ListViewTableInitialState} from "../../../../state/list-view-state/list-view-table-initial-state";
@@ -28,10 +28,9 @@ import {
   SuggestionEntityRemoteFilterableListViewStateManager
 } from "../../../../state/list-view-state/suggestion-entity-remote-filterable-list-view-state-manager";
 import {ListViewTableStateManager} from "../../../../state/list-view-state/list-view-table-state-manager";
-import {TableColumn} from "../../../../modules/table-module/table/models/dataModels/tableColumn";
 import {
   BooleanInputListViewTableStateManager
-} from "../../../../modules/input-components/components/boolean-input/boolean-input-list-view-table-state-manager";
+} from "../../../../modules/input-components-module/components/boolean-input/boolean-input-list-view-table-state-manager";
 
 @Component({
   selector: 'app-plan-list-view',
@@ -53,9 +52,7 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
       itemsCount: 0,
     }
   }
-
   public listViewTableAsyncState: ListViewTableState = new ListViewTableState(this.initialState);
-
   public listViewTableAsyncStateManager: RemoteFilterableListViewStateManager =
     new RemoteFilterableListViewStateManager({
     listViewTableState: this.listViewTableAsyncState,
@@ -63,7 +60,6 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
     listViewFiltersStateManager: new ListViewFiltersStateManager({}),
     filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
   });
-
   public storyFilterManager: SuggestionEntityRemoteFilterableListViewStateManager =
     new SuggestionEntityRemoteFilterableListViewStateManager({
       listViewTableState: new ListViewTableState({
@@ -85,9 +81,7 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
       listViewFiltersStateManager: new ListViewFiltersStateManager({}),
       filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
     });
-
   public booleanFilterManager: any = new BooleanInputListViewTableStateManager();
-
   public stringFilterManager: SuggestionValueRemoteFilterableListViewStateManager =
     new SuggestionValueRemoteFilterableListViewStateManager({
       listViewTableState: new ListViewTableState({

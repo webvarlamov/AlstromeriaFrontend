@@ -5,7 +5,7 @@ import {Page} from "../model/page";
 import {HasId} from "../model/pageable";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {ResponsePage} from "../model/response-page";
-import {TableSort} from "../../../modules/table-module/table/models/dataModels/tableSort";
+import {TableSort} from "../../../modules/table-components-module/table/models/dataModels/tableSort";
 
 export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S extends HasId> implements PagingAndSortingRepositoryAsync<S> {
   protected constructor(

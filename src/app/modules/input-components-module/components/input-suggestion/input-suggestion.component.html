@@ -1,0 +1,18 @@
+<app-table
+  *ngIf="stateManager != null && stateManager.listViewTableAsyncState != null"
+  [id]="'entity-input-list-data-grid'"
+  [selectionConfig]="selectionConfig"
+  [sorting]="this.stateManager.listViewTableAsyncState.tableSorting$ | async"
+  [items]="this.stateManager.listViewTableAsyncState.tableItemsList$ | async"
+  [columns]="this.stateManager.listViewTableAsyncState.tableColumns$ | async"
+  [selectedEntities]="this.stateManager.listViewTableAsyncState.tableSelectedList$ | async"
+  [page]="this.stateManager.listViewTableAsyncState.tablePage$ | async"
+  [showLoadingIndicator]="this.stateManager.listViewTableAsyncState.tableShowLoaderIndicator$ | async"
+  (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
+  (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
+  (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
+  (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
+  (onSortChangeRequest)="this.onSortChangeRequest($event)"
+  (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)"
+  (onTableRowClickEvent)="onTableRowClickEvent($event)"
+></app-table>

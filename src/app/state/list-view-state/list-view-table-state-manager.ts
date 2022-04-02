@@ -3,8 +3,8 @@ import {take, tap} from "rxjs/operators";
 import {combineLatest, of, throwError} from "rxjs";
 import {HasId} from "../../service/http/model/pageable";
 import {Page} from "../../service/http/model/page";
-import {TableSort} from "../../modules/table-module/table/models/dataModels/tableSort";
-import {TableColumn} from "../../modules/table-module/table/models/dataModels/tableColumn";
+import {TableSort} from "../../modules/table-components-module/table/models/dataModels/tableSort";
+import {TableColumn} from "../../modules/table-components-module/table/models/dataModels/tableColumn";
 
 export class ListViewTableStateManager {
   public listViewTableAsyncState: ListViewTableState;

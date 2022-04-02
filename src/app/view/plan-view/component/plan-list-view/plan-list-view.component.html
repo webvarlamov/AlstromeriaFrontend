@@ -11,52 +11,46 @@
       <div class='fd-container'>
         <div class='fd-row'>
           <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-entity-input [label]="'Сущность инпут'">
-              <app-input-suggestion
-                [suggestionListViewTableStateManager]="storyFilterManager"
-              ></app-input-suggestion>
-              <app-entity-master-input
-                masterInputContent>
-              </app-entity-master-input>
-            </app-entity-input>
+            <app-filter>
+              <app-entity-input [label]="'Сущность инпут'" #filterComponentContent>
+                <app-input-suggestion [stateManager]="storyFilterManager"></app-input-suggestion>
+                <app-entity-master-input masterInputContent></app-entity-master-input>
+              </app-entity-input>
+            </app-filter>
           </div>
 
           <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-boolean-input [label]="'Булевый инпут'">
-              <app-input-suggestion
-                [suggestionListViewTableStateManager]="booleanFilterManager"
-              ></app-input-suggestion>
-            </app-boolean-input>
+            <app-filter>
+              <app-boolean-input [label]="'Булевый инпут'" #filterComponentContent>
+                <app-input-suggestion [stateManager]="booleanFilterManager"></app-input-suggestion>
+              </app-boolean-input>
+            </app-filter>
           </div>
 
           <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-string-input [config]="stringInputConfig" [label]="'Строка инпут'">
-              <app-input-suggestion
-                [suggestionListViewTableStateManager]="stringFilterManager"
-              ></app-input-suggestion>
-              <app-string-master-input
-                masterInputContent>
-              </app-string-master-input>
-            </app-string-input>
+            <app-filter>
+              <app-string-input [config]="stringInputConfig" [label]="'Строка инпут'" #filterComponentContent>
+                <app-input-suggestion [stateManager]="stringFilterManager"></app-input-suggestion>
+                <app-string-master-input masterInputContent></app-string-master-input>
+              </app-string-input>
+            </app-filter>
           </div>
 
           <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-number-input [config]="numberInputConfig" [label]="'Номерной инпут'">
-              <app-input-suggestion
-                [suggestionListViewTableStateManager]="numberFilterManager"
-              ></app-input-suggestion>
-              <app-number-master-input
-                masterInputContent>
-              </app-number-master-input>
-            </app-number-input>
+            <app-filter>
+              <app-number-input [config]="numberInputConfig" [label]="'Номерной инпут'" #filterComponentContent>
+                <app-input-suggestion [stateManager]="numberFilterManager"></app-input-suggestion>
+                <app-number-master-input masterInputContent></app-number-master-input>
+              </app-number-input>
+            </app-filter>
           </div>
 
           <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-enum-input [label]="'Энам инпут'">
-              <app-input-suggestion
-                [suggestionListViewTableStateManager]="enumFilterManager"
-              ></app-input-suggestion>
-            </app-enum-input>
+            <app-filter>
+              <app-enum-input [label]="'Энам инпут'" #filterComponentContent>
+                <app-input-suggestion [stateManager]="enumFilterManager"></app-input-suggestion>
+              </app-enum-input>
+            </app-filter>
           </div>
         </div>
       </div>

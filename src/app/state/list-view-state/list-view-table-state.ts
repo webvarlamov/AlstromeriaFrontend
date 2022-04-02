@@ -1,7 +1,7 @@
 import {BehaviorSubject} from "rxjs";
 import {HasId} from "../../service/http/model/pageable";
-import {TableColumn} from "../../modules/table-module/table/models/dataModels/tableColumn";
-import {TableSort} from "../../modules/table-module/table/models/dataModels/tableSort";
+import {TableColumn} from "../../modules/table-components-module/table/models/dataModels/tableColumn";
+import {TableSort} from "../../modules/table-components-module/table/models/dataModels/tableSort";
 import {Page} from "../../service/http/model/page";
 import {ListViewTableInitialState} from "./list-view-table-initial-state";
 
