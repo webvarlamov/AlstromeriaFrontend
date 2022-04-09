@@ -2,8 +2,7 @@ import {ListViewTableStateManager} from "../../../../state/list-view-state/list-
 import {ListViewTableState} from "../../../../state/list-view-state/list-view-table-state";
 import {of} from "rxjs";
 
-export class BooleanInputListViewTableStateManager extends ListViewTableStateManager {
-  constructor() {
+export class BooleanInputListViewTableStateManager extends ListViewTableStateManager {constructor() {
     super(new ListViewTableState(
       {
         tableItemsList: [

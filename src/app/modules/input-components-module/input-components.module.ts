@@ -10,7 +10,7 @@ import { EntityInputComponent } from "./components/entity-input/entity-input.com
 import { TableModule } from "../table-components-module/table.module";
 import { InputSuggestionComponent } from './components/input-suggestion/input-suggestion.component';
 import { NumberMasterInputComponent } from './components/master-input/number-master-input/number-master-input.component';
-import { StringMasterInputComponent } from './components/master-input/string-master-input/string-master-input.component';
+import { StringFilterDetails } from './components/master-input/string-master-filter/string-filter-details.component';
 import { EntityMasterInputComponent } from './components/master-input/entity-master-input/entity-master-input.component';
 import {ModalWindowModuleModule} from "../modal-window-module/modal-window-module.module";
 import {ObjectViewModule} from "../object-view-module/object-view.module";
@@ -27,7 +27,7 @@ import {FieldsetModuleModule} from "../fieldset-components-module/fieldset-modul
         EntityInputComponent,
         InputSuggestionComponent,
         NumberMasterInputComponent,
-        StringMasterInputComponent,
+        StringFilterDetails,
         EntityMasterInputComponent
     ],
   exports: [
@@ -40,7 +40,7 @@ import {FieldsetModuleModule} from "../fieldset-components-module/fieldset-modul
     EnumInputComponent,
     InputSuggestionComponent,
     EntityMasterInputComponent,
-    StringMasterInputComponent,
+    StringFilterDetails,
     NumberMasterInputComponent
   ],
     imports: [

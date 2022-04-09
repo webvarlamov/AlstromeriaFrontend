@@ -234,7 +234,6 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
   public inputPlaceholder: string = '';
   public inputDisabled: boolean = false;
   public inputSelectionValueInfo: string;
-  public showMasterInput: boolean = false;
 
   @Input()
   public label: string = 'Label has not been overridden';
@@ -260,13 +259,5 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
     if (this.suggestionComponent != null) {
       this.suggestionComponent.owner = this;
     }
-  }
-
-  public onMasterInputButtonClick(): void {
-    this.showMasterInput = true;
-  }
-
-  public onMasterInputDecline(): void {
-    this.showMasterInput = false;
   }
 }

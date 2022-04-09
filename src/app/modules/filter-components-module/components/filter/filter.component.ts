@@ -1,12 +1,13 @@
-import {AfterViewInit, Component, ContentChild, OnInit} from '@angular/core';
-import {InputComponent} from "../../../input-components-module/components/input-component/input.component";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit, AfterViewInit {
-  @ContentChild('filterComponentContent') inputComponent!: InputComponent<any, any>;
+  @ViewChild('modalWindowBodyRef') modalWindowBodyRef: any;
+
+  public showMasterInput: boolean = false;
 
   constructor() { }
 
@@ -14,5 +15,16 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void  {
+    debugger
   }
+
+  public onMasterInputButtonClick(): void {
+    this.showMasterInput = true;
+  }
+
+  public onMasterInputDecline(): void {
+    this.showMasterInput = false;
+  }
+
+
 }

@@ -11,12 +11,12 @@ import {
 import {RequestType} from "../../../../object-view-module/components/object-view/model/request.type";
 
 @Component({
-  selector: 'app-string-master-input',
-  templateUrl: './string-master-input.component.html',
-  styleUrls: ['./string-master-input.component.css'],
+  selector: 'app-string-filter-details',
+  templateUrl: './string-filter-details.component.html',
+  styleUrls: ['./string-filter-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StringMasterInputComponent implements OnInit {
+export class StringFilterDetails implements OnInit {
 
   public objectState: FilterExpression = new FilterExpression({
     expressions: []
@@ -43,12 +43,12 @@ export class StringMasterInputComponent implements OnInit {
     "RangeOperator": {
       EQ: 'EQ',
       NE: 'NE',
-      LE: 'LE',
-      GE: 'GE',
-      LT: 'LT',
-      GT: 'GT',
+      // LE: 'LE',
+      // GE: 'GE',
+      // LT: 'LT',
+      // GT: 'GT',
       IN: 'IN',
-      BT: 'BT',
+      // BT: 'BT',
       LIKE: 'LIKE',
       ISMEMBER: 'ISMEMBER',
       STARTWITH: 'STARTWITH',
@@ -79,7 +79,7 @@ export class StringMasterInputComponent implements OnInit {
       GT: 'Больще',
       IN: 'Входит в значения',
       BT: 'Между',
-      LIKE: 'Похож',
+      LIKE: 'Содержит',
       ISMEMBER: 'Является элементом',
       STARTWITH: 'Начинается с',
       ENDWITH: 'Кончается на'

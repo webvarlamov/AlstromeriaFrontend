@@ -82,6 +82,8 @@ export class PlanListViewComponent extends FilterableListViewComponent<any> impl
       filterExpressionBuilder: new DefaultFilterExpressionBuilderImpl()
     });
   public booleanFilterManager: any = new BooleanInputListViewTableStateManager();
+
+  public stringFilterContextManager: any;
   public stringFilterManager: SuggestionValueRemoteFilterableListViewStateManager =
     new SuggestionValueRemoteFilterableListViewStateManager({
       listViewTableState: new ListViewTableState({

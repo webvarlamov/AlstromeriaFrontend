@@ -5,17 +5,6 @@
   <div class="fd-popover">
     <div class="fd-popover__control" aria-expanded="true" aria-haspopup="true">
       <div class="fd-input-group fd-input-group--control">
-        <span class="fd-input-group__addon fd-input-group__addon--button" *ngIf="allowMasterInput">
-          <button
-            aria-label="show options"
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="fd-input-group__button fd-button fd-button--transparent"
-            (click)="onMasterInputButtonClick()"
-          >
-            <i class="sap-icon--value-help"></i>
-          </button>
-        </span>
         <div class="fd-tokenizer">
           <div class="fd-tokenizer__inner">
             <input class="fd-input fd-input fd-input-group__input fd-tokenizer__input"
@@ -37,18 +26,3 @@
     </div>
   </div>
 </div>
-
-<app-modal-window [id]="'master-input-id'"
-                  *ngIf="showMasterInput"
-                  style="z-index: 100"
-                  [baseHeight]="'800px'"
-                  [baseWidth]="'1200px'"
-                  [minWidth]="'700px'"
-                  [minHeight]="'450px'"
-                  (decline)="onMasterInputDecline()"
-                  [headerTitle]="'Детальная настройка значения фильтра'"
->
-  <div modalWindowBody>
-    <ng-content select="[masterInputContent]"></ng-content>
-  </div>
-</app-modal-window>
