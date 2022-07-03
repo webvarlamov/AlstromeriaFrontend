@@ -1,0 +1,36 @@
+<!--<div>-->
+<!--  <app-fieldset legend="Результирующее выражение">-->
+<!--    <div class="result-filter-expression">-->
+
+<!--    </div>-->
+<!--  </app-fieldset>-->
+<!--</div>-->
+<!--<div></div>-->
+
+<!--<app-fieldset legend="Набор компонентов">-->
+<!--  <div class="filter-expression-builder-components">-->
+<!--    <app-filter-expression draggable="true"></app-filter-expression>-->
+<!--    <app-filter-expression-operator draggable="true"></app-filter-expression-operator>-->
+<!--    <app-filter-expression-range draggable="true"></app-filter-expression-range>-->
+<!--  </div>-->
+<!--</app-fieldset>-->
+<fieldset>
+  <legend>Результирующее выражение</legend>
+  <app-object-view
+    [objectState]="objectState"
+    [typeGraph]="typeGraph"
+    [propertyNameLocalisation]="propertyNameLocalisation"
+    [enumMembersLocalisation]="enumMembersLocalisation"
+    [objectStateType]="rootObjectTypeName"
+    (onObjectStateChangeRequest)="onObjectStateChangeRequestEvent($event)"
+  ></app-object-view>
+</fieldset>
+<!--<fieldset>-->
+<!--  <legend>Набор компонентов</legend>-->
+<!--  <div class="filter-expression-builder-components">-->
+<!--    <app-filter-expression draggable="true"></app-filter-expression>-->
+<!--    <app-filter-expression-operator draggable="true"></app-filter-expression-operator>-->
+<!--    <app-filter-expression-range draggable="true"></app-filter-expression-range>-->
+<!--  </div>-->
+<!--</fieldset>-->
+

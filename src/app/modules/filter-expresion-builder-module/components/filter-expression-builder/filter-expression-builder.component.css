@@ -1,0 +1,16 @@
+:host {
+  display: grid;
+  /*grid-template-rows: auto 100px;*/
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/*.filter-expression-builder-components {*/
+/*  display: flex;*/
+/*}*/
+
+/*:host ::ng-deep app-fieldset fieldset {*/
+/*  height: 100%;*/
+/*  box-sizing: border-box;*/
+/*}*/
