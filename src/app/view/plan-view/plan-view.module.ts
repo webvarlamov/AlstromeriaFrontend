@@ -8,9 +8,6 @@ import {InputComponentsModule} from "../../modules/input-components-module/input
 import {TableModule} from "../../modules/table-components-module/table.module";
 import {FieldsetModuleModule} from "../../modules/fieldset-components-module/fieldset-module.module";
 import {FilterModuleModule} from "../../modules/filter-components-module/filter-module.module";
-import {
-  FilterExpressionBuilderModule
-} from "../../modules/filter-expresion-builder-module/filter-expression-builder.module";
 import {ModalWindowModuleModule} from "../../modules/modal-window-module/modal-window-module.module";
 
 
@@ -32,7 +29,6 @@ import {ModalWindowModuleModule} from "../../modules/modal-window-module/modal-w
     TableModule,
     FieldsetModuleModule,
     FilterModuleModule,
-    FilterExpressionBuilderModule,
     ModalWindowModuleModule,
   ]
 })

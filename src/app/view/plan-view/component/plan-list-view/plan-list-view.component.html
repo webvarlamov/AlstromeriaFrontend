@@ -27,14 +27,14 @@
 <!--                    </app-filter>-->
 <!--                  </div>-->
 
-<!--                  <div class='fd-col fd-col&#45;&#45;12 fd-col-md&#45;&#45;6 fd-col-lg&#45;&#45;4 fd-col-xl&#45;&#45;3'>-->
-<!--                    <app-filter >-->
-<!--                      <app-string-input filterInput>-->
-<!--                        <app-input-suggestion></app-input-suggestion>-->
-<!--                      </app-string-input>-->
-<!--                      <app-string-filter-details filterDetails></app-string-filter-details>-->
-<!--                    </app-filter>-->
-<!--                  </div>-->
+                  <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
+                    <app-filter >
+                      <app-string-input filterInput>
+                        <app-input-suggestion></app-input-suggestion>
+                      </app-string-input>
+                      <app-string-filter-details filterDetails></app-string-filter-details>
+                    </app-filter>
+                  </div>
 
 <!--                  <div class='fd-col fd-col&#45;&#45;12 fd-col-md&#45;&#45;6 fd-col-lg&#45;&#45;4 fd-col-xl&#45;&#45;3'>-->
 <!--                    <app-filter>-->
@@ -79,17 +79,17 @@
       (onPageSizeChangeRequest)="this.listViewStateManager.onPageSizeChangeRequest($event)">
     </app-table>
 </div>
-<app-modal-window [id]="'lala-input-id'"
-                  *ngIf="true"
-                  style="z-index: 100"
-                  [baseHeight]="'800px'"
-                  [baseWidth]="'1200px'"
-                  [minWidth]="'700px'"
-                  [minHeight]="'450px'"
-                  [headerTitle]="'Детальная настройка значения фильтра'"
->
-  <div modalWindowBody >
-    <app-filter-expression-builder></app-filter-expression-builder>
-  </div>
-</app-modal-window>
+<!--<app-modal-window [id]="'lala-input-id'"-->
+<!--                  *ngIf="true"-->
+<!--                  style="z-index: 100"-->
+<!--                  [baseHeight]="'800px'"-->
+<!--                  [baseWidth]="'1200px'"-->
+<!--                  [minWidth]="'700px'"-->
+<!--                  [minHeight]="'450px'"-->
+<!--                  [headerTitle]="'Детальная настройка значения фильтра'"-->
+<!--&gt;-->
+<!--  <div modalWindowBody >-->
+<!--    <app-filter-expression-builder></app-filter-expression-builder>-->
+<!--  </div>-->
+<!--</app-modal-window>-->
 

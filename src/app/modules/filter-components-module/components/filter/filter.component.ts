@@ -16,7 +16,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void  {
-    debugger
+
   }
 
   public onMasterInputButtonClick(): void {

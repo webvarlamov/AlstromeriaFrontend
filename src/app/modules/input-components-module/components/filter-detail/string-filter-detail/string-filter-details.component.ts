@@ -9,6 +9,11 @@ import {
   RequestPurpose
 } from "../../../../object-view-module/components/object-view/model/common.request";
 import {RequestType} from "../../../../object-view-module/components/object-view/model/request.type";
+import {StringFilterComponentRangeOperatorType} from "../../../../filter-components-module/models/filter-component-value";
+import {
+  BasicFilterExpressionBuilderTypeGraph, FilterExpressionBuilderEnumMembersLocalisation,
+  FilterExpressionBuilderPropertyLocalisation, FilterExpressionBuilderRootObjectTypeName
+} from "../common/filter-expression-builder.config";
 
 @Component({
   selector: 'app-string-filter-details',
@@ -22,73 +27,26 @@ export class StringFilterDetails implements OnInit {
     expressions: []
   })
 
-  public typeGraph: TypeGraph & any = {
-    "FilterExpression": {
-      operator: "Enum<FilterExpressionOperator>",
-      expressions: "Array<FilterExpression>",
-      ranges: "Array<Range>",
-    },
-    "FilterExpressionOperator": {
-      AND: 'AND',
-      OR: 'OR'
-    },
-    "Range": {
-      exclude: "boolean",
-      operator: "Enum<RangeOperator>",
-      property: "string",
-      value1: "string",
-      value2: "string",
-      values: "Array<string>",
-    },
-    "RangeOperator": {
-      EQ: 'EQ',
-      NE: 'NE',
-      // LE: 'LE',
-      // GE: 'GE',
-      // LT: 'LT',
-      // GT: 'GT',
-      IN: 'IN',
-      // BT: 'BT',
-      LIKE: 'LIKE',
-      ISMEMBER: 'ISMEMBER',
-      STARTWITH: 'STARTWITH',
-      ENDWITH: 'ENDWITH'
-    }
-  };
-
-  public propertyNameLocalisation: any = {
-    expressions: "Выражения",
-    ranges: "Ограничения",
-    operator: "Оператор",
-    value1: "Значение 1",
-    value2: "Значение 2",
-    values: "Значения",
-    exclude: "Исключено",
-    property: "Свойство"
+  public filterExpressionValuesType = {
+    value1: "string",
+    value2: "string",
+    values: "Array<string>",
   }
 
-  public rootObjectTypeName: string = "FilterExpression";
+  public typeGraph: TypeGraph & any = {
+    ...BasicFilterExpressionBuilderTypeGraph,
+    "RangeOperator": StringFilterComponentRangeOperatorType,
+    "Range": Object.assign({},
+      BasicFilterExpressionBuilderTypeGraph.Range,
+      this.filterExpressionValuesType
+    )
+  }
 
-  public enumMembersLocalisation: any = {
-    "RangeOperator": {
-      EQ: 'Равно',
-      NE: 'Не равно',
-      LE: 'Меньше либо равно',
-      GE: 'Больше либо равно',
-      LT: 'Меньше',
-      GT: 'Больще',
-      IN: 'Входит в значения',
-      BT: 'Между',
-      LIKE: 'Содержит',
-      ISMEMBER: 'Является элементом',
-      STARTWITH: 'Начинается с',
-      ENDWITH: 'Кончается на'
-    },
-    "FilterExpressionOperator": {
-      AND: 'И',
-      OR: 'Или'
-    }
-  };
+  public propertyNameLocalisation: any = FilterExpressionBuilderPropertyLocalisation;
+
+  public rootObjectTypeName: string = FilterExpressionBuilderRootObjectTypeName;
+
+  public enumMembersLocalisation: any = FilterExpressionBuilderEnumMembersLocalisation;
 
   public constructor() {
   }
