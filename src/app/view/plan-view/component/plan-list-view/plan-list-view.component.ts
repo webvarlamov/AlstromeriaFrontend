@@ -1,7 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {
-  TableSelectionConfig
-} from "../../../../modules/table-components-module/table/models/config/tableSelectionConfig";
+import {TableSelectionConfig} from "../../../../modules/table-components-module/table/models/config/tableSelectionConfig";
 import {SelectionMode} from "../../../../modules/table-components-module/table/models/config/selectionMode";
 import {PlanRepository} from "../../../../repository/plan-repository.service";
 import {ListViewTableState} from "../../../../state/list-view-state/list-view-table-state";
@@ -14,19 +12,20 @@ import {
   RemoteRepositoryDefaultFilterExpressionBuilderImpl
 } from "../../../../provider/paging-and-sorting-remote-repository-list-view-state-manager-impl";
 import {ListViewComponent} from "../../../view/component/list-view/list-view.component";
-import {
-  ListViewTableStateManager,
-  ListViewTableStateManagerImpl
-} from "../../../../state/list-view-state/list-view-table-state-manager-impl";
+import {ListViewTableStateManager, ListViewTableStateManagerImpl} from "../../../../state/list-view-state/list-view-table-state-manager-impl";
 import {
   NumberFilterComponentValueImpl,
   StringFilterComponentValueImpl
 } from "../../../../modules/filter-components-module/models/filter-component-value-basic-impl";
 import {FilterComponentConfigImpl} from "../../../view/component/list-view/filter-component-config.impl";
+import {InputComponentConfigImpl, InputComponentType} from "../../../../modules/input-components-module/components/input-component/input.component";
 import {
-  InputComponentConfigImpl,
-  InputComponentType
-} from "../../../../modules/input-components-module/components/input-component/input.component";
+  ListViewFilterDetailEventManagerImpl
+} from "../../../../modules/input-components-module/components/filter-detail/manager/list-view-filter-detail-event-manager.impl";
+import {
+  FilterComponentValueUnionOperator,
+  StringFilterComponentRangeOperatorType
+} from "../../../../modules/filter-components-module/models/filter-component-value";
 
 @Component({
   selector: 'app-plan-list-view',
@@ -41,7 +40,6 @@ export class PlanListViewComponent extends ListViewComponent<any> implements OnI
     columnWidth: '35px',
   };
 
-  // Данные таблицы.
   public initialListViewTableStateState: ListViewTableInitialState = {
     tableItemsList: [],
     tableColumns: [
@@ -60,12 +58,19 @@ export class PlanListViewComponent extends ListViewComponent<any> implements OnI
   public listViewTableState: ListViewTableState = new ListViewTableState(this.initialListViewTableStateState);
   public listViewTableStateManager: ListViewTableStateManager = new ListViewTableStateManagerImpl(this.listViewTableState);
 
-  // Данные фильтров.
   public listViewFiltersInitialState: ListViewFiltersInitialState<any> = {
     // Хранение значений
     listViewFilterValuesByAttributeKey: {
-      name: new StringFilterComponentValueImpl(),
-      description: new StringFilterComponentValueImpl(),
+      name: new StringFilterComponentValueImpl({
+        ranges: [{operator: StringFilterComponentRangeOperatorType.ENDWITH, value1: "fds"}],
+        values: [],
+        operator: FilterComponentValueUnionOperator.AND
+      }),
+      description: new StringFilterComponentValueImpl({
+        ranges: [{operator: StringFilterComponentRangeOperatorType.ENDWITH, value1: "fds"}],
+        values: [],
+        operator: FilterComponentValueUnionOperator.AND
+      }),
       num: new NumberFilterComponentValueImpl()
     },
     // Конфигурация фильтров
@@ -99,11 +104,10 @@ export class PlanListViewComponent extends ListViewComponent<any> implements OnI
       })
     }
   };
-
   public listViewFiltersState = new ListViewFiltersState(this.listViewFiltersInitialState);
   public listViewFiltersStateManager = new ListViewFiltersStateManagerImpl({listViewFiltersState: this.listViewFiltersState});
+  public listViewFilterDetailEventManager: ListViewFilterDetailEventManagerImpl = new ListViewFilterDetailEventManagerImpl(this.listViewFiltersStateManager);
 
-  // .
   public listViewStateManager = new PagingAndSortingRemoteRepositoryListViewStateManagerImpl({
     listViewTableStateManager: this.listViewTableStateManager,
     listViewFiltersStateManager: this.listViewFiltersStateManager,

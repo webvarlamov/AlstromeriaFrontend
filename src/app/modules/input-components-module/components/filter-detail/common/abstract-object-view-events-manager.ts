@@ -3,7 +3,7 @@ import {CommonRequestImpl, RequestPurpose} from "../../../../object-view-module/
 import {RequestType} from "../../../../object-view-module/components/object-view/model/request.type";
 import {TypeGraph} from "../../../../object-view-module/components/object-view/model/type.graph";
 
-export abstract class ObjectViewHolder {
+export abstract class AbstractObjectViewEventsManager {
   public abstract typeGraph: TypeGraph & any;
 
   public onObjectStateChangeRequestEvent($event: ObjectStateChangeRequest) {

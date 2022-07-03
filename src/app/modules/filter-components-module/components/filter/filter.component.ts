@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-filter',
@@ -6,7 +6,8 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit, AfterViewInit {
-  @ViewChild('modalWindowBodyRef') modalWindowBodyRef: any;
+  @ViewChild('modalWindowBodyRef')
+  modalWindowBodyRef: any;
 
   public showMasterInput: boolean = false;
 
@@ -26,6 +27,5 @@ export class FilterComponent implements OnInit, AfterViewInit {
   public onMasterInputDecline(): void {
     this.showMasterInput = false;
   }
-
 
 }

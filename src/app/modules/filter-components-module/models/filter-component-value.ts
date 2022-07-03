@@ -46,11 +46,11 @@ export enum FilterComponentValueUnionOperator {
 
 
 export interface FilterComponentValueRange<RangeValueType, FilterComponentValueRangeOperatorType> {
-  exclude: boolean;
-  operator: FilterComponentValueRangeOperatorType,
-  value1: RangeValueType;
-  value2: RangeValueType;
-  values: Array<RangeValueType>
+  exclude?: boolean;
+  operator?: FilterComponentValueRangeOperatorType,
+  value1?: RangeValueType;
+  value2?: RangeValueType;
+  values?: Array<RangeValueType>
 }
 
 export interface FilterComponentValue<ValuesType, RangesValueType, RangeOperatorType> {

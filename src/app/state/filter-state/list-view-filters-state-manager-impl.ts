@@ -3,14 +3,57 @@ import {combineLatest, Observable} from "rxjs";
 import {map, take} from "rxjs/operators";
 import {FilterValuesByAttributeKey} from "../../view/view/component/list-view/filter-values-by-attribute.key";
 import {FilterConfigByAttributeKey} from "../../view/view/component/list-view/filter-config-by-attribute.key";
+import {FilterComponentValue} from "../../modules/filter-components-module/models/filter-component-value";
+import {FilterComponentConfig} from "../../view/view/component/list-view/filter-config.interface";
+
+export interface ObjectOfMappedFilterStates {
+  [key: string]: {
+    value?: FilterComponentValue<any, any, any>,
+    config?: FilterComponentConfig
+  }
+}
 
 export class ListViewFiltersStateManagerImpl implements ListViewFiltersStateManager {
   public listViewFilterState: ListViewFiltersState;
+  public arrayOfMappedFilterStates$: Observable<any>;
+  public objectOfMappedFilterStates$: Observable<ObjectOfMappedFilterStates>;
 
   constructor(args: {
     listViewFiltersState?: ListViewFiltersState
   }) {
-    this.listViewFilterState = args.listViewFiltersState != null ? args.listViewFiltersState : new ListViewFiltersState()
+    this.listViewFilterState = args.listViewFiltersState != null ? args.listViewFiltersState : new ListViewFiltersState();
+
+    this.arrayOfMappedFilterStates$ = combineLatest([
+      this.listViewFilterState.filterConfigByAttributeKey$,
+      this.listViewFilterState.filterValuesByAttributeKey$
+    ]).pipe(
+      map(([filterConfigByAttributeKey, filterValuesByAttributeKey]) => {
+        return Object.keys(filterConfigByAttributeKey).map(key => {
+          return {
+            key,
+            config: filterConfigByAttributeKey[key],
+            value: filterValuesByAttributeKey[key]
+          }
+        })
+      })
+    )
+
+    this.objectOfMappedFilterStates$ = combineLatest([
+      this.listViewFilterState.filterConfigByAttributeKey$,
+      this.listViewFilterState.filterValuesByAttributeKey$
+    ]).pipe(
+      map(([filterConfigByAttributeKey, filterValuesByAttributeKey]) => {
+        const result: ObjectOfMappedFilterStates = {};
+        Object.keys(filterConfigByAttributeKey).map(key => {
+          result[key] = {
+            config: filterConfigByAttributeKey[key],
+            value: filterValuesByAttributeKey[key]
+          }
+        });
+
+        return result;
+      })
+    )
   }
 
   public getListViewFiltersStateData(): Observable<ListViewFiltersStateData> {

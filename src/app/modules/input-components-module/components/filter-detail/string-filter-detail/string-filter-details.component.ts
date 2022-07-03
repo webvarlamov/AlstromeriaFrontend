@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {TypeGraph} from "../../../../object-view-module/components/object-view/model/type.graph";
 import {StringFilterComponentRangeOperatorType} from "../../../../filter-components-module/models/filter-component-value";
 import {BasicFilterExpressionBuilderTypeGraph} from "../config/filter-expression-object-view.config";
@@ -13,6 +13,7 @@ import {FilterDetailComponent} from "../common/filter-detail-component";
 export class StringFilterDetailsComponent extends FilterDetailComponent implements OnInit {
 
   public ngOnInit(): void {
+    console.log(this.filterDetailState)
   }
 
   public typeGraph: TypeGraph & any = {

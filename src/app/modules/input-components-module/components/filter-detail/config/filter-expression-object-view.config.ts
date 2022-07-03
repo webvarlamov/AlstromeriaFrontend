@@ -28,7 +28,7 @@ export const BasicFilterExpressionBuilderTypeGraph: TypeGraph & any = {
   "Range": {
     exclude: "boolean",
     operator: "Enum<RangeOperator>",
-    property: "string",
+    // property: "string",
     value1: "string",
     value2: "string",
     values: "Array<string>",
