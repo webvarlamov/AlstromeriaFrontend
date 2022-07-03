@@ -9,50 +9,50 @@
   <div class="section-content">
     <app-fieldset [legend]="'Список фильтров'">
       <div class='fd-container'>
-        <div class='fd-row'>
-          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-filter>
-              <app-entity-input filterInput>
-                <app-input-suggestion [stateManager]="storyFilterManager"></app-input-suggestion>
-              </app-entity-input>
-              <app-entity-master-input filterDetails></app-entity-master-input>
-            </app-filter>
-          </div>
+<!--                <div class='fd-row'>-->
+<!--                  <div class='fd-col fd-col&#45;&#45;12 fd-col-md&#45;&#45;6 fd-col-lg&#45;&#45;4 fd-col-xl&#45;&#45;3'>-->
+<!--                    <app-filter>-->
+<!--                      <app-entity-input filterInput>-->
+<!--                        <app-input-suggestion></app-input-suggestion>-->
+<!--                      </app-entity-input>-->
+<!--                      <app-entity-master-input filterDetails></app-entity-master-input>-->
+<!--                    </app-filter>-->
+<!--                  </div>-->
 
-          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-filter>
-              <app-boolean-input filterInput>
-                <app-input-suggestion [stateManager]="booleanFilterManager"></app-input-suggestion>
-              </app-boolean-input>
-            </app-filter>
-          </div>
+<!--                  <div class='fd-col fd-col&#45;&#45;12 fd-col-md&#45;&#45;6 fd-col-lg&#45;&#45;4 fd-col-xl&#45;&#45;3'>-->
+<!--                    <app-filter>-->
+<!--                      <app-boolean-input filterInput>-->
+<!--                        <app-input-suggestion></app-input-suggestion>-->
+<!--                      </app-boolean-input>-->
+<!--                    </app-filter>-->
+<!--                  </div>-->
 
-          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-filter >
-              <app-string-input filterInput [config]="stringInputConfig">
-                <app-input-suggestion [stateManager]="stringFilterManager"></app-input-suggestion>
-              </app-string-input>
-              <app-string-filter-details filterDetails></app-string-filter-details>
-            </app-filter>
-          </div>
+<!--                  <div class='fd-col fd-col&#45;&#45;12 fd-col-md&#45;&#45;6 fd-col-lg&#45;&#45;4 fd-col-xl&#45;&#45;3'>-->
+<!--                    <app-filter >-->
+<!--                      <app-string-input filterInput>-->
+<!--                        <app-input-suggestion></app-input-suggestion>-->
+<!--                      </app-string-input>-->
+<!--                      <app-string-filter-details filterDetails></app-string-filter-details>-->
+<!--                    </app-filter>-->
+<!--                  </div>-->
 
-          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-filter>
-              <app-number-input filterInput [config]="numberInputConfig" [label]="'Номерной инпут'">
-                <app-input-suggestion [stateManager]="numberFilterManager"></app-input-suggestion>
-              </app-number-input>
-              <app-number-master-input filterDetails></app-number-master-input>
-            </app-filter>
-          </div>
+<!--                  <div class='fd-col fd-col&#45;&#45;12 fd-col-md&#45;&#45;6 fd-col-lg&#45;&#45;4 fd-col-xl&#45;&#45;3'>-->
+<!--                    <app-filter>-->
+<!--                      <app-number-input filterInput [label]="'Номерной инпут'">-->
+<!--                        <app-input-suggestion></app-input-suggestion>-->
+<!--                      </app-number-input>-->
+<!--                      <app-number-master-input filterDetails></app-number-master-input>-->
+<!--                    </app-filter>-->
+<!--                  </div>-->
 
-          <div class='fd-col fd-col--12 fd-col-md--6 fd-col-lg--4 fd-col-xl--3'>
-            <app-filter>
-              <app-enum-input filterInput [label]="'Энам инпут'">
-                <app-input-suggestion [stateManager]="enumFilterManager"></app-input-suggestion>
-              </app-enum-input>
-            </app-filter>
-          </div>
-        </div>
+<!--                  <div class='fd-col fd-col&#45;&#45;12 fd-col-md&#45;&#45;6 fd-col-lg&#45;&#45;4 fd-col-xl&#45;&#45;3'>-->
+<!--                    <app-filter>-->
+<!--                      <app-enum-input filterInput [label]="'Энам инпут'">-->
+<!--                        <app-input-suggestion></app-input-suggestion>-->
+<!--                      </app-enum-input>-->
+<!--                    </app-filter>-->
+<!--                  </div>-->
+<!--                </div>-->
       </div>
       <hr>
       <div class="section-content">
@@ -65,17 +65,31 @@
     <app-table
       [id]="'plan-list-data-grid'"
       [selectionConfig]="tableSelectionConfig"
-      [sorting]="this.listViewTableAsyncState.tableSorting$ | async"
-      [items]="this.listViewTableAsyncState.tableItemsList$ | async"
-      [columns]="this.listViewTableAsyncState.tableColumns$ | async"
-      [selectedEntities]="this.listViewTableAsyncState.tableSelectedList$ | async"
-      [page]="this.listViewTableAsyncState.tablePage$ | async"
-      [showLoadingIndicator]="this.listViewTableAsyncState.tableShowLoaderIndicator$ | async"
-      (onPageNumberChangeRequest)="this.onPageNumberChangeRequest($event)"
-      (onColumnSizeChangeRequest)="this.onColumnSizeChangeRequest($event)"
-      (onSelectionChangeRequest)="this.onTableSelectionChangeRequest($event)"
-      (onColumnPositionChangeRequest)="this.onColumnMoveChangeRequest($event)"
-      (onSortChangeRequest)="this.onSortChangeRequest($event)"
-      (onPageSizeChangeRequest)="this.onPageSizeChangeRequest($event)">
+      [sorting]="this.listViewTableState.tableSorting$ | async"
+      [items]="this.listViewTableState.tableItemsList$ | async"
+      [columns]="this.listViewTableState.tableColumns$ | async"
+      [selectedEntities]="this.listViewTableState.tableSelectedList$ | async"
+      [page]="this.listViewTableState.tablePage$ | async"
+      [showLoadingIndicator]="this.listViewTableState.tableShowLoaderIndicator$ | async"
+      (onPageNumberChangeRequest)="this.listViewStateManager.onPageNumberChangeRequest($event)"
+      (onColumnSizeChangeRequest)="this.listViewStateManager.onColumnSizeChangeRequest($event)"
+      (onSelectionChangeRequest)="this.listViewStateManager.onTableSelectionChangeRequest($event)"
+      (onColumnPositionChangeRequest)="this.listViewStateManager.onColumnMoveChangeRequest($event)"
+      (onSortChangeRequest)="this.listViewStateManager.onSortChangeRequest($event)"
+      (onPageSizeChangeRequest)="this.listViewStateManager.onPageSizeChangeRequest($event)">
     </app-table>
 </div>
+<app-modal-window [id]="'lala-input-id'"
+                  *ngIf="true"
+                  style="z-index: 100"
+                  [baseHeight]="'800px'"
+                  [baseWidth]="'1200px'"
+                  [minWidth]="'700px'"
+                  [minHeight]="'450px'"
+                  [headerTitle]="'Детальная настройка значения фильтра'"
+>
+  <div modalWindowBody >
+    <app-filter-expression-builder></app-filter-expression-builder>
+  </div>
+</app-modal-window>
+

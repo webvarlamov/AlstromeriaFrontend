@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
-import {PagingAndSortingRepositoryAsync} from "../service/http/repository/paging-and-sorting-repository-async";
+import {PagingAndSortingRepository} from "../service/http/repository/paging-and-sorting-repository";
 import {Plan} from "../entity/plan";
-import {AbstractPagingAndSortingRemoteEntityRepositoryAsync} from "../service/http/repository/abstract-paging-and-sorting-remote-entity-repository-async";
+import {PagingAndSortingRemoteRepositoryImpl} from "../service/http/repository/paging-and-sorting-remote-repository-impl";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlanRepository extends AbstractPagingAndSortingRemoteEntityRepositoryAsync<Plan> implements PagingAndSortingRepositoryAsync<Plan> {
+export class PlanRepository extends PagingAndSortingRemoteRepositoryImpl<Plan> implements PagingAndSortingRepository<Plan> {
   constructor(
     public http: HttpClient
   ) {

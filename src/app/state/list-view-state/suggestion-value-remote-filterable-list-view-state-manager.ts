@@ -1,12 +1,12 @@
 import {ListViewTableState} from "./list-view-table-state";
-import {PagingAndSortingRepositoryAsync} from "../../service/http/repository/paging-and-sorting-repository-async";
+import {PagingAndSortingRepository} from "../../service/http/repository/paging-and-sorting-repository";
 import {FilterExpression} from "../../service/http/model/filter-expression";
 import {combineLatest, of} from "rxjs";
 import {ResponsePage} from "../../service/http/model/response-page";
 import {HasId} from "../../service/http/model/pageable";
 import {switchMap, take} from "rxjs/operators";
 import {RemoteFilterableListViewStateManager} from "./remote-filterable-list-view-state-manager";
-import {ListViewFiltersStateManager} from "../filter-state/list-view-filters-state-manager";
+import {ListViewFiltersStateManagerImpl} from "../filter-state/list-view-filters-state-manager-impl";
 import {FilterExpressionBuilder} from "../../service/http/service/filter-expression-builder";
 import {SuggestionFilterableListViewStateManager} from "./suggestion-filterable-list-view-state-manager";
 import {SuggestionOwnerInputEvent} from "../../modules/input-components-module/components/input-component/input.component";
@@ -17,10 +17,10 @@ export class SuggestionValueRemoteFilterableListViewStateManager extends RemoteF
   constructor(
     args: {
       listViewTableState: ListViewTableState;
-      repository: PagingAndSortingRepositoryAsync<any>;
+      repository: PagingAndSortingRepository<any>;
       fetchStrategy?: string;
       attributeKey: string;
-      listViewFiltersStateManager: ListViewFiltersStateManager,
+      listViewFiltersStateManager: ListViewFiltersStateManagerImpl,
       filterExpressionBuilder: FilterExpressionBuilder
     }) {
     super(args);
@@ -29,8 +29,8 @@ export class SuggestionValueRemoteFilterableListViewStateManager extends RemoteF
 
   public loadFromRemote(): Promise<ResponsePage<HasId>> {
     return combineLatest([
-      this.listViewTableAsyncState.tablePage$,
-      this.listViewTableAsyncState.tableSorting$,
+      this.listViewTableState.tablePage$,
+      this.listViewTableState.tableSorting$,
       this.listViewFiltersStateManager.filtersByAttributeKey$.pipe(
         switchMap(filtersByAttributeKey => {
           return this.filterExpressionBuilder ?

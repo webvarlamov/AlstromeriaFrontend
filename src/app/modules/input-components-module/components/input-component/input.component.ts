@@ -33,12 +33,12 @@ export enum InputComponentType {
 export interface InputComponentValueChangeRequest {
   attributeKey: string;
   value: InputComponentValue;
-  config: InputComponentConfig<any>;
+  config: InputComponentConfigImpl<any>;
 }
 
 export interface InputComponentData {
   attributeKey: string;
-  config: InputComponentConfig<any>;
+  config: InputComponentConfigImpl<any>;
   value: InputComponentValue;
 }
 
@@ -53,167 +53,21 @@ export abstract class InputComponentValue {
   }
 }
 
-export class BooleanInputComponentValue extends InputComponentValue {
-  get(): boolean {
-    return this.value;
-  }
-
-  constructor(value: boolean) {
-    super(value);
-    this.type = InputComponentType.BOOLEAN;
-  }
-}
-
-export class BooleanListInputComponentValue extends InputComponentValue {
-  get(): Array<boolean> {
-    return this.value
-  }
-
-  constructor(value: Array<boolean>) {
-    super(value);
-    this.type = InputComponentType.BOOLEAN_LIST;
-  }
-}
-
-export class DateTimeInputComponentValue extends InputComponentValue {
-  get(): Date {
-    return this.value
-  }
-
-  constructor(value: Date) {
-    super(value);
-    this.type = InputComponentType.DATETIME;
-  }
-}
-
-export class DateTimeListInputComponentValue extends InputComponentValue {
-  get(): Array<Date> {
-    return this.value
-  }
-
-  constructor(value: Array<Date>) {
-    super(value);
-    this.type = InputComponentType.DATETIME_LIST;
-  }
-}
-
-export class PeriodInputComponentValue extends InputComponentValue {
-  get(): { startDate: Date, endDate: Date } {
-    return this.value;
-  }
-
-  constructor(value: { startDate: Date, endDate: Date }) {
-    super(value);
-    this.type = InputComponentType.PERIOD;
-  }
-}
-
-export class EntityInputComponentValue extends InputComponentValue {
-  get(): HasId {
-    return this.value
-  }
-
-  constructor(value: HasId) {
-    super(value);
-    this.type = InputComponentType.ENTITY;
-  }
-}
-
-export class EntityListInputComponentValue extends InputComponentValue {
-  get(): Array<HasId> {
-    return this.value
-  }
-
-  constructor(value: Array<HasId>) {
-    super(value);
-    this.type = InputComponentType.ENTITY_LIST;
-  }
-}
-
-export class EnumInputComponentValue extends InputComponentValue {
-  get(): HasId {
-    return this.value
-  }
-
-  constructor(value: HasId) {
-    super(value);
-    this.type = InputComponentType.ENUM;
-  }
-}
-
-export class EnumListInputComponentValue extends InputComponentValue {
-  get(): Array<HasId> {
-    return this.value
-  }
-
-  constructor(value: Array<HasId>) {
-    super(value);
-    this.type = InputComponentType.ENUM_LIST;
-  }
-}
-
-export class NumberInputComponentValue extends InputComponentValue {
-  get(): number {
-    return this.value
-  }
-
-  constructor(value: number) {
-    super(value);
-    this.type = InputComponentType.NUMBER;
-  }
-}
-
-export class NumberListInputComponentValue extends InputComponentValue {
-  get(): Array<number> {
-    return this.value
-  }
-
-  constructor(value: Array<number>) {
-    super(value);
-    this.type = InputComponentType.NUMBER_LIST;
-  }
-}
-
-export class StringInputComponentValue extends InputComponentValue {
-  get(): string {
-    return this.value
-  }
-
-  constructor(value: string) {
-    super(value);
-    this.type = InputComponentType.STRING;
-  }
-}
-
-export class StringListInputComponentValue extends InputComponentValue {
-  get(): Array<string> {
-    return this.value
-  }
-
-  constructor(value: Array<string>) {
-    super(value);
-    this.type = InputComponentType.STRING_LIST;
-  }
-}
-
-export interface InputConfigInterface {
+export interface InputComponentConfig {
   attributeKey: string;
   caption: string;
   componentType: InputComponentType;
-  operator: RangeOperator
 }
 
-export class InputComponentConfig<T> implements InputConfigInterface {
+export class InputComponentConfigImpl<T> implements InputComponentConfig {
   attributeKey: string;
   caption: string;
   componentType: InputComponentType;
-  operator: RangeOperator;
 
-  constructor(initial: InputConfigInterface) {
-    this.attributeKey = initial?.attributeKey;
-    this.caption = initial?.caption;
-    this.componentType = initial?.componentType
-    this.operator = initial?.operator
+  constructor(args: InputComponentConfig) {
+    this.attributeKey = args?.attributeKey;
+    this.caption = args?.caption;
+    this.componentType = args?.componentType
   }
 }
 
@@ -225,7 +79,7 @@ export interface SuggestionOwnerInputEvent {
 @Directive({
   selector: 'app-input-component-directive'
 })
-export abstract class InputComponent<C extends InputComponentConfig<any>, V extends InputComponentValue> extends SuggestionOwner implements OnInit, AfterViewInit {
+export abstract class InputComponent<C extends InputComponentConfigImpl<any>, V extends InputComponentValue> extends SuggestionOwner implements OnInit, AfterViewInit {
   public inputValue$: BehaviorSubject<string> = new BehaviorSubject<any>('');
   @ContentChild(InputSuggestionComponent)
   public suggestionComponent: InputSuggestionComponent;
@@ -261,3 +115,5 @@ export abstract class InputComponent<C extends InputComponentConfig<any>, V exte
     }
   }
 }
+
+

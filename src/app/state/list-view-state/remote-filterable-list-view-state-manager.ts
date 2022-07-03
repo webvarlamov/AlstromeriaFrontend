@@ -1,5 +1,5 @@
 import {ListViewTableState} from "./list-view-table-state";
-import {PagingAndSortingRepositoryAsync} from "../../service/http/repository/paging-and-sorting-repository-async";
+import {PagingAndSortingRepository} from "../../service/http/repository/paging-and-sorting-repository";
 import {combineLatest, of} from "rxjs";
 import {Page} from "../../service/http/model/page";
 import {TableSort} from "../../modules/table-components-module/table/models/dataModels/tableSort";
@@ -7,20 +7,20 @@ import {ResponsePage} from "../../service/http/model/response-page";
 import {HasId} from "../../service/http/model/pageable";
 import {map, switchMap, take, tap} from "rxjs/operators";
 import {FilterableListViewTableStateManager} from "./filterable-list-view-table-state-manager";
-import {ListViewFiltersStateManager} from "../filter-state/list-view-filters-state-manager";
+import {ListViewFiltersStateManagerImpl} from "../filter-state/list-view-filters-state-manager-impl";
 import {FilterExpressionBuilder} from "../../service/http/service/filter-expression-builder";
 import {FilterExpression} from "../../service/http/model/filter-expression";
 
 export class RemoteFilterableListViewStateManager extends FilterableListViewTableStateManager {
-  public repository: PagingAndSortingRepositoryAsync<any>;
+  public repository: PagingAndSortingRepository<any>;
   public fetchStrategy: string;
   public filterExpressionBuilder: FilterExpressionBuilder;
 
   constructor(
     args: {
       listViewTableState: ListViewTableState,
-      listViewFiltersStateManager: ListViewFiltersStateManager,
-      repository: PagingAndSortingRepositoryAsync<any>,
+      listViewFiltersStateManager: ListViewFiltersStateManagerImpl,
+      repository: PagingAndSortingRepository<any>,
       fetchStrategy?: string,
       filterExpressionBuilder: FilterExpressionBuilder
     }
@@ -32,44 +32,45 @@ export class RemoteFilterableListViewStateManager extends FilterableListViewTabl
   }
 
   public changeTablePage(page: Page): void {
-    this.listViewTableAsyncState.nextTablePage(page);
+    this.listViewTableState.nextTablePage(page);
 
     this.updateItems().then();
   }
 
   public changeTableSorting(tableSorting: Array<TableSort>) {
-    this.listViewTableAsyncState.nextTableSorting(tableSorting);
+    this.listViewTableState.nextTableSorting(tableSorting);
 
     this.updateItems().then();
   }
 
   public loadFromRemote(): Promise<ResponsePage<HasId>> {
-    return combineLatest([
-      this.listViewTableAsyncState.tablePage$,
-      this.listViewTableAsyncState.tableSorting$,
-      this.listViewFiltersStateManager.filtersByAttributeKey$.pipe(
-        switchMap(filtersByAttributeKey => {
-          return this.filterExpressionBuilder ?
-            this.filterExpressionBuilder.build(filtersByAttributeKey)
-            : of(FilterExpression.empty());
-        }),
-        take(1)
-      )
-    ]).pipe(
-      take(1),
-      switchMap(([page, sort, filterExpression]) => this.repository.findAllEntitiesOnPage({
-        page: page,
-        sort: sort,
-        fetchStrategy: this.fetchStrategy,
-        filterExpression: filterExpression
-      }))
-    ).toPromise();
+    return null;
+    // return combineLatest([
+    //   this.listViewTableState.tablePage$,
+    //   this.listViewTableState.tableSorting$,
+    //   this.listViewFiltersStateManager.filtersByAttributeKey$.pipe(
+    //     switchMap(filtersByAttributeKey => {
+    //       return this.filterExpressionBuilder ?
+    //         this.filterExpressionBuilder.build(filtersByAttributeKey)
+    //         : of(FilterExpression.empty());
+    //     }),
+    //     take(1)
+    //   )
+    // ]).pipe(
+    //   take(1),
+    //   switchMap(([page, sort, filterExpression]) => this.repository.findAllEntitiesOnPage({
+    //     page: page,
+    //     sort: sort,
+    //     fetchStrategy: this.fetchStrategy,
+    //     filterExpression: filterExpression
+    //   }))
+    // ).toPromise();
   }
 
   public updateItems(): Promise<boolean> {
     return this.loadFromRemote().then(responsePage => {
-      this.listViewTableAsyncState.nextTableItemsList(responsePage.items);
-      this.listViewTableAsyncState.nextTablePage({
+      this.listViewTableState.nextTableItemsList(responsePage.items);
+      this.listViewTableState.nextTablePage({
         size: responsePage.size,
         page: responsePage.page,
         pagesCount: responsePage.pagesCount,
@@ -80,8 +81,8 @@ export class RemoteFilterableListViewStateManager extends FilterableListViewTabl
     })
   }
 
-  public deleteTableItems(): Promise<any> {
-    return this.listViewTableAsyncState.tableSelectedList$.pipe(
+  public deleteSelectedTableItems(): Promise<any> {
+    return this.listViewTableState.tableSelectedList$.pipe(
       take(1),
       switchMap(selectedItems => {
         return this.repository.deleteAllEntities({entities: selectedItems})

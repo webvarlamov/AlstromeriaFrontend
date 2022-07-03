@@ -14,13 +14,16 @@ import {
   PageNumberChangeRequest
 } from "../../../../modules/table-components-module/table/models/changeRequest/pageNumberChangeRequest";
 import {ListViewTableState} from "../../../../state/list-view-state/list-view-table-state";
-import {ListViewTableStateManager} from "../../../../state/list-view-state/list-view-table-state-manager";
+import {ListViewTableStateManagerImpl} from "../../../../state/list-view-state/list-view-table-state-manager-impl";
+import {PagingAndSortingRemoteRepositoryListViewStateManagerImpl} from "../../../../provider/paging-and-sorting-remote-repository-list-view-state-manager-impl";
+import {HasId} from "../../../../service/http/model/pageable";
+import {$e} from "@angular/compiler/src/chars";
 
 @Directive({
   selector: "app-list-view-component",
 })
-export class ListViewComponent<T> implements OnInit {
-  public listViewTableAsyncState: ListViewTableState = new ListViewTableState({
+export class ListViewComponent<T extends HasId> implements OnInit {
+  public listViewTableState: ListViewTableState = new ListViewTableState({
     tableItemsList: [],
     tablePage: {
       size: 10,
@@ -31,7 +34,8 @@ export class ListViewComponent<T> implements OnInit {
     tableColumns: []
   });
 
-  public listViewTableAsyncStateManager: ListViewTableStateManager = new ListViewTableStateManager(this.listViewTableAsyncState);
+  // public listViewTableStateManager: ListViewTableStateManagerImpl = new ListViewTableStateManagerImpl(this.listViewTableState);
+  public listViewStateManager: PagingAndSortingRemoteRepositoryListViewStateManagerImpl<T>;
 
   constructor(
     public injector: Injector
@@ -40,30 +44,36 @@ export class ListViewComponent<T> implements OnInit {
   ngOnInit(): void {}
 
   public onColumnMoveChangeRequest($event: ColumnPositionChangeRequest) {
-    this.listViewTableAsyncState.nextTableColumnsList($event.candidates);
+    this.listViewStateManager.onColumnMoveChangeRequest($event)
   }
 
   public onColumnSizeChangeRequest($event: ColumnSizeChangeRequest) {
-    this.listViewTableAsyncState.nextTableColumnsList($event.candidates)
+    this.listViewStateManager.onColumnSizeChangeRequest($event)
+    // this.listViewTableState.nextTableColumnsList($event.candidates)
   }
 
   public onSortChangeRequest($event: SortChangeRequest) {
-    this.listViewTableAsyncStateManager.changeTableSorting($event.candidates)
+    this.listViewStateManager.onSortChangeRequest($event)
+    // this.listViewTableStateManager.changeTableSorting($event.candidates)
   }
 
   public onTableSelectionChangeRequest($event: SelectionChangeRequest) {
-    this.listViewTableAsyncState.nextTableSelectedList($event.candidates)
+    this.listViewStateManager.onTableSelectionChangeRequest($event);
+    // this.listViewTableState.nextTableSelectedList($event.candidates)
   }
 
   public onPageSizeChangeRequest($event: PageSizeChangeRequest) {
-    this.listViewTableAsyncStateManager.changeTablePage($event.candidate);
+    this.listViewStateManager.onPageSizeChangeRequest($event)
+    // this.listViewTableStateManager.changeTablePage($event.candidate);
   }
 
   public onPageNumberChangeRequest($event: PageNumberChangeRequest) {
-    this.listViewTableAsyncStateManager.changeTablePage($event.candidate);
+    this.listViewStateManager.onPageNumberChangeRequest($event);
+    // this.listViewTableStateManager.changeTablePage($event.candidate);
   }
 
   public onDeleteItemsRequest() {
-    this.listViewTableAsyncStateManager.deleteTableItems();
+    this.listViewStateManager.onDeleteItemsRequest();
+    // this.listViewTableStateManager.deleteSelectedTableItems();
   }
 }

@@ -1,15 +1,15 @@
 import {ListViewTableState} from "./list-view-table-state";
-import {ListViewTableStateManager} from "./list-view-table-state-manager";
-import {ListViewFiltersStateManager} from "../filter-state/list-view-filters-state-manager";
+import {ListViewTableStateManagerImpl} from "./list-view-table-state-manager-impl";
+import {ListViewFiltersStateManagerImpl} from "../filter-state/list-view-filters-state-manager-impl";
 
 
-export class FilterableListViewTableStateManager extends ListViewTableStateManager {
-  public listViewFiltersStateManager: ListViewFiltersStateManager;
+export class FilterableListViewTableStateManager extends ListViewTableStateManagerImpl {
+  public listViewFiltersStateManager: ListViewFiltersStateManagerImpl;
 
   constructor(
     args: {
       listViewTableState: ListViewTableState,
-      listViewFiltersStateManager: ListViewFiltersStateManager;
+      listViewFiltersStateManager: ListViewFiltersStateManagerImpl;
     }
   ) {
     super(args.listViewTableState);

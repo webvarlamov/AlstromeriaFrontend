@@ -1,9 +1,10 @@
 import { Range } from './range';
 
 export class FilterExpression {
-  public operator: FilterExpressionOperator;
   public expressions?: FilterExpression[];
+  public operator?: FilterExpressionOperator;
   public ranges?: Range[];
+  public exclude?: boolean;
 
   constructor(params: FilterExpressionInterface) {
     this.operator = params.operator;
@@ -27,5 +28,5 @@ export interface FilterExpressionInterface {
 }
 
 export enum FilterExpressionOperator {
-  AND = 'AND', OR = 'OR'
+  AND = 'AND', OR = 'OR', DEFAULT = 'DEFAULT'
 }

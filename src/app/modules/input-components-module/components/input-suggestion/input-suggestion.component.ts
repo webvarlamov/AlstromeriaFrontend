@@ -11,7 +11,7 @@ import {PageSizeChangeRequest} from "../../../table-components-module/table/mode
 import {PageNumberChangeRequest} from "../../../table-components-module/table/models/changeRequest/pageNumberChangeRequest";
 import {InputComponent, SuggestionOwnerInputEvent} from "../input-component/input.component";
 import {TableRowClickEvent} from "../../../table-components-module/table/models/event/table-row-click-event";
-import {ListViewTableStateManager} from "../../../../state/list-view-state/list-view-table-state-manager";
+import {ListViewTableStateManagerImpl} from "../../../../state/list-view-state/list-view-table-state-manager-impl";
 import {
   SuggestionFilterableListViewStateManager
 } from "../../../../state/list-view-state/suggestion-filterable-list-view-state-manager";
@@ -26,7 +26,7 @@ export class InputSuggestionComponent implements OnInit {
   public owner: InputComponent<any, any>;
 
   @Input()
-  public stateManager: ListViewTableStateManager & SuggestionFilterableListViewStateManager;
+  public stateManager: ListViewTableStateManagerImpl & SuggestionFilterableListViewStateManager;
 
   @Input()
   public selectionConfig: TableSelectionConfig = {
@@ -37,7 +37,7 @@ export class InputSuggestionComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.stateManager?.updateItems().then()
+    // this.stateManager?.updateItems().then()
   }
 
   public onColumnMoveChangeRequest($event: ColumnPositionChangeRequest) {
@@ -77,6 +77,6 @@ export class InputSuggestionComponent implements OnInit {
 
   public onOwnerInputValueChangeEvent(args: SuggestionOwnerInputEvent) {
     this.stateManager.onSuggestionOwnerValueChangeEvent(args);
-    this.stateManager.updateItems().then();
+    // this.stateManager.updateItems().then();
   }
 }

@@ -1,4 +1,4 @@
-import {PagingAndSortingRepositoryAsync} from "./paging-and-sorting-repository-async";
+import {PagingAndSortingRepository} from "./paging-and-sorting-repository";
 import {FilterExpression} from "../model/filter-expression";
 import {forkJoin, Observable} from "rxjs";
 import {Page} from "../model/page";
@@ -7,7 +7,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {ResponsePage} from "../model/response-page";
 import {TableSort} from "../../../modules/table-components-module/table/models/dataModels/tableSort";
 
-export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S extends HasId> implements PagingAndSortingRepositoryAsync<S> {
+export abstract class PagingAndSortingRemoteRepositoryImpl<S extends HasId> implements PagingAndSortingRepository<S> {
   protected constructor(
     public http: HttpClient
   ) {}
@@ -93,6 +93,7 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
     params = params.set("page", args?.page?.page)
     params = params.set("size", args?.page?.size)
     params = params.set("fetchStrategy", args?.fetchStrategy)
+    params = params.set("filterExpression", JSON.stringify(args?.filterExpression))
 
     if (args?.sort != null) {
       args?.sort.forEach(s => {
@@ -142,5 +143,5 @@ export abstract class AbstractPagingAndSortingRemoteEntityRepositoryAsync<S exte
     return undefined;
   }
 
-  public abstract getURL(method: any, methodArgs?: any): string;
+  protected abstract getURL(method: any, methodArgs?: any): string;
 }

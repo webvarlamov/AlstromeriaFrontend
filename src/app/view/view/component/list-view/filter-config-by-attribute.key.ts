@@ -1,5 +1,5 @@
-import {FilterComponentConfig} from "./filter-component.config";
+import {FilterComponentConfigImpl} from "./filter-component-config.impl";
 
 export interface FilterConfigByAttributeKey {
-    [attributeKey: string]: FilterComponentConfig<any>
+    [attributeKey: string]: FilterComponentConfigImpl
 }

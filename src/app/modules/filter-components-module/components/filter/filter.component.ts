@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',

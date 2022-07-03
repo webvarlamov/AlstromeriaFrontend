@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {InputComponent, InputComponentConfig, InputComponentValue} from "../input-component/input.component";
+import {InputComponent, InputComponentConfigImpl, InputComponentValue} from "../input-component/input.component";
 import {InputSuggestionEvent} from "../input-component/suggestions.directive";
 import {TableRowClickEvent} from "../../../table-components-module/table/models/event/table-row-click-event";
 
@@ -9,7 +9,7 @@ import {TableRowClickEvent} from "../../../table-components-module/table/models/
   styleUrls: ['./period-input.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PeriodInputComponent extends InputComponent<InputComponentConfig<any>, InputComponentValue> implements OnInit {
+export class PeriodInputComponent extends InputComponent<InputComponentConfigImpl<any>, InputComponentValue> implements OnInit {
   onInputSuggestionEvent(event: InputSuggestionEvent): void {
   }
 }

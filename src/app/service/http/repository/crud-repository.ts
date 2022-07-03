@@ -2,7 +2,7 @@ import {Observable} from "rxjs";
 import {FilterExpression} from "../model/filter-expression";
 import {HasId} from "../model/pageable";
 
-export interface CrudRepositoryAsync<S extends HasId> {
+export interface CrudRepository<S extends HasId> {
     save(entity: S): Observable<S>;
 
     saveAll(entities: Iterable<S>): Observable<Iterable<S>>;
