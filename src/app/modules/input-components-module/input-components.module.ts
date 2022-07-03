@@ -10,7 +10,7 @@ import { EntityInputComponent } from "./components/entity-input/entity-input.com
 import { TableModule } from "../table-components-module/table.module";
 import { InputSuggestionComponent } from './components/input-suggestion/input-suggestion.component';
 import { NumberFilterDetailComponent } from './components/filter-detail/number-filter-detail/number-filter-detail.component';
-import { StringFilterDetails } from './components/filter-detail/string-filter-detail/string-filter-details.component';
+import { StringFilterDetailsComponent } from './components/filter-detail/string-filter-detail/string-filter-details.component';
 import { EntityFilterDetailComponent } from './components/filter-detail/entity-filter-detail/entity-filter-detail.component';
 import {ModalWindowModuleModule} from "../modal-window-module/modal-window-module.module";
 import {ObjectViewModule} from "../object-view-module/object-view.module";
@@ -27,7 +27,7 @@ import {FieldsetModuleModule} from "../fieldset-components-module/fieldset-modul
         EntityInputComponent,
         InputSuggestionComponent,
         NumberFilterDetailComponent,
-        StringFilterDetails,
+        StringFilterDetailsComponent,
         EntityFilterDetailComponent
     ],
   exports: [
@@ -40,7 +40,7 @@ import {FieldsetModuleModule} from "../fieldset-components-module/fieldset-modul
     EnumInputComponent,
     InputSuggestionComponent,
     EntityFilterDetailComponent,
-    StringFilterDetails,
+    StringFilterDetailsComponent,
     NumberFilterDetailComponent
   ],
     imports: [
